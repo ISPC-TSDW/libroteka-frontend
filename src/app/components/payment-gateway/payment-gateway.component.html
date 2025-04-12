@@ -1,0 +1,138 @@
+<div class="payment-gateway-container">
+  <div *ngIf="!showPaymentForm">
+    <h2>Datos de envío y facturación</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="cart-summary">
+          <h5>Detalle de la compra</h5>
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <div class="cart-item-title">
+              {{ item.title + " - " + item.id_Author?.name }}
+            </div>
+            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+            <div class="cart-item-price">
+              Precio: {{ item.price | currency }}
+            </div>
+          </div>
+          <div *ngIf="cartItems.length === 0" class="cart-empty">
+            Tu carrito está vacío.
+          </div>
+          <div class="total-amount">
+            <h4>Total a pagar: {{ totalAmount | currency }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <form (ngSubmit)="onAddressSubmit()">
+          <div class="form-group">
+            <label for="city">Ciudad</label>
+            <input
+              type="text"
+              id="city"
+              [(ngModel)]="addressDetails.city"
+              name="city"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Dirección</label>
+            <input
+              type="text"
+              id="address"
+              [(ngModel)]="addressDetails.address"
+              name="address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="telephone">Teléfono</label>
+            <input
+              type="text"
+              id="telephone"
+              [(ngModel)]="addressDetails.telephone"
+              name="telephone"
+              required
+            />
+            <button type="submit" class="btn btn-primary mt-3">
+              Siguiente
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showPaymentForm">
+    <h2>Realizar pago</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="cart-summary">
+          <h5>Detalle de la compra</h5>
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <div class="cart-item-title">
+              {{ item.title + " - " + item.id_Author?.name }}
+            </div>
+            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+            <div class="cart-item-price">
+              Precio: {{ item.price | currency }}
+            </div>
+          </div>
+          <div *ngIf="cartItems.length === 0" class="cart-empty">
+            Tu carrito está vacío.
+          </div>
+          <div class="total-amount">
+            <h4>Total a pagar: {{ totalAmount | currency }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <form (ngSubmit)="onPaymentSubmit()">
+          <div class="form-group">
+            <label for="cardNumber">Tarjeta de crédito</label>
+            <input
+              type="text"
+              id="cardNumber"
+              [(ngModel)]="paymentDetails.cardNumber"
+              name="cardNumber"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="expiryDate">Fecha de expiración</label>
+            <input
+              type="text"
+              id="expiryDate"
+              [(ngModel)]="paymentDetails.expiryDate"
+              name="expiryDate"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input
+              type="text"
+              id="cvv"
+              [(ngModel)]="paymentDetails.cvv"
+              name="cvv"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="cardHolderName">Titular de la tarjeta</label>
+            <input
+              type="text"
+              id="cardHolderName"
+              [(ngModel)]="paymentDetails.cardHolderName"
+              name="cardHolderName"
+              required
+            />
+            <button  type="submit" class="btn btn-primary mt-3">
+              Realizar pago
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

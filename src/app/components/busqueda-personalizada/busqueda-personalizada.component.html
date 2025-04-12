@@ -1,0 +1,55 @@
+ <div class="container">
+  <form [formGroup]="form" (ngSubmit)="onEnviar($event)"id="search-form">
+    <input type="text" id="search-input" placeholder="Buscar..." formControlName="value">
+    @if (Value?.touched) { @if (Value?.hasError('required')) {
+      <p class="text-danger">
+        Debe indicar un título, autor, editorial o categoría (según el criterio seleccionado).
+      </p>}}
+    <select id="search-filter" name="filter" formControlName="criterio">
+      <option value="author">Por Autor</option>
+      <option value="genre">Por Categorías</option>
+      <option value="editorial">Por Editorial</option>
+      <option value="title">Por Título</option>
+    </select>
+    @if (Criterio?.touched) { @if (Criterio?.hasError('required')) {
+      <p class="text-danger">
+        Debe seleccionar una categoria.
+      </p>}}
+    <button type="submit">Buscar</button>
+
+    <div class="recuadro">
+      <div id="results">
+        <h2>Resultados encontrados</h2>
+        <ul *ngIf="hasSearched && searchResults.length > 0">
+          @for (book of searchResults; track book.id_Book) {
+            <p class="book">
+              <strong>Título:</strong> {{ book.title }} <br>
+              <strong>Autor:</strong> {{ book.id_Author?.name }} <br>
+              <strong>Género:</strong> {{ book.id_Genre?.name }} <br>
+              <strong>Editorial:</strong> {{ book.id_Editorial?.name }} <br>
+              <button (click)="selectBook(book)">Ver detalles</button>
+            </p>
+          }
+          @empty{ 
+            <div *ngIf="hasSearched && searchResults.length === 0">
+              <h4>No hay publicaciones que coincidan con tu búsqueda.</h4>
+                <ul class="Lista">
+                  <li aria-label="Revisar la ortografía de la palabra">Revisá la ortografía de la palabra.</li>
+                  <li aria-label="Probar navegar por nuestro menú de categorías">Prueba navegar por nuestro menú de categorías.</li>
+                  <li aria-label="Volver a la página principal para seguir buscando">Vuelve a la <a href="/landing">página principal</a> para seguir buscando.</li>
+                </ul>
+              </div>            
+          } 
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Popup del Detalle del Libro -->
+<div *ngIf="isPopupVisible" class="popup-overlay"(click)="closePopup()">
+  <div class="popup-container"(click)="$event.stopPropagation()">
+    <span class="close-button" (click)="closePopup()">X</span>
+    <app-book-details [selectedBook]="selectedBook"></app-book-details>
+  </div>
+</div>

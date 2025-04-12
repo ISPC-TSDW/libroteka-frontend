@@ -1,0 +1,86 @@
+<!-- <div class="popup-content">
+  <h2>Detalles del Libro</h2>
+  <div *ngIf="selectedBook">
+    <p><strong>Título:</strong> {{ selectedBook.title }}</p>
+    <p><strong>Autor:</strong> {{ selectedBook.id_Author?.name }}</p>
+    <p><strong>Género:</strong> {{ selectedBook.id_Genre?.name }}</p>
+    <p><strong>Editorial:</strong> {{ selectedBook.id_Editorial?.name }}</p>
+    <p><strong>Descripción:</strong> {{ selectedBook.description }}</p>
+    <p><strong>Precio:</strong> {{ selectedBook.price }}</p>
+    <p><strong>Stock:</strong> {{ selectedBook.stock }}</p>
+  </div>
+</div> -->
+
+<div class="popup-content">
+  <h2>Detalles del Libro</h2>
+  <div *ngIf="selectedBook">
+    <p><strong>Título:</strong> {{ selectedBook.title }}</p>
+    <p><strong>Autor:</strong> {{ selectedBook.id_Author?.name }}</p>
+    <p><strong>Género:</strong> {{ selectedBook.id_Genre?.name }}</p>
+    <p><strong>Editorial:</strong> {{ selectedBook.id_Editorial?.name }}</p>
+    <p><strong>Descripción:</strong> {{ selectedBook.description }}</p>
+    <p><strong>Precio:</strong> {{ selectedBook.price }}</p>
+    <p><strong>Stock:</strong> {{ selectedBook.stock }}</p>
+
+    <div class="formgroup">
+      <label for="edition">Cual Comprar?</label>
+      <select id="edition">
+
+        <option selected value="gold">Edicion Oro</option>
+        <option selected value="normal">Edicion Normal</option>
+        <option selected value="test">Edicion prueba</option>
+        <option selected value="choose">Escoje una opcion</option>
+
+      </select>
+    </div>
+
+    <div class="addcart">
+      <div class="quantity">
+          <input 
+          type="number" 
+          placeholder="1" 
+          value="1" 
+          min="1" 
+          class="inputquantity">
+        </div>
+        <button class="btntocart">
+          <i class="fa-solid fa-plus"></i>Añadir al carrito
+        </button>
+      </div>
+
+      <div class="titlereview">
+        <h4>Reseñas</h4>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+      </div>
+  </div>
+</div> 
+
+
+
+  
+
+  
+
+
+      
+
+
+
+          
+
+
+
+    
+
+   
+
+
+
+
+  
+
+

@@ -1,0 +1,38 @@
+.cart-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  
+  .cart-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  
+  .cart-item-title {
+    font-weight: bold;
+  }
+  
+  .cart-item-quantity {
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .cart-empty {
+    padding: 10px;
+    text-align: center;
+    color: #777;
+  }
+  
+  

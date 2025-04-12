@@ -1,0 +1,103 @@
+<!-- 1era fila -->
+<div class="container-fluid d-flex flex-wrap justify-content-center">
+   <h1 class="card-header m-3">Resumen de Compras</h1>
+   <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-3 mb-3" *ngFor="let order of recentPurchases">
+        <div class="card">
+          <div class="card-header">
+            Orden #{{ order.id_Order }} (Total: ${{ order.total }})
+          </div>
+          <div class="card-body">
+            <ul class="list-group mb-3">
+              <li class="list-group-item">
+                <strong>Libros:</strong>
+                <ul class="list-group" style="padding: 5%">
+                  <li *ngFor="let book of order.books">{{ book.title }} - ${{ book.price }}</li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="list-group">
+              <li class="list-group-item">
+                <strong>Estado del Envío:</strong>
+                <br> Estado: {{ getStatus(order.id_Order_Status) }}
+                <br> Llegada estimada: {{ order.date | date: 'longDate' }}
+                <br>
+                <a href="#" target="_blank">Track Package</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- 2da fila -->
+
+<div class="container-fluid d-flex flex-wrap justify-content-center">
+    <div class="card m-2" style="width: 30%;">
+        <div class="card-header">Cupones y Descuentos</div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Cupones
+                    <ul class="list-group" style="padding: 5%">
+                        <li>Bienvenida - 15% off</li>
+                        <li>Newsletter- 5% off</li>
+                    </ul>
+                </li>
+                <li class="list-group-item">
+                    Descuentos
+                    <ul class="list-group" style="padding: 5%">
+                        <li>HotSale - Hasta 60% off</li>
+                        <li>BlackFriday- Hasta 80% off</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card m-2" style="width: 30%;">
+        <div class="card-header">Recomendaciones</div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item" style="padding: 5%">
+                    ¡Nuevo ingreso!
+                    <br>
+                    <a href=" " target="_blank">Libro 1</a>
+                    <br>
+                    <a href=" " target="_blank">Libro 2</a>
+                </li>
+                <li class="list-group-item" style="padding: 5%">
+                    Novedades
+                    <br>
+                    <a href=" " target="_blank">Libro 1</a>
+                    <br>
+                    <a href=" " target="_blank">Libro 2</a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card m-2" style="width: 30%;">
+        <div class="card-header">Soporte al cliente</div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <ul class="list-group" style="padding: 5%">
+                        Podés contactarnos a través de nuestros canales de atención
+                        <br> Correo <a href=" " target="_blank">ayuda&#64;libroteka.com</a>
+                        <br> Whatsapp <a href=" " target="_blank">+54 123 456 789</a>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid d-flex flex-wrap justify-content-center">
+    <div class="card m-2 ">
+        <div class="card-header ">Reseñas y Comentarios</div>
+        <div class="card-body">
+        </div>
+    </div>
+</div>
