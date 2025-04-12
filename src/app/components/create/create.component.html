@@ -1,0 +1,239 @@
+<div class="container form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card h-100 mb-3">
+                <div class="card-body text-center">
+                    <div class="alert alert-info" role="alert">
+                        <h2>CREÁ TU CUENTA</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container form-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card h-100 mb-3">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <form [formGroup]="form" (ngSubmit)="onEnviar($event)">
+                            <div *ngIf="successMessage" class="alert alert-success">
+                                {{ successMessage }}
+                            </div>
+                            <div *ngIf="errorMessage" class="alert alert-danger">
+                                {{ errorMessage }}
+                                <div *ngIf="form.get('confirmpass')?.errors?.['notSame'] && form.get('confirmpass')?.touched" class="text-danger">
+                                    Las contraseñas no coinciden.
+                                </div>
+                            </div>
+                            <p style="color: rgb(19, 19, 103)">
+                                <strong>Información Personal</strong>
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nombre de Usuario<span style="color: red">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="username"
+                    class="form-control"
+                    placeholder="Ingrese su nombre de usuario"
+                  />
+                  <div *ngIf="Username?.errors && Username?.touched">
+                    <div *ngIf="Username?.hasError('required')" class="text-danger">
+                      Completar nombre de usuario es obligatorio.
+                    </div>
+                    <div *ngIf="Username?.hasError('minlength')" class="text-danger">
+                      El nombre de usuario debe tener un mínimo de 3 caracteres.
+                    </div>
+                    <div *ngIf="Username?.hasError('maxlength')" class="text-danger">
+                      El nombre de usuario debe tener un máximo de 20 caracteres.
+                    </div>
+                    <div *ngIf="Username?.hasError('pattern')" class="text-danger">
+                      El nombre de usuario debe contener solo caracteres alfanuméricos.
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+                  <div class="col">
+                    <label for="first_name" class="form-label"
+                      >Nombre<span style="color: red">*</span></label
+                    >
+                    <input
+                      type="text"
+                      formControlName="first_name"
+                      class="form-control"
+                      placeholder="Ingrese su nombre"
+                    />
+                    @if (FirstName?.errors && FirstName?.touched) { @if
+                    (FirstName?.hasError('required')) {
+                    <p class="text-danger">Completar nombre es obligatorio.</p>
+                    } @else if (FirstName?.hasError('minlength')) {
+                    <p class="text-danger">
+                      El nombre debe tener un minimo de 2 caracteres.
+                    </p>
+                    } @else if (FirstName?.hasError('maxlength')) {
+                    <p class="text-danger">
+                      El nombre debe tener un maximo de 30 caracteres.
+                    </p>
+                    } @else if (FirstName?.hasError('pattern')) {
+                    <p class="text-danger">
+                      El nombre debe contener solo caracteres alfabeticos.
+                    </p>
+                    } }
+                  </div>
+                  <div class="col">
+                    <label for="last_name" class="form-label"
+                      >Apellido<span style="color: red">*</span></label
+                    >
+                    <input
+                      type="text"
+                      formControlName="last_name"
+                      class="form-control"
+                      placeholder="Ingrese su apellido"
+                    />
+                    @if (LastName?.errors && LastName?.touched) { @if
+                    (LastName?.hasError('required')) {
+                    <p class="text-danger">Completar apellido es obligatorio.</p>
+                    } @else if (LastName?.hasError('minlength')) {
+                    <p class="text-danger">
+                      El apellido debe tener un minimo de 2 caracteres.
+                    </p>
+                    } @else if (LastName?.hasError('maxlength')) {
+                    <p class="text-danger">
+                      El apellido debe tener un maximo de 35 caracteres.
+                    </p>
+                    } @else if (LastName?.hasError('pattern')) {
+                    <p class="text-danger">
+                      El apellido debe contener solo caracteres alfabeticos.
+                    </p>
+                    } }
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="Inputdni" class="form-label"
+                    >Número de DNI<span style="color: red">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="dni"
+                    class="form-control"
+                    placeholder="Ingrese su numero de documento"
+                  />
+                  @if (dni?.errors && dni?.touched) { @if
+                  (dni?.hasError('required')) {
+                  <p class="text-danger">
+                    Completar el numero de DNI es obligatorio.
+                  </p>
+                  } @else if (dni?.hasError('minlength')) {
+                  <p class="text-danger">
+                    El numero de DNI debe tener un minimo de 6 caracteres.
+                  </p>
+                  } @else if (dni?.hasError('maxlength')) {
+                  <p class="text-danger">
+                    El numero de DNI debe tener un maximo de 6 caracteres.
+                  </p>
+                  } @else if (dni?.hasError('pattern')) {
+                  <p class="text-danger">
+                    El DNI debe contener solo caracteres numericos.
+                  </p>
+                  } }
+                </div>
+                <div class="mb-3">
+                  <label for="Inputmail" class="form-label"
+                    >Dirección de email<span style="color: red">*</span></label
+                  >
+                  <input
+                    type="mail"
+                    formControlName="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Ingrese su direccion de email"
+                  />
+  
+                  @if (Email?.errors && Email?.touched) { @if
+                  (Email?.hasError('required')) {
+                  <p class="text-danger">
+                    Completar la direccion de email es obligatorio.
+                  </p>
+                  } @else if (Email?.hasError('email')) {
+                  <p class="text-danger">
+                    La direccion ingresada no es una direccion de correo valida.
+                  </p>
+                  } }
+                </div>
+                <p style="color: rgb(19, 19, 103)">
+                  <strong>Información de inicio de sesión</strong>
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <div class="form-text">
+                      <label for="InputPassword" class="form-label"
+                        >Contraseña<span style="color: red">*</span></label
+                      >
+                      <input
+                        type="password"
+                        formControlName="password"
+                        class="form-control"
+                        placeholder="Por favor ingrese su contraseña"
+                      />
+                      @if (Password?.errors && Password?.touched) { @if
+                      (Password?.hasError('required')) {
+                      <p class="text-danger">
+                        Completar su contraseña es obligatorio.
+                      </p>
+                      } @else if (Password?.hasError('minlength')) {
+                      <p class="text-danger">
+                        La contraseña debe tener un minimo de 8 caracteres.
+                      </p>
+                      } }
+                      <span id="mensajeErrorPassword" style="color: red"></span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <label for="Inputconfirmpass" class="form-label">
+                      Confirme contraseña<span style="color: red">*</span>
+                    </label>
+                                <input type="password" formControlName="confirmpass" class="form-control" placeholder="Por favor reingrese su contraseña" (focus)="ConfirmPassMsg($event)" (blur)="showConfirmPassMessage = false" /> @if (ConfirmPass?.errors
+                                && ConfirmPass?.touched) { @if (ConfirmPass?.hasError('required')) {
+                                <p class="text-danger">
+                                    Completar la contraseña es obligatorio.
+                                </p>
+                                } @else if (ConfirmPass?.hasError('minlength')) {
+                                <p class="text-danger">
+                                    La contraseña debe tener un minimo de 8 caracteres.
+                                </p>
+                                } }
+                                <div [hidden]="!showConfirmPassMessage" class="alert alert-warning">
+                                    Recuerda que las contraseñas deben ser iguales.
+                                </div>
+                            </div>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="Check" />
+                        <label class="form-check-label" for="Check">Suscribirse al boletín de novedades</label
+                  >
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">
+                    <!-- routerLink="./app-socialnet" -->
+                    Enviar
+                  </button>
+                  <p>
+                    <strong
+                      ><a href="../" style="color: rgb(19, 19, 103)"
+                        >Volver atrás</a
+                      ></strong
+                    >
+                  </p>
+                  <label></label>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

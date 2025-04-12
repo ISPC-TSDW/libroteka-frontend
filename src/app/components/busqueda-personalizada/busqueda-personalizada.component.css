@@ -1,0 +1,146 @@
+.container {
+    background-color: #FFFFFF;
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 100px;
+    margin: auto;
+    width: 1000px;
+    height: 80vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+#search-form {
+    text-align: center;
+    margin-bottom: 100px;
+    margin-top: 30px;
+}
+
+#search-input {
+    padding: 8px;
+    width: 400px;
+    margin-right: 20px;
+    background-color: #E8F0FE;
+}
+
+#search-filter {
+    padding: 8px;
+    margin-right: 20px;
+    background-color: #E8F0FE;
+    width: 300px;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.recuadro {
+    background-color: #E8F0FE;
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+#results {
+    margin-top: 20px;
+    max-height: 60vh; /* Ajusta la altura máxima de los resultados */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+
+#results ul {
+    padding: 0;
+    list-style: none;
+}
+
+#results li {
+    margin: 10px 0;
+}
+
+.book {
+    display: block;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+.book p {
+    margin: 5px 0;
+}
+
+#chosen-books {
+    margin-top: 40px;
+}
+
+#chosen-books h2 {
+    color: #333;
+}
+
+.chosen-book {
+    display: block;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    background-color: #dff0d8;
+    color: #4CAF50;
+}
+
+a[href="/"] {
+    text-decoration: none;
+    color: #007bff;
+    background-color: white;
+}
+
+a[href="/"]:hover {
+    color: white;
+    background-color: #007bff;
+}
+
+.miLista li {
+    padding-left: 50px;
+}
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  
+  .popup-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 550px;
+    max-width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; 
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 3000;
+  }
+  

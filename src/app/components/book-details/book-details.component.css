@@ -1,0 +1,81 @@
+.popup-content {
+  text-align: left;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;   
+}
+
+.popup-content h2 {
+  margin-bottom: 10px;
+}
+
+.popup-content p {
+  margin: 5px 0;
+}
+
+.formgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;  
+}
+
+.formgroup label {
+  font-weight: bold;
+}
+
+.formgroup select {
+  padding: 8px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.addcart {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;   
+}
+
+.quantity input {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btntocart {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;   
+}
+
+.btntocart:hover {
+  background-color: #45a049;
+}
+
+.titlereview {
+  margin-top: 20px;
+}
+
+.titlereview h4 {
+  margin-bottom: 10px;
+}
+
+.titlereview i {
+  color: #ffd700;   
+  margin-right: 5px;  
+}
+
+  
+
+  
