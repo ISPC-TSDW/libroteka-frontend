@@ -1,39 +1,67 @@
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>(false);
-  private userEmail = new BehaviorSubject<string | null>(null);
+  private accessTokenKey = 'accessToken';
+  private refreshTokenKey = 'refreshToken';
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private currentUserEmailSubject = new BehaviorSubject<string | null>(null);
 
-  isLoggedIn = this.loggedIn.asObservable();
-  currentUserEmail = this.userEmail.asObservable();
+  constructor(private http: HttpClient) {}
 
-  login(email: string): void {
-    sessionStorage.setItem('token', 'token123'); // Store token
-    sessionStorage.setItem('userEmail', email); // Store email
-    this.loggedIn.next(true);
-    this.userEmail.next(email);
+  storeTokens(accessToken: string, refreshToken: string): void {
+    sessionStorage.setItem(this.accessTokenKey, accessToken);
+    sessionStorage.setItem(this.refreshTokenKey, refreshToken);
+    this.isLoggedInSubject.next(true);
+    const email = this.decodeToken(accessToken)?.email || null;
+    this.currentUserEmailSubject.next(email);
   }
 
-  logout(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userEmail');
-    this.loggedIn.next(false);
-    this.userEmail.next(null);
+  getAccessToken(): string | null {
+    return sessionStorage.getItem(this.accessTokenKey);
+  }
+
+  getRefreshToken(): string | null {
+    return sessionStorage.getItem(this.refreshTokenKey);
+  }
+
+  clearTokens(): void {
+    sessionStorage.removeItem(this.accessTokenKey);
+    sessionStorage.removeItem(this.refreshTokenKey);
+    this.isLoggedInSubject.next(false);
+    this.currentUserEmailSubject.next(null);
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.isLoggedInSubject.asObservable();
+  }
+
+  currentUserEmail(): Observable<string | null> {
+    return this.currentUserEmailSubject.asObservable();
   }
 
   checkLoginStatus(): void {
-    const token = sessionStorage.getItem('token');
-    const email = sessionStorage.getItem('userEmail');
-    if (token && email) {
-      this.loggedIn.next(true);
-      this.userEmail.next(email);
-    } else {
-      this.loggedIn.next(false);
-      this.userEmail.next(null);
+    const token = this.getAccessToken();
+    this.isLoggedInSubject.next(!!token);
+    if (token) {
+      const email = this.decodeToken(token)?.email || null;
+      this.currentUserEmailSubject.next(email);
+    }
+  }
+
+  logout(): void {
+    this.clearTokens();
+  }
+
+  private decodeToken(token: string): any {
+    try {
+      const payload = atob(token.split('.')[1]);
+      return JSON.parse(payload);
+    } catch (e) {
+      return null;
     }
   }
 }
