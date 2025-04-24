@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   userEmail: string | null = '';
 
   constructor(
-    private cartService: CartService,  
+    private cartService: CartService,
     private router: Router,
     private authService: AuthService
   ) {}
@@ -29,16 +29,18 @@ export class NavbarComponent implements OnInit {
       this.cartItemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
       this.cartItems = cartItems;
     });
-    this.authService.isLoggedIn.subscribe(isLoggedIn => {
+
+    this.authService.isLoggedIn().subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
 
-    this.authService.currentUserEmail.subscribe(email => {
+    this.authService.currentUserEmail().subscribe(email => {
       this.userEmail = email;
     });
 
     this.authService.checkLoginStatus();
   }
+
   toggleCart(): void {
     this.isCartVisible = !this.isCartVisible;
   }
@@ -50,6 +52,7 @@ export class NavbarComponent implements OnInit {
   proceedToCheckout(): void {
     this.router.navigate(['/pagos']);
   }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
