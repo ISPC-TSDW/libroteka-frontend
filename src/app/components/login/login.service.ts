@@ -6,9 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
+  private apiUrl = 'http://127.0.0.1:8000/api/token/';
+
   constructor(private http: HttpClient) {}
 
-  loginUser(userData: any): Observable<any> {
-    return this.http.post('http://127.0.0.1:8000/api/login/', userData);
+  loginUser(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post(this.apiUrl, credentials);
   }
 }
