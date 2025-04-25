@@ -1,101 +1,83 @@
 import { Component } from '@angular/core';
-import { Validators, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { CreateService } from './create.service'; // Asegúrate de que la ruta es correcta
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CreateService } from './create.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-create',
   standalone: true,
-imports: [ReactiveFormsModule, RouterLink, RouterOutlet, CommonModule],
+  imports: [ReactiveFormsModule, RouterModule, CommonModule],
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css'],
+  styleUrls: ['./create.component.css']
 })
 export class CreateComponent {
   form!: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
+  showConfirmPassMessage: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private createService: CreateService) {
-    this.form = this.formBuilder.group(
-      {
-        username: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(20),
-            Validators.pattern(/^[a-zA-Z0-9]+$/),
-          ],
-        ],
-        
-        
-        first_name: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(30),
-            Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s']+/),
-          ],
-        ],
-         last_name: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(35),
-            Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s']+/),
-          ],
-        ],
-        dni: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(10),
-            Validators.pattern(/^[0-9]+/),
-          ],
-        ],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
-        confirmpass: ['', [Validators.required, Validators.minLength(8)]],
-      },
-      { validators: this.checkPasswords }
-    );
+  constructor(
+    private formBuilder: FormBuilder,
+    private createService: CreateService,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.form = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      first_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+')]], // Updated to match backend field name
+      last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern('[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+')]], // Updated to match backend field name
+      dni: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('[0-9]+')]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmpass: ['', [Validators.required, Validators.minLength(8)]],
+    }, { validators: this.checkPasswords });
   }
+
+  // Getters for form controls
   get Username() {
     return this.form.get('username');
   }
+
   get FirstName() {
-    return this.form.get('first_name');
+    return this.form.get('firstName');
   }
+
   get LastName() {
-    return this.form.get('last_name');
+    return this.form.get('lastName');
   }
+
   get dni() {
     return this.form.get('dni');
   }
+
   get Email() {
     return this.form.get('email');
   }
+
   get Password() {
     return this.form.get('password');
   }
+
   get ConfirmPass() {
     return this.form.get('confirmpass');
   }
 
-  onEnviar(event: Event) {
+  onEnviar(event: Event): void {
     event.preventDefault();
     if (this.form.valid) {
-      console.log(this.form.value);
-      this.createService.registerUser(this.form.value).subscribe(
-        response => {
-          this.successMessage = 'Recibirá un correo electrónico con los datos del registro';
+      const { confirmpass, ...formData } = this.form.value;
+
+      this.createService.registerUser(formData).subscribe(
+        (response) => {
+          const { access, refresh } = response;
+          this.authService.storeTokens(access, refresh);
+          this.successMessage = 'Registro exitoso. Redirigiendo al dashboard...';
           this.errorMessage = '';
+          this.router.navigate(['/dashboard']);
         },
-        error => {
+        (error) => {
           this.errorMessage = 'No se pudo crear el registro, revisa las observaciones.';
           console.error(error);
         }
@@ -106,19 +88,13 @@ export class CreateComponent {
     }
   }
 
-  checkPasswords(group: FormGroup) {
-    const pass = group.get('password')?.value;
-    const confirmPass = group.get('confirmpass')?.value;
-    if (pass && confirmPass && pass !== confirmPass) {
-      group.get('confirmpass')?.setErrors({ notSame: true });
-    } else {
-      group.get('confirmpass')?.setErrors(null);
-    }
-    return null;
+  checkPasswords(group: FormGroup): { [key: string]: boolean } | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmpass')?.value;
+    return password === confirmPassword ? null : { notSame: true };
   }
 
-  showConfirmPassMessage = false;
-  ConfirmPassMsg(event: any) {
+  ConfirmPassMsg(event: Event): void {
     this.showConfirmPassMessage = true;
   }
 }
