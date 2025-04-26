@@ -49,7 +49,7 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   onPaymentSubmit() {
-    this.authService.currentUserEmail.subscribe(email => {
+    this.authService.currentUserEmail().subscribe(email => {
       if (email !== null) {
         const validCart = this.cartItems.map(({ quantity, ...validProps }) => validProps);
         const orderData = {
@@ -63,8 +63,8 @@ export class PaymentGatewayComponent implements OnInit {
 
         this.orderService.createOrder(orderData).subscribe(response => {
           console.log('Order created successfully:', response);
-          this.cartService.clearCart()
-          this.router.navigate(['/dashboard']); 
+          this.cartService.clearCart();
+          this.router.navigate(['/dashboard']);
         }, error => {
           console.error('Error creating order:', error);
         });

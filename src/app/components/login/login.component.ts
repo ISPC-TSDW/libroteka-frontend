@@ -1,31 +1,30 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { LoginService } from './login.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   form!: FormGroup;
-  successMessage: string = '';
   errorMessage: string = '';
 
   constructor(
-    private formBuilder: FormBuilder, 
-    private loginService: LoginService, 
-    private router: Router,
-    private authService: AuthService 
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -37,18 +36,15 @@ export class LoginComponent {
     return this.form.get('password');
   }
 
-  onSubmit(event: Event) {
-    event.preventDefault();
+  onSubmit(): void {
     if (this.form.valid) {
-      console.log(this.form.value);
       this.loginService.loginUser(this.form.value).subscribe(
-        response => {
-          this.successMessage = 'Login successful';
-          this.errorMessage = '';
-          this.authService.login(this.form.value.email); // Se guarda email
-          this.router.navigate(['/']); 
+        (response) => {
+          const { access, refresh } = response;
+          this.authService.storeTokens(access, refresh);
+          this.router.navigate(['/dashboard']);
         },
-        error => {
+        (error) => {
           this.errorMessage = 'Invalid email or password';
           console.error(error);
         }

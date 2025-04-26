@@ -8,8 +8,8 @@ import { CatalogoComponent } from './components/catalogo/catalogo.component';
 import { SobreNosotrosComponent } from './components/sobre-nosotros/sobre-nosotros.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { MasVendidosComponent } from './components/mas-vendidos/mas-vendidos.component';
-import { authGuard } from './guards/auth-guard';
+import { MasVendidosComponent } from './components/mas-vendidos/mas-vendidos.component'
+import { AuthGuard } from './guards/auth-guard';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { PaymentGatewayComponent } from './components/payment-gateway/payment-gateway.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -23,18 +23,10 @@ export const routes: Routes = [
   { path: 'socialnet', component: SocialnetComponent },
   { path: 'sobre-nosotros', component: SobreNosotrosComponent },
   { path: 'create', component: CreateComponent },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard],
-  },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'mas-vendidos', component: MasVendidosComponent },
   { path: 'book/:bookId', component: BookDetailsComponent },
-  {
-    path: 'pagos',
-    component: PaymentGatewayComponent,
-    canActivate: [authGuard],
-  },
+  { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },
   { path: 'not-found', component: NotFoundComponent },
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },

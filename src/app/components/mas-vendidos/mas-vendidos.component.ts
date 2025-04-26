@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './mas-vendidos.component.html',
-  styleUrl: './mas-vendidos.component.css'
+  styleUrls: ['./mas-vendidos.component.css'],
 })
 export class MasVendidosComponent {
 
