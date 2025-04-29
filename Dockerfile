@@ -1,13 +1,22 @@
-FROM node:18
+# Stage 1
+FROM node:slim AS build
 
 WORKDIR /app
 
-COPY Frontend/ .
+RUN npm install -g @angular/cli@17.3.12
 
-WORKDIR /app/Libroteka/Frontend
+COPY ./package.json .
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
-EXPOSE 4200
+COPY . .
 
-CMD ["npm", "start"]
+RUN ng build
+# Stage 2
+FROM nginx:alpine AS runtime
+
+COPY --from=build /app/dist/libroteka/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
