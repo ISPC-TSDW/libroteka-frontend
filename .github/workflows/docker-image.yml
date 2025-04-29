@@ -25,6 +25,12 @@ jobs:
         env:
           REPO: ${{ github.repository }}
 
+      - name: Set Short SHA Tag
+        run: |
+          echo "SHORT_SHA=${FULL_SHA:0:6}" >> $GITHUB_ENV
+        env:
+          FULL_SHA: ${{ github.sha }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -44,6 +50,6 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.REPO_LC }}:stable
-            ${{ env.REGISTRY }}/${{ env.REPO_LC }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.REPO_LC }}:${{ env.SHORT_SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
