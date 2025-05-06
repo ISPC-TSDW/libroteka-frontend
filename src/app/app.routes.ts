@@ -5,7 +5,7 @@ import { CreateComponent } from './components/create/create.component';
 import { ContactoComponent } from './components/contacto/contacto.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { CatalogoComponent } from './components/catalogo/catalogo.component';
-import { SobreNosotrosComponent } from './components/sobre-nosotros/sobre-nosotros.component';
+import { SobrenosotrosComponent } from './components/sobre-nosotros/sobre-nosotros.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MasVendidosComponent } from './components/mas-vendidos/mas-vendidos.component'
@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'catalogo', component: CatalogoComponent },
   { path: 'contacto', component: ContactoComponent },
   { path: 'socialnet', component: SocialnetComponent },
-  { path: 'sobre-nosotros', component: SobreNosotrosComponent },
+  { path: 'sobre-nosotros', component: SobrenosotrosComponent },
   { path: 'create', component: CreateComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'mas-vendidos', component: MasVendidosComponent },
