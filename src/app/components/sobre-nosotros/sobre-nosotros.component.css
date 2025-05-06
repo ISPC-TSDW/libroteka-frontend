@@ -1,0 +1,12 @@
+.team-section {
+    position: relative;
+    top: 40px;
+    background-color: #e7e0d8;
+    padding-bottom: 40px;
+  }
+  
+  .team-card {
+    width: 100%;
+    max-width: 150px;
+    /* margin: 0 auto; */
+  }
