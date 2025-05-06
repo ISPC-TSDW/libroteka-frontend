@@ -1,38 +1,81 @@
-.cart-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    z-index: 1000;
-  }
-  
-  .cart-item {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .cart-item:last-child {
-    border-bottom: none;
-  }
-  
-  .cart-item-title {
-    font-weight: bold;
-  }
-  
-  .cart-item-quantity {
-    font-size: 0.9em;
-    color: #555;
-  }
-  
-  .cart-empty {
-    padding: 10px;
-    text-align: center;
-    color: #777;
-  }
-  
-  
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7b2cbf; /* Violeta */
+}
+
+.navbar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  background: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 400px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+.navbar-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #7b2cbf;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  color: #5a189a;
+}
+
+.cart-badge {
+  background: #7b2cbf;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+}
+
+i {
+  width: 20px;
+  height: 20px;
+}
