@@ -12,6 +12,10 @@
   </div>
 
   <div class="navbar-right">
+    <a class="nav-link" routerLink="/inicio">
+      <i data-lucide="home"></i>
+      <span>Inicio</span>
+    </a>
     <a class="nav-link" routerLink="/favoritos">
       <i data-lucide="heart"></i>
       <span>Favoritos</span>
@@ -20,14 +24,15 @@
       <i data-lucide="layout-dashboard"></i>
       <span>Dashboard</span>
     </a>
+    
+    <a class="nav-link carrito-icon" routerLink="/sobre-nosotros">
+      <i data-lucide="handshake"></i>
+      <span>Sobre Nosotros</span>
+      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+    </a>
     <a class="nav-link" routerLink="/login">
       <i data-lucide="log-in"></i>
       <span>Login</span>
-    </a>
-    <a class="nav-link carrito-icon" routerLink="/carrito">
-      <i data-lucide="shopping-cart"></i>
-      <span>Carrito</span>
-      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
     </a>
   </div>
 </nav>
