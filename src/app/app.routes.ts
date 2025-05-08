@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'sobre-nosotros', component: SobrenosotrosComponent },
   { path: 'create', component: CreateComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'admin/books', component: AdminBooksComponent, canActivate: [AuthGuard] },
+  { path: 'admin/books', component: AdminBooksComponent },
   { path: 'mas-vendidos', component: MasVendidosComponent },
   { path: 'book/:bookId', component: BookDetailsComponent },
   { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },

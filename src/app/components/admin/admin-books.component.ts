@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BookService } from '../../services/book.service';
 
 interface Author {
   id: number;
@@ -38,7 +39,8 @@ interface Book {
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BookService
   ],
   templateUrl: './admin-books.component.html',
   styleUrls: ['./admin-books.component.css']
@@ -55,7 +57,10 @@ export class AdminBooksComponent implements OnInit {
   imagePreview: string | null = null;
   currentYear: number;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private bookService: BookService
+  ) {
     this.currentYear = new Date().getFullYear();
     this.bookForm = this.fb.group({
       id_Author: ['', Validators.required],
@@ -71,6 +76,8 @@ export class AdminBooksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('AdminBooksComponent.ngOnInit() called');
+    console.log('BookService instance:', this.bookService);
     this.loadBooks();
     this.loadRelatedData();
   }
@@ -88,24 +95,34 @@ export class AdminBooksComponent implements OnInit {
   }
 
   loadBooks(): void {
-    // TODO: Implement API call
-    // For now, using mock data
-    this.books = [
-      {
-        id_Book: 30,
-        id_Author: 1,
-        id_Genre: 1,
-        id_Editorial: 2,
-        avg_rating: 0.0,
-        image: null,
-        title: "Cien años de soledad",
-        description: "Una obra maestra de Gabriel García Márquez que sigue la historia de la familia Buendía en el mítico pueblo de Macondo. A través de generaciones, la novela explora temas como la soledad, el amor, la violencia y el poder, envueltos en un realismo mágico que mezcla lo extraordinario con lo cotidiano.",
-        price: "29.99",
-        stock: 100,
-        ISBN: "9780307474728",
-        year: 1967
+    console.log('AdminBooksComponent.loadBooks() called');
+    this.bookService.getBooks().subscribe(
+      data => {
+        console.log('AdminBooksComponent: Received books data:', data);
+        this.books = data;
+        console.log('AdminBooksComponent: Updated books array:', this.books);
+      },
+      error => {
+        console.error('AdminBooksComponent: Error fetching books:', error);
+        // Keep the mock data as fallback
+        this.books = [
+          {
+            id_Book: 30,
+            id_Author: 1,
+            id_Genre: 1,
+            id_Editorial: 2,
+            avg_rating: 0.0,
+            image: null,
+            title: "Cien años de soledad",
+            description: "Una obra maestra de Gabriel García Márquez que sigue la historia de la familia Buendía en el mítico pueblo de Macondo. A través de generaciones, la novela explora temas como la soledad, el amor, la violencia y el poder, envueltos en un realismo mágico que mezcla lo extraordinario con lo cotidiano.",
+            price: "29.99",
+            stock: 100,
+            ISBN: "9780307474728",
+            year: 1967
+          }
+        ];
       }
-    ];
+    );
   }
 
   loadRelatedData(): void {
@@ -149,19 +166,32 @@ export class AdminBooksComponent implements OnInit {
       }
 
       if (this.isEditing && this.selectedBook) {
-        // TODO: Implement update API call
-        const updatedBook = { ...this.bookForm.value, id_Book: this.selectedBook.id_Book };
-        this.books = this.books.map(book => 
-          book.id_Book === this.selectedBook?.id_Book ? updatedBook : book
-        );
-        alert('Book updated successfully');
+        this.bookService.updateBook(this.selectedBook.id_Book!, formData).subscribe({
+          next: (response) => {
+            this.books = this.books.map(book => 
+              book.id_Book === this.selectedBook?.id_Book ? response : book
+            );
+            alert('Book updated successfully');
+            this.resetForm();
+          },
+          error: (error) => {
+            console.error('Error updating book:', error);
+            // TODO: Add proper error handling/notification
+          }
+        });
       } else {
-        // TODO: Implement create API call
-        const newBook = { ...this.bookForm.value, id_Book: this.books.length + 1 };
-        this.books = [...this.books, newBook];
-        alert('Book created successfully');
+        this.bookService.createBook(formData).subscribe({
+          next: (response) => {
+            this.books = [...this.books, response];
+            alert('Book created successfully');
+            this.resetForm();
+          },
+          error: (error) => {
+            console.error('Error creating book:', error);
+            // TODO: Add proper error handling/notification
+          }
+        });
       }
-      this.resetForm();
     }
   }
 
@@ -174,9 +204,16 @@ export class AdminBooksComponent implements OnInit {
 
   deleteBook(book: Book): void {
     if (confirm('Are you sure you want to delete this book?')) {
-      // TODO: Implement delete API call
-      this.books = this.books.filter(b => b.id_Book !== book.id_Book);
-      alert('Book deleted successfully');
+      this.bookService.deleteBook(book.id_Book!).subscribe({
+        next: () => {
+          this.books = this.books.filter(b => b.id_Book !== book.id_Book);
+          alert('Book deleted successfully');
+        },
+        error: (error) => {
+          console.error('Error deleting book:', error);
+          // TODO: Add proper error handling/notification
+        }
+      });
     }
   }
 
