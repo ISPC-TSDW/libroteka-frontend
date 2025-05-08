@@ -1,0 +1,196 @@
+<div class="admin-container">
+  <h1>Book Management</h1>
+
+  <!-- Book Form -->
+  <div class="form-container">
+    <h2>{{ isEditing ? 'Edit Book' : 'Add New Book' }}</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="book-form">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input 
+          type="text" 
+          id="title" 
+          formControlName="title" 
+          required
+          [class.error]="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="author">Author</label>
+        <select 
+          id="author" 
+          formControlName="id_Author"
+          required
+          [class.error]="bookForm.get('id_Author')?.invalid && bookForm.get('id_Author')?.touched"
+        >
+          <option value="">Select an author</option>
+          <option *ngFor="let author of authors" [value]="author.id">
+            {{author.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="genre">Genre</label>
+        <select 
+          id="genre" 
+          formControlName="id_Genre"
+          required
+          [class.error]="bookForm.get('id_Genre')?.invalid && bookForm.get('id_Genre')?.touched"
+        >
+          <option value="">Select a genre</option>
+          <option *ngFor="let genre of genres" [value]="genre.id">
+            {{genre.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="editorial">Editorial</label>
+        <select 
+          id="editorial" 
+          formControlName="id_Editorial"
+          required
+          [class.error]="bookForm.get('id_Editorial')?.invalid && bookForm.get('id_Editorial')?.touched"
+        >
+          <option value="">Select an editorial</option>
+          <option *ngFor="let editorial of editorials" [value]="editorial.id">
+            {{editorial.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <input 
+          type="text" 
+          id="isbn" 
+          formControlName="ISBN" 
+          required
+          [class.error]="bookForm.get('ISBN')?.invalid && bookForm.get('ISBN')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="year">Publication Year</label>
+        <input 
+          type="number" 
+          id="year" 
+          formControlName="year" 
+          required
+          min="1800"
+          [max]="currentYear"
+          [class.error]="bookForm.get('year')?.invalid && bookForm.get('year')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input 
+          type="number" 
+          id="price" 
+          formControlName="price" 
+          required
+          min="0"
+          step="0.01"
+          [class.error]="bookForm.get('price')?.invalid && bookForm.get('price')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input 
+          type="number" 
+          id="stock" 
+          formControlName="stock" 
+          required
+          min="0"
+          [class.error]="bookForm.get('stock')?.invalid && bookForm.get('stock')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Book Cover</label>
+        <input 
+          type="file" 
+          id="image" 
+          accept="image/*"
+          (change)="onImageSelected($event)"
+        >
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Book cover preview">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          [disabled]="!bookForm.valid"
+          class="btn btn-primary"
+        >
+          {{ isEditing ? 'Update Book' : 'Add Book' }}
+        </button>
+        <button 
+          type="button" 
+          (click)="resetForm()" 
+          *ngIf="isEditing"
+          class="btn btn-secondary"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Books Table -->
+  <div class="table-container">
+    <h2>Book List</h2>
+    <table class="books-table">
+      <thead>
+        <tr>
+          <th>Cover</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>ISBN</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Year</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td class="book-cover">
+            <img [src]="book.image || 'assets/images/no-cover.png'" alt="Book cover">
+          </td>
+          <td>{{book.title}}</td>
+          <td>{{getAuthorName(book.id_Author)}}</td>
+          <td>{{getGenreName(book.id_Genre)}}</td>
+          <td>{{book.ISBN}}</td>
+          <td>${{book.price}}</td>
+          <td>{{book.stock}}</td>
+          <td>{{book.year}}</td>
+          <td class="actions">
+            <button (click)="editBook(book)" class="btn btn-edit">
+              Edit
+            </button>
+            <button (click)="deleteBook(book)" class="btn btn-delete">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> 
