@@ -8,7 +8,7 @@ import { environment } from '../environment';
   providedIn: 'root'
 })
 export class BookService {
-  private apiUrl = `${environment.apiUrl}/api/book`;
+  private apiUrl = `${environment.apiUrl}/api/book/`;
 
   constructor(private http: HttpClient) {
     console.log('BookService initialized with URL:', this.apiUrl);
@@ -34,13 +34,13 @@ export class BookService {
   }
 
   updateBook(id: number, bookData: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, bookData).pipe(
+    return this.http.put(`${this.apiUrl}${id}/`, bookData).pipe(
       catchError(this.handleError)
     );
   }
 
   deleteBook(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete(`${this.apiUrl}${id}/`).pipe(
       catchError(this.handleError)
     );
   }

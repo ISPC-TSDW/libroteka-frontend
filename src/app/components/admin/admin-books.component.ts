@@ -39,8 +39,7 @@ interface Book {
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    BookService
+    ReactiveFormsModule
   ],
   templateUrl: './admin-books.component.html',
   styleUrls: ['./admin-books.component.css']
