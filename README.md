@@ -1,30 +1,6 @@
 # Tecnicatura Superior en Desarrollo web y Aplicaciones Digitales
 
-- Equipo: Bookster
-- Proyecto: Libroteka
-- Cohorte: 2023
 
-Dependencies: 
-- Node: "^18"
-- Angular: "^17"
-- Python: "^3.8"
-- Django: "^4.2"
-- SQLITE3: Incluido en Django
-
-Puntos claves:
-- Formulario IEEE830: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Formulario-IEEE830)
-- Ceremonias - Scrum: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Scrum:-Registro-de-ceremonias)
-- Historias de Usuario: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Historias-de-Usuario)
-- Milestones: [Link](https://github.com/ISPC-Bookster/Libroteka/milestones)
-
-
-## Credenciales Django Admin
-- user:
-- password: 
-
-## Librerías
-- FrontEnd: fortawesome, nodemailer, bootstrap, rxjs, smtpjs, tslib, zone.js
-- BackEnd: django, djangorestframework, django-cors-headers, Pillow, jsonfield, mysqlclient
 
 ## Correr localmente
 <table>
