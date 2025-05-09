@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environment';
 
 export interface Author {
-  id: number;
+  id_Author: number;
   name: string;
 }
 

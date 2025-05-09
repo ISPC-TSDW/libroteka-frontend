@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environment';
 
 export interface Editorial {
-  id: number;
+  id_Editorial: number;
   name: string;
 }
 

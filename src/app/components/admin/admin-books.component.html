@@ -5,121 +5,124 @@
   <div class="accordion mb-4" id="entityAccordion">
     <!-- Authors -->
     <div class="accordion-item">
-      <h2 class="accordion-header" id="headingAuthors">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthors" aria-expanded="true" aria-controls="collapseAuthors">
-          Manage Authors
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#authorsCollapse">
+          Authors
         </button>
       </h2>
-      <div id="collapseAuthors" class="accordion-collapse collapse show" aria-labelledby="headingAuthors" data-bs-parent="#entityAccordion">
+      <div id="authorsCollapse" class="accordion-collapse collapse show">
         <div class="accordion-body">
-          <ul class="list-group mb-2">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newAuthorName" placeholder="New author name">
+            <button class="btn btn-primary mt-2" (click)="addAuthor()">Add Author</button>
+          </div>
+          <ul class="list-group">
             <li *ngFor="let author of paginatedAuthors" class="list-group-item d-flex justify-content-between align-items-center">
               <span>
-                {{author.name}}
+                {{ author.name }}
                 <span *ngIf="isNewItem(author)" class="badge bg-success ms-2">New</span>
               </span>
-              <span>
-                <button class="btn btn-sm btn-danger ms-2" (click)="deleteAuthor(author.id)">Delete</button>
-              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteAuthor(author.id_Author)">Delete</button>
             </li>
           </ul>
-          <!-- Pagination controls for authors -->
-          <div class="d-flex justify-content-center mb-3">
-            <nav aria-label="Author pagination">
-              <ul class="pagination">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= authors.length">
-                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <form class="d-flex" (ngSubmit)="addAuthor(newAuthorName); newAuthorName=''" #authorForm="ngForm">
-            <input type="text" class="form-control me-2" placeholder="New author name" required [(ngModel)]="newAuthorName" name="newAuthorName">
-            <button class="btn btn-primary" type="submit" [disabled]="!newAuthorName">Add</button>
-          </form>
+          <nav *ngIf="authors.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">First</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Previous</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Next</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Last</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
     <!-- Genres -->
     <div class="accordion-item">
-      <h2 class="accordion-header" id="headingGenres">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGenres" aria-expanded="false" aria-controls="collapseGenres">
-          Manage Genres
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#genresCollapse">
+          Genres
         </button>
       </h2>
-      <div id="collapseGenres" class="accordion-collapse collapse" aria-labelledby="headingGenres" data-bs-parent="#entityAccordion">
+      <div id="genresCollapse" class="accordion-collapse collapse">
         <div class="accordion-body">
-          <ul class="list-group mb-2">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newGenreName" placeholder="New genre name">
+            <button class="btn btn-primary mt-2" (click)="addGenre()">Add Genre</button>
+          </div>
+          <ul class="list-group">
             <li *ngFor="let genre of paginatedGenres" class="list-group-item d-flex justify-content-between align-items-center">
               <span>
-                {{genre.name}}
+                {{ genre.name }}
                 <span *ngIf="isNewItem(genre)" class="badge bg-success ms-2">New</span>
               </span>
-              <span>
-                <button class="btn btn-sm btn-danger ms-2" (click)="deleteGenre(genre.id)">Delete</button>
-              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteGenre(genre.id_Genre)">Delete</button>
             </li>
           </ul>
-          <!-- Pagination controls for genres -->
-          <div class="d-flex justify-content-center mb-3">
-            <nav aria-label="Genre pagination">
-              <ul class="pagination">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= genres.length">
-                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <form class="d-flex" (ngSubmit)="addGenre(newGenreName); newGenreName=''" #genreForm="ngForm">
-            <input type="text" class="form-control me-2" placeholder="New genre name" required [(ngModel)]="newGenreName" name="newGenreName">
-            <button class="btn btn-primary" type="submit" [disabled]="!newGenreName">Add</button>
-          </form>
+          <nav *ngIf="genres.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">First</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Previous</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Next</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Last</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
     <!-- Editorials -->
     <div class="accordion-item">
-      <h2 class="accordion-header" id="headingEditorials">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEditorials" aria-expanded="false" aria-controls="collapseEditorials">
-          Manage Editorials
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#editorialsCollapse">
+          Editorials
         </button>
       </h2>
-      <div id="collapseEditorials" class="accordion-collapse collapse" aria-labelledby="headingEditorials" data-bs-parent="#entityAccordion">
+      <div id="editorialsCollapse" class="accordion-collapse collapse">
         <div class="accordion-body">
-          <ul class="list-group mb-2">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newEditorialName" placeholder="New editorial name">
+            <button class="btn btn-primary mt-2" (click)="addEditorial()">Add Editorial</button>
+          </div>
+          <ul class="list-group">
             <li *ngFor="let editorial of paginatedEditorials" class="list-group-item d-flex justify-content-between align-items-center">
               <span>
-                {{editorial.name}}
+                {{ editorial.name }}
                 <span *ngIf="isNewItem(editorial)" class="badge bg-success ms-2">New</span>
               </span>
-              <span>
-                <button class="btn btn-sm btn-danger ms-2" (click)="deleteEditorial(editorial.id)">Delete</button>
-              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteEditorial(editorial.id_Editorial)">Delete</button>
             </li>
           </ul>
-          <!-- Pagination controls for editorials -->
-          <div class="d-flex justify-content-center mb-3">
-            <nav aria-label="Editorial pagination">
-              <ul class="pagination">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= editorials.length">
-                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <form class="d-flex" (ngSubmit)="addEditorial(newEditorialName); newEditorialName=''" #editorialForm="ngForm">
-            <input type="text" class="form-control me-2" placeholder="New editorial name" required [(ngModel)]="newEditorialName" name="newEditorialName">
-            <button class="btn btn-primary" type="submit" [disabled]="!newEditorialName">Add</button>
-          </form>
+          <nav *ngIf="editorials.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">First</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Previous</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Next</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Last</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
@@ -149,7 +152,7 @@
           [class.error]="bookForm.get('id_Author')?.invalid && bookForm.get('id_Author')?.touched"
         >
           <option value="">Select an author</option>
-          <option *ngFor="let author of authors" [value]="author.id">
+          <option *ngFor="let author of authors" [value]="author.id_Author">
             {{author.name}}
           </option>
         </select>
@@ -164,7 +167,7 @@
           [class.error]="bookForm.get('id_Genre')?.invalid && bookForm.get('id_Genre')?.touched"
         >
           <option value="">Select a genre</option>
-          <option *ngFor="let genre of genres" [value]="genre.id">
+          <option *ngFor="let genre of genres" [value]="genre.id_Genre">
             {{genre.name}}
           </option>
         </select>
@@ -179,7 +182,7 @@
           [class.error]="bookForm.get('id_Editorial')?.invalid && bookForm.get('id_Editorial')?.touched"
         >
           <option value="">Select an editorial</option>
-          <option *ngFor="let editorial of editorials" [value]="editorial.id">
+          <option *ngFor="let editorial of editorials" [value]="editorial.id_Editorial">
             {{editorial.name}}
           </option>
         </select>

@@ -53,6 +53,7 @@ export class AdminBooksComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
   totalItems = 0;
+  totalPages = 1;
   
   // Paginated lists
   paginatedBooks: Book[] = [];
@@ -93,15 +94,15 @@ export class AdminBooksComponent implements OnInit {
   }
 
   getAuthorName(authorId: number): string {
-    return this.authors.find(a => a.id === authorId)?.name || '';
+    return this.authors.find(a => a.id_Author === authorId)?.name || '';
   }
 
   getGenreName(genreId: number): string {
-    return this.genres.find(g => g.id === genreId)?.name || '';
+    return this.genres.find(g => g.id_Genre === genreId)?.name || '';
   }
 
   getEditorialName(editorialId: number): string {
-    return this.editorials.find(e => e.id === editorialId)?.name || '';
+    return this.editorials.find(e => e.id_Editorial === editorialId)?.name || '';
   }
 
   // Pagination methods
@@ -126,6 +127,7 @@ export class AdminBooksComponent implements OnInit {
       this.genres.length,
       this.editorials.length
     );
+    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   onPageChange(page: number): void {
@@ -277,20 +279,23 @@ export class AdminBooksComponent implements OnInit {
   }
 
   // Author CRUD
-  addAuthor(name: string) {
-    this.authorService.createAuthor({ name }).subscribe(author => {
-      this.authors.unshift(author);
-      this.newItems.add(author.id);
-      this.updatePagination();
-      // Remove "new" status after timeout
-      setTimeout(() => {
-        this.newItems.delete(author.id);
-      }, this.NEW_ITEM_TIMEOUT);
-    });
+  addAuthor() {
+    if (this.newAuthorName.trim()) {
+      this.authorService.createAuthor({ name: this.newAuthorName.trim() }).subscribe(author => {
+        this.authors.unshift(author);
+        this.newItems.add(author.id_Author);
+        this.updatePagination();
+        this.newAuthorName = ''; // Clear the input
+        // Remove "new" status after timeout
+        setTimeout(() => {
+          this.newItems.delete(author.id_Author);
+        }, this.NEW_ITEM_TIMEOUT);
+      });
+    }
   }
   updateAuthor(id: number, name: string) {
     this.authorService.updateAuthor(id, { name }).subscribe(updated => {
-      const idx = this.authors.findIndex(a => a.id === id);
+      const idx = this.authors.findIndex(a => a.id_Author === id);
       if (idx > -1) this.authors[idx] = updated;
     });
   }
@@ -298,7 +303,7 @@ export class AdminBooksComponent implements OnInit {
     if (confirm('Are you sure you want to delete this author?')) {
       this.authorService.deleteAuthor(id).subscribe({
         next: () => {
-          this.authors = this.authors.filter(a => a.id !== id);
+          this.authors = this.authors.filter(a => a.id_Author !== id);
           this.newItems.delete(id);
           this.updatePagination();
         },
@@ -311,19 +316,22 @@ export class AdminBooksComponent implements OnInit {
   }
 
   // Genre CRUD
-  addGenre(name: string) {
-    this.genreService.createGenre({ name }).subscribe(genre => {
-      this.genres.unshift(genre);
-      this.newItems.add(genre.id);
-      this.updatePagination();
-      setTimeout(() => {
-        this.newItems.delete(genre.id);
-      }, this.NEW_ITEM_TIMEOUT);
-    });
+  addGenre() {
+    if (this.newGenreName.trim()) {
+      this.genreService.createGenre({ name: this.newGenreName.trim() }).subscribe(genre => {
+        this.genres.unshift(genre);
+        this.newItems.add(genre.id_Genre);
+        this.updatePagination();
+        this.newGenreName = ''; // Clear the input
+        setTimeout(() => {
+          this.newItems.delete(genre.id_Genre);
+        }, this.NEW_ITEM_TIMEOUT);
+      });
+    }
   }
   updateGenre(id: number, name: string) {
     this.genreService.updateGenre(id, { name }).subscribe(updated => {
-      const idx = this.genres.findIndex(g => g.id === id);
+      const idx = this.genres.findIndex(g => g.id_Genre === id);
       if (idx > -1) this.genres[idx] = updated;
     });
   }
@@ -331,7 +339,7 @@ export class AdminBooksComponent implements OnInit {
     if (confirm('Are you sure you want to delete this genre?')) {
       this.genreService.deleteGenre(id).subscribe({
         next: () => {
-          this.genres = this.genres.filter(g => g.id !== id);
+          this.genres = this.genres.filter(g => g.id_Genre !== id);
           this.newItems.delete(id);
           this.updatePagination();
         },
@@ -344,19 +352,22 @@ export class AdminBooksComponent implements OnInit {
   }
 
   // Editorial CRUD
-  addEditorial(name: string) {
-    this.editorialService.createEditorial({ name }).subscribe(editorial => {
-      this.editorials.unshift(editorial);
-      this.newItems.add(editorial.id);
-      this.updatePagination();
-      setTimeout(() => {
-        this.newItems.delete(editorial.id);
-      }, this.NEW_ITEM_TIMEOUT);
-    });
+  addEditorial() {
+    if (this.newEditorialName.trim()) {
+      this.editorialService.createEditorial({ name: this.newEditorialName.trim() }).subscribe(editorial => {
+        this.editorials.unshift(editorial);
+        this.newItems.add(editorial.id_Editorial);
+        this.updatePagination();
+        this.newEditorialName = ''; // Clear the input
+        setTimeout(() => {
+          this.newItems.delete(editorial.id_Editorial);
+        }, this.NEW_ITEM_TIMEOUT);
+      });
+    }
   }
   updateEditorial(id: number, name: string) {
     this.editorialService.updateEditorial(id, { name }).subscribe(updated => {
-      const idx = this.editorials.findIndex(e => e.id === id);
+      const idx = this.editorials.findIndex(e => e.id_Editorial === id);
       if (idx > -1) this.editorials[idx] = updated;
     });
   }
@@ -364,7 +375,7 @@ export class AdminBooksComponent implements OnInit {
     if (confirm('Are you sure you want to delete this editorial?')) {
       this.editorialService.deleteEditorial(id).subscribe({
         next: () => {
-          this.editorials = this.editorials.filter(e => e.id !== id);
+          this.editorials = this.editorials.filter(e => e.id_Editorial !== id);
           this.newItems.delete(id);
           this.updatePagination();
         },
@@ -378,6 +389,9 @@ export class AdminBooksComponent implements OnInit {
 
   // Helper method to check if an item is new
   isNewItem(item: Author | Genre | Editorial): boolean {
-    return this.newItems.has(item.id);
+    if ('id_Author' in item) return this.newItems.has(item.id_Author);
+    if ('id_Genre' in item) return this.newItems.has(item.id_Genre);
+    if ('id_Editorial' in item) return this.newItems.has(item.id_Editorial);
+    return false;
   }
 } 
