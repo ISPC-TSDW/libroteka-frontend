@@ -309,12 +309,14 @@
           <td>{{book.stock}}</td>
           <td>{{book.year}}</td>
           <td class="actions">
-            <button (click)="editBook(book)" class="btn btn-edit">
-              Editar
-            </button>
-            <button (click)="deleteBook(book)" class="btn btn-delete">
-              Eliminar
-            </button>
+            <div class="action-buttons">
+              <button (click)="editBook(book)" class="btn btn-edit">
+                Editar
+              </button>
+              <button (click)="deleteBook(book)" class="btn btn-delete">
+                Eliminar
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

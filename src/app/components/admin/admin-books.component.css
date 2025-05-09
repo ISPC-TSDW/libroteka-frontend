@@ -136,8 +136,23 @@
 }
 
 .books-table .actions {
+  width: 160px;
+  text-align: center;
+}
+
+.action-buttons {
   display: flex;
   gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-edit,
+.btn-delete {
+  min-width: 70px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .btn {
