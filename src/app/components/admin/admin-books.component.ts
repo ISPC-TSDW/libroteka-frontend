@@ -2,21 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookService } from '../../services/book.service';
-
-interface Author {
-  id: number;
-  name: string;
-}
-
-interface Genre {
-  id: number;
-  name: string;
-}
-
-interface Editorial {
-  id: number;
-  name: string;
-}
+import { AuthorService, Author } from '../../services/author.service';
+import { GenreService, Genre } from '../../services/genre.service';
+import { EditorialService, Editorial } from '../../services/editorial.service';
 
 interface Book {
   id_Book?: number;
@@ -56,9 +44,17 @@ export class AdminBooksComponent implements OnInit {
   imagePreview: string | null = null;
   currentYear: number;
 
+  // For add forms in accordion
+  newAuthorName: string = '';
+  newGenreName: string = '';
+  newEditorialName: string = '';
+
   constructor(
     private fb: FormBuilder,
-    private bookService: BookService
+    private bookService: BookService,
+    private authorService: AuthorService,
+    private genreService: GenreService,
+    private editorialService: EditorialService
   ) {
     this.currentYear = new Date().getFullYear();
     this.bookForm = this.fb.group({
@@ -125,17 +121,9 @@ export class AdminBooksComponent implements OnInit {
   }
 
   loadRelatedData(): void {
-    // TODO: Implement API calls
-    // Mock data for now
-    this.authors = [
-      { id: 1, name: 'Gabriel García Márquez' }
-    ];
-    this.genres = [
-      { id: 1, name: 'Ficción' }
-    ];
-    this.editorials = [
-      { id: 2, name: 'Editorial Sudamericana' }
-    ];
+    this.authorService.getAuthors().subscribe(authors => this.authors = authors);
+    this.genreService.getGenres().subscribe(genres => this.genres = genres);
+    this.editorialService.getEditorials().subscribe(editorials => this.editorials = editorials);
   }
 
   onImageSelected(event: Event): void {
@@ -222,5 +210,53 @@ export class AdminBooksComponent implements OnInit {
     this.selectedImage = null;
     this.imagePreview = null;
     this.bookForm.reset();
+  }
+
+  // Author CRUD
+  addAuthor(name: string) {
+    this.authorService.createAuthor({ name }).subscribe(author => this.authors.push(author));
+  }
+  updateAuthor(id: number, name: string) {
+    this.authorService.updateAuthor(id, { name }).subscribe(updated => {
+      const idx = this.authors.findIndex(a => a.id === id);
+      if (idx > -1) this.authors[idx] = updated;
+    });
+  }
+  deleteAuthor(id: number) {
+    this.authorService.deleteAuthor(id).subscribe(() => {
+      this.authors = this.authors.filter(a => a.id !== id);
+    });
+  }
+
+  // Genre CRUD
+  addGenre(name: string) {
+    this.genreService.createGenre({ name }).subscribe(genre => this.genres.push(genre));
+  }
+  updateGenre(id: number, name: string) {
+    this.genreService.updateGenre(id, { name }).subscribe(updated => {
+      const idx = this.genres.findIndex(g => g.id === id);
+      if (idx > -1) this.genres[idx] = updated;
+    });
+  }
+  deleteGenre(id: number) {
+    this.genreService.deleteGenre(id).subscribe(() => {
+      this.genres = this.genres.filter(g => g.id !== id);
+    });
+  }
+
+  // Editorial CRUD
+  addEditorial(name: string) {
+    this.editorialService.createEditorial({ name }).subscribe(editorial => this.editorials.push(editorial));
+  }
+  updateEditorial(id: number, name: string) {
+    this.editorialService.updateEditorial(id, { name }).subscribe(updated => {
+      const idx = this.editorials.findIndex(e => e.id === id);
+      if (idx > -1) this.editorials[idx] = updated;
+    });
+  }
+  deleteEditorial(id: number) {
+    this.editorialService.deleteEditorial(id).subscribe(() => {
+      this.editorials = this.editorials.filter(e => e.id !== id);
+    });
   }
 } 

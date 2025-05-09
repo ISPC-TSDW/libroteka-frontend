@@ -1,6 +1,82 @@
 <div class="admin-container">
   <h1>Book Management</h1>
 
+  <!-- Management Accordion for Authors, Genres, Editorials -->
+  <div class="accordion mb-4" id="entityAccordion">
+    <!-- Authors -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingAuthors">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuthors" aria-expanded="true" aria-controls="collapseAuthors">
+          Manage Authors
+        </button>
+      </h2>
+      <div id="collapseAuthors" class="accordion-collapse collapse show" aria-labelledby="headingAuthors" data-bs-parent="#entityAccordion">
+        <div class="accordion-body">
+          <ul class="list-group mb-2">
+            <li *ngFor="let author of authors" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{author.name}}</span>
+              <span>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteAuthor(author.id)">Delete</button>
+              </span>
+            </li>
+          </ul>
+          <form class="d-flex" (ngSubmit)="addAuthor(newAuthorName); newAuthorName=''" #authorForm="ngForm">
+            <input type="text" class="form-control me-2" placeholder="New author name" required [(ngModel)]="newAuthorName" name="newAuthorName">
+            <button class="btn btn-primary" type="submit" [disabled]="!newAuthorName">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Genres -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingGenres">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGenres" aria-expanded="false" aria-controls="collapseGenres">
+          Manage Genres
+        </button>
+      </h2>
+      <div id="collapseGenres" class="accordion-collapse collapse" aria-labelledby="headingGenres" data-bs-parent="#entityAccordion">
+        <div class="accordion-body">
+          <ul class="list-group mb-2">
+            <li *ngFor="let genre of genres" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{genre.name}}</span>
+              <span>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteGenre(genre.id)">Delete</button>
+              </span>
+            </li>
+          </ul>
+          <form class="d-flex" (ngSubmit)="addGenre(newGenreName); newGenreName=''" #genreForm="ngForm">
+            <input type="text" class="form-control me-2" placeholder="New genre name" required [(ngModel)]="newGenreName" name="newGenreName">
+            <button class="btn btn-primary" type="submit" [disabled]="!newGenreName">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Editorials -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingEditorials">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEditorials" aria-expanded="false" aria-controls="collapseEditorials">
+          Manage Editorials
+        </button>
+      </h2>
+      <div id="collapseEditorials" class="accordion-collapse collapse" aria-labelledby="headingEditorials" data-bs-parent="#entityAccordion">
+        <div class="accordion-body">
+          <ul class="list-group mb-2">
+            <li *ngFor="let editorial of editorials" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{editorial.name}}</span>
+              <span>
+                <button class="btn btn-sm btn-danger ms-2" (click)="deleteEditorial(editorial.id)">Delete</button>
+              </span>
+            </li>
+          </ul>
+          <form class="d-flex" (ngSubmit)="addEditorial(newEditorialName); newEditorialName=''" #editorialForm="ngForm">
+            <input type="text" class="form-control me-2" placeholder="New editorial name" required [(ngModel)]="newEditorialName" name="newEditorialName">
+            <button class="btn btn-primary" type="submit" [disabled]="!newEditorialName">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Book Form -->
   <div class="form-container">
     <h2>{{ isEditing ? 'Edit Book' : 'Add New Book' }}</h2>
