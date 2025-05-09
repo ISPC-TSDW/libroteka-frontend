@@ -295,10 +295,19 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteAuthor(id: number) {
-    this.authorService.deleteAuthor(id).subscribe(() => {
-      this.authors = this.authors.filter(a => a.id !== id);
-      this.updatePagination();
-    });
+    if (confirm('Are you sure you want to delete this author?')) {
+      this.authorService.deleteAuthor(id).subscribe({
+        next: () => {
+          this.authors = this.authors.filter(a => a.id !== id);
+          this.newItems.delete(id);
+          this.updatePagination();
+        },
+        error: (error) => {
+          console.error('Error deleting author:', error);
+          alert('Error deleting author. Please try again.');
+        }
+      });
+    }
   }
 
   // Genre CRUD
@@ -319,10 +328,19 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteGenre(id: number) {
-    this.genreService.deleteGenre(id).subscribe(() => {
-      this.genres = this.genres.filter(g => g.id !== id);
-      this.updatePagination();
-    });
+    if (confirm('Are you sure you want to delete this genre?')) {
+      this.genreService.deleteGenre(id).subscribe({
+        next: () => {
+          this.genres = this.genres.filter(g => g.id !== id);
+          this.newItems.delete(id);
+          this.updatePagination();
+        },
+        error: (error) => {
+          console.error('Error deleting genre:', error);
+          alert('Error deleting genre. Please try again.');
+        }
+      });
+    }
   }
 
   // Editorial CRUD
@@ -343,10 +361,19 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteEditorial(id: number) {
-    this.editorialService.deleteEditorial(id).subscribe(() => {
-      this.editorials = this.editorials.filter(e => e.id !== id);
-      this.updatePagination();
-    });
+    if (confirm('Are you sure you want to delete this editorial?')) {
+      this.editorialService.deleteEditorial(id).subscribe({
+        next: () => {
+          this.editorials = this.editorials.filter(e => e.id !== id);
+          this.newItems.delete(id);
+          this.updatePagination();
+        },
+        error: (error) => {
+          console.error('Error deleting editorial:', error);
+          alert('Error deleting editorial. Please try again.');
+        }
+      });
+    }
   }
 
   // Helper method to check if an item is new
