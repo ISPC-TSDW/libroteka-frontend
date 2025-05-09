@@ -216,19 +216,23 @@ export class AdminBooksComponent implements OnInit {
         formData.append('image', this.selectedImage);
       }
 
-      if (this.isEditing && this.selectedBook) {
-        this.bookService.updateBook(this.selectedBook.id_Book!, formData).subscribe({
+      if (this.isEditing && this.selectedBook?.id_Book) {
+        // For editing, we need to include the book ID
+        formData.append('id_Book', this.selectedBook.id_Book.toString());
+        
+        this.bookService.updateBook(this.selectedBook.id_Book, formData).subscribe({
           next: (response) => {
-            this.books = this.books.map(book => 
-              book.id_Book === this.selectedBook?.id_Book ? response : book
-            );
-            this.updatePagination();
-            alert('Book updated successfully');
+            const index = this.books.findIndex(book => book.id_Book === this.selectedBook?.id_Book);
+            if (index !== -1) {
+              this.books[index] = response;
+              this.updatePagination();
+            }
+            alert('Libro actualizado exitosamente');
             this.resetForm();
           },
           error: (error) => {
             console.error('Error updating book:', error);
-            // TODO: Add proper error handling/notification
+            alert('Error al actualizar el libro. Por favor, intente nuevamente.');
           }
         });
       } else {
@@ -236,12 +240,12 @@ export class AdminBooksComponent implements OnInit {
           next: (response) => {
             this.books = [...this.books, response];
             this.updatePagination();
-            alert('Book created successfully');
+            alert('Libro creado exitosamente');
             this.resetForm();
           },
           error: (error) => {
             console.error('Error creating book:', error);
-            // TODO: Add proper error handling/notification
+            alert('Error al crear el libro. Por favor, intente nuevamente.');
           }
         });
       }
@@ -251,7 +255,18 @@ export class AdminBooksComponent implements OnInit {
   editBook(book: Book): void {
     this.isEditing = true;
     this.selectedBook = book;
-    this.bookForm.patchValue(book);
+    // Ensure all form fields are properly set
+    this.bookForm.patchValue({
+      id_Author: book.id_Author,
+      id_Genre: book.id_Genre,
+      id_Editorial: book.id_Editorial,
+      title: book.title,
+      description: book.description,
+      price: book.price,
+      stock: book.stock,
+      ISBN: book.ISBN,
+      year: book.year
+    });
     this.imagePreview = book.image;
   }
 
