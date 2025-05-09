@@ -10,4 +10,3 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {}
-
