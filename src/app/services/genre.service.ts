@@ -10,7 +10,7 @@ export interface Genre {
 
 @Injectable({ providedIn: 'root' })
 export class GenreService {
-  private apiUrl = `${environment.apiUrl}/api/book/`;
+  private apiUrl = `${environment.apiUrl}/api/genre/`;
 
   constructor(private http: HttpClient) {}
 
