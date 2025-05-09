@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartService, Book } from '../../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
 import { AuthService } from '../../../services/auth.service';
+
+declare var lucide: any;
 
 @Component({
   selector: 'app-navbar',
@@ -11,23 +13,20 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit {
   cartItemCount: number = 0;
-  cartItems: Book[] = [];
-  isCartVisible: boolean = false;
   isLoggedIn = false;
   userEmail: string | null = '';
 
   constructor(
     private cartService: CartService,
-    private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(cartItems => {
       this.cartItemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
-      this.cartItems = cartItems;
     });
 
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
@@ -41,8 +40,15 @@ export class NavbarComponent implements OnInit {
     this.authService.checkLoginStatus();
   }
 
-  toggleCart(): void {
-    this.isCartVisible = !this.isCartVisible;
+  ngAfterViewInit(): void {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   clearCart(): void {
@@ -52,9 +58,7 @@ export class NavbarComponent implements OnInit {
   proceedToCheckout(): void {
     this.router.navigate(['/pagos']);
   }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 }
+
+
+

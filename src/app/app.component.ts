@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet} from '@angular/router';
-import { SocialnetComponent } from './components/shared/socialnet/socialnet.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { HeaderComponent } from './components/shared/header/header.component';
@@ -20,7 +19,6 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     RouterOutlet,
     CommonModule,
-    SocialnetComponent, 
     NavbarComponent, 
     FooterComponent, 
     HeaderComponent, 

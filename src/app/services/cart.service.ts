@@ -1,21 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Book } from '../models/book.model';
 
-export interface Author {
-    id_Author: number;
-    name: string;
-}
-
-export interface Book {
-    id_Book: number;
-    title: string;
-    description: string;
-    price: number;
-    stock: number;
-    quantity?: number;
-    id_Author?: Author;
-  }
-  
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +17,6 @@ export class CartService {
 
   private loadCartItems(): void {
     const storedItems = localStorage.getItem('cartItems');
-    console.log('Loaded items from storage:', storedItems); // Add this line
     this.cartItems = storedItems ? JSON.parse(storedItems) : [];
     this.cartItemsSubject.next(this.cartItems);
   }
@@ -48,7 +33,7 @@ export class CartService {
   addCartItem(book: Book): void {
     const existingItem = this.cartItems.find(item => item.id_Book === book.id_Book);
     if (existingItem) {
-      existingItem.quantity! += 1;
+      existingItem.quantity = (existingItem.quantity ?? 1) + 1;
     } else {
       this.cartItems.push({ ...book, quantity: 1 });
     }
@@ -65,3 +50,4 @@ export class CartService {
     this.saveCartItems();
   }
 }
+
