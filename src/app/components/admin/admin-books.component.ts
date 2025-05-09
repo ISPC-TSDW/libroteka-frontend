@@ -49,6 +49,17 @@ export class AdminBooksComponent implements OnInit {
   newGenreName: string = '';
   newEditorialName: string = '';
 
+  // Pagination properties
+  currentPage = 1;
+  itemsPerPage = 5;
+  totalItems = 0;
+  
+  // Paginated lists
+  paginatedBooks: Book[] = [];
+  paginatedAuthors: Author[] = [];
+  paginatedGenres: Genre[] = [];
+  paginatedEditorials: Editorial[] = [];
+
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
@@ -89,13 +100,37 @@ export class AdminBooksComponent implements OnInit {
     return this.editorials.find(e => e.id === editorialId)?.name || '';
   }
 
+  // Pagination methods
+  updatePagination(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    
+    this.paginatedBooks = this.books.slice(startIndex, endIndex);
+    this.paginatedAuthors = this.authors.slice(startIndex, endIndex);
+    this.paginatedGenres = this.genres.slice(startIndex, endIndex);
+    this.paginatedEditorials = this.editorials.slice(startIndex, endIndex);
+    
+    this.totalItems = Math.max(
+      this.books.length,
+      this.authors.length,
+      this.genres.length,
+      this.editorials.length
+    );
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updatePagination();
+  }
+
+  // Update load methods to use pagination
   loadBooks(): void {
     console.log('AdminBooksComponent.loadBooks() called');
     this.bookService.getBooks().subscribe(
       data => {
         console.log('AdminBooksComponent: Received books data:', data);
         this.books = data;
-        console.log('AdminBooksComponent: Updated books array:', this.books);
+        this.updatePagination();
       },
       error => {
         console.error('AdminBooksComponent: Error fetching books:', error);
@@ -116,14 +151,24 @@ export class AdminBooksComponent implements OnInit {
             year: 1967
           }
         ];
+        this.updatePagination();
       }
     );
   }
 
   loadRelatedData(): void {
-    this.authorService.getAuthors().subscribe(authors => this.authors = authors);
-    this.genreService.getGenres().subscribe(genres => this.genres = genres);
-    this.editorialService.getEditorials().subscribe(editorials => this.editorials = editorials);
+    this.authorService.getAuthors().subscribe(authors => {
+      this.authors = authors;
+      this.updatePagination();
+    });
+    this.genreService.getGenres().subscribe(genres => {
+      this.genres = genres;
+      this.updatePagination();
+    });
+    this.editorialService.getEditorials().subscribe(editorials => {
+      this.editorials = editorials;
+      this.updatePagination();
+    });
   }
 
   onImageSelected(event: Event): void {
@@ -142,9 +187,16 @@ export class AdminBooksComponent implements OnInit {
   onSubmit(): void {
     if (this.bookForm.valid) {
       const formData = new FormData();
+      const formValue = this.bookForm.value;
+      
+      // Convert IDs to numbers
+      formValue.id_Author = Number(formValue.id_Author);
+      formValue.id_Genre = Number(formValue.id_Genre);
+      formValue.id_Editorial = Number(formValue.id_Editorial);
+      
       // Append form fields
-      Object.keys(this.bookForm.value).forEach(key => {
-        formData.append(key, this.bookForm.value[key]);
+      Object.keys(formValue).forEach(key => {
+        formData.append(key, formValue[key]);
       });
       
       // Append image if selected
@@ -158,6 +210,7 @@ export class AdminBooksComponent implements OnInit {
             this.books = this.books.map(book => 
               book.id_Book === this.selectedBook?.id_Book ? response : book
             );
+            this.updatePagination();
             alert('Book updated successfully');
             this.resetForm();
           },
@@ -170,6 +223,7 @@ export class AdminBooksComponent implements OnInit {
         this.bookService.createBook(formData).subscribe({
           next: (response) => {
             this.books = [...this.books, response];
+            this.updatePagination();
             alert('Book created successfully');
             this.resetForm();
           },
@@ -214,7 +268,10 @@ export class AdminBooksComponent implements OnInit {
 
   // Author CRUD
   addAuthor(name: string) {
-    this.authorService.createAuthor({ name }).subscribe(author => this.authors.push(author));
+    this.authorService.createAuthor({ name }).subscribe(author => {
+      this.authors.push(author);
+      this.updatePagination();
+    });
   }
   updateAuthor(id: number, name: string) {
     this.authorService.updateAuthor(id, { name }).subscribe(updated => {
@@ -225,12 +282,16 @@ export class AdminBooksComponent implements OnInit {
   deleteAuthor(id: number) {
     this.authorService.deleteAuthor(id).subscribe(() => {
       this.authors = this.authors.filter(a => a.id !== id);
+      this.updatePagination();
     });
   }
 
   // Genre CRUD
   addGenre(name: string) {
-    this.genreService.createGenre({ name }).subscribe(genre => this.genres.push(genre));
+    this.genreService.createGenre({ name }).subscribe(genre => {
+      this.genres.push(genre);
+      this.updatePagination();
+    });
   }
   updateGenre(id: number, name: string) {
     this.genreService.updateGenre(id, { name }).subscribe(updated => {
@@ -241,12 +302,16 @@ export class AdminBooksComponent implements OnInit {
   deleteGenre(id: number) {
     this.genreService.deleteGenre(id).subscribe(() => {
       this.genres = this.genres.filter(g => g.id !== id);
+      this.updatePagination();
     });
   }
 
   // Editorial CRUD
   addEditorial(name: string) {
-    this.editorialService.createEditorial({ name }).subscribe(editorial => this.editorials.push(editorial));
+    this.editorialService.createEditorial({ name }).subscribe(editorial => {
+      this.editorials.push(editorial);
+      this.updatePagination();
+    });
   }
   updateEditorial(id: number, name: string) {
     this.editorialService.updateEditorial(id, { name }).subscribe(updated => {
@@ -257,6 +322,7 @@ export class AdminBooksComponent implements OnInit {
   deleteEditorial(id: number) {
     this.editorialService.deleteEditorial(id).subscribe(() => {
       this.editorials = this.editorials.filter(e => e.id !== id);
+      this.updatePagination();
     });
   }
 } 

@@ -13,13 +13,26 @@
       <div id="collapseAuthors" class="accordion-collapse collapse show" aria-labelledby="headingAuthors" data-bs-parent="#entityAccordion">
         <div class="accordion-body">
           <ul class="list-group mb-2">
-            <li *ngFor="let author of authors" class="list-group-item d-flex justify-content-between align-items-center">
+            <li *ngFor="let author of paginatedAuthors" class="list-group-item d-flex justify-content-between align-items-center">
               <span>{{author.name}}</span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteAuthor(author.id)">Delete</button>
               </span>
             </li>
           </ul>
+          <!-- Pagination controls for authors -->
+          <div class="d-flex justify-content-center mb-3">
+            <nav aria-label="Author pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= authors.length">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
           <form class="d-flex" (ngSubmit)="addAuthor(newAuthorName); newAuthorName=''" #authorForm="ngForm">
             <input type="text" class="form-control me-2" placeholder="New author name" required [(ngModel)]="newAuthorName" name="newAuthorName">
             <button class="btn btn-primary" type="submit" [disabled]="!newAuthorName">Add</button>
@@ -37,13 +50,26 @@
       <div id="collapseGenres" class="accordion-collapse collapse" aria-labelledby="headingGenres" data-bs-parent="#entityAccordion">
         <div class="accordion-body">
           <ul class="list-group mb-2">
-            <li *ngFor="let genre of genres" class="list-group-item d-flex justify-content-between align-items-center">
+            <li *ngFor="let genre of paginatedGenres" class="list-group-item d-flex justify-content-between align-items-center">
               <span>{{genre.name}}</span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteGenre(genre.id)">Delete</button>
               </span>
             </li>
           </ul>
+          <!-- Pagination controls for genres -->
+          <div class="d-flex justify-content-center mb-3">
+            <nav aria-label="Genre pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= genres.length">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
           <form class="d-flex" (ngSubmit)="addGenre(newGenreName); newGenreName=''" #genreForm="ngForm">
             <input type="text" class="form-control me-2" placeholder="New genre name" required [(ngModel)]="newGenreName" name="newGenreName">
             <button class="btn btn-primary" type="submit" [disabled]="!newGenreName">Add</button>
@@ -61,13 +87,26 @@
       <div id="collapseEditorials" class="accordion-collapse collapse" aria-labelledby="headingEditorials" data-bs-parent="#entityAccordion">
         <div class="accordion-body">
           <ul class="list-group mb-2">
-            <li *ngFor="let editorial of editorials" class="list-group-item d-flex justify-content-between align-items-center">
+            <li *ngFor="let editorial of paginatedEditorials" class="list-group-item d-flex justify-content-between align-items-center">
               <span>{{editorial.name}}</span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteEditorial(editorial.id)">Delete</button>
               </span>
             </li>
           </ul>
+          <!-- Pagination controls for editorials -->
+          <div class="d-flex justify-content-center mb-3">
+            <nav aria-label="Editorial pagination">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= editorials.length">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
           <form class="d-flex" (ngSubmit)="addEditorial(newEditorialName); newEditorialName=''" #editorialForm="ngForm">
             <input type="text" class="form-control me-2" placeholder="New editorial name" required [(ngModel)]="newEditorialName" name="newEditorialName">
             <button class="btn btn-primary" type="submit" [disabled]="!newEditorialName">Add</button>
@@ -246,7 +285,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let book of books">
+        <tr *ngFor="let book of paginatedBooks">
           <td class="book-cover">
             <img [src]="book.image || 'assets/images/no-cover.png'" alt="Book cover">
           </td>
@@ -268,5 +307,18 @@
         </tr>
       </tbody>
     </table>
+    <!-- Pagination controls for books -->
+    <div class="d-flex justify-content-center mt-3">
+      <nav aria-label="Book pagination">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Previous</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= books.length">
+            <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div> 
