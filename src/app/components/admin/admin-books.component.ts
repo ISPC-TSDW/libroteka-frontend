@@ -271,7 +271,7 @@ export class AdminBooksComponent implements OnInit {
   }
 
   deleteBook(book: Book): void {
-    if (confirm('Are you sure you want to delete this book?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar este libro?')) {
       this.bookService.deleteBook(book.id_Book!).subscribe({
         next: () => {
           this.books = this.books.filter(b => b.id_Book !== book.id_Book);
@@ -315,7 +315,7 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteAuthor(id: number) {
-    if (confirm('Are you sure you want to delete this author?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar este autor?')) {
       this.authorService.deleteAuthor(id).subscribe({
         next: () => {
           this.authors = this.authors.filter(a => a.id_Author !== id);
@@ -351,7 +351,7 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteGenre(id: number) {
-    if (confirm('Are you sure you want to delete this genre?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar este género?')) {
       this.genreService.deleteGenre(id).subscribe({
         next: () => {
           this.genres = this.genres.filter(g => g.id_Genre !== id);
@@ -387,7 +387,7 @@ export class AdminBooksComponent implements OnInit {
     });
   }
   deleteEditorial(id: number) {
-    if (confirm('Are you sure you want to delete this editorial?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar este editorial?')) {
       this.editorialService.deleteEditorial(id).subscribe({
         next: () => {
           this.editorials = this.editorials.filter(e => e.id_Editorial !== id);
