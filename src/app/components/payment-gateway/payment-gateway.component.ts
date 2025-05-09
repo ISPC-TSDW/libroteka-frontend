@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
-import { CartService, Book } from '../../services/cart.service';
+import { CartService } from '../../services/cart.service';
+import { Book } from '../../models/book.model';
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -49,7 +50,7 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   onPaymentSubmit() {
-    this.authService.currentUserEmail.subscribe(email => {
+    this.authService.currentUserEmail().subscribe(email => {
       if (email !== null) {
         const validCart = this.cartItems.map(({ quantity, ...validProps }) => validProps);
         const orderData = {
@@ -63,8 +64,8 @@ export class PaymentGatewayComponent implements OnInit {
 
         this.orderService.createOrder(orderData).subscribe(response => {
           console.log('Order created successfully:', response);
-          this.cartService.clearCart()
-          this.router.navigate(['/dashboard']); 
+          this.cartService.clearCart();
+          this.router.navigate(['/dashboard']);
         }, error => {
           console.error('Error creating order:', error);
         });

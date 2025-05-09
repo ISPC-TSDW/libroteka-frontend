@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-
+import { environment } from '../environment';
 @Injectable({
   providedIn: 'root'
 })
 export class BusquedaService {
 
-  private apiUrl = 'http://localhost:8000/book/';
+  private apiUrl =  `${environment.apiUrl}/book/`;
 
   constructor(private http: HttpClient) { }
 

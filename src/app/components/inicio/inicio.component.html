@@ -1,0 +1,120 @@
+<!-- Carrousel -->
+<div class="carousel">
+    <div class="carousel-slide active">
+      <img src="assets/images/carrusel-1.jpg" alt="Carrusel 1">
+      <div class="carousel-text">
+        <h2>Descubre Nuevos Mundos</h2>
+        <p>Las mejores historias te esperan</p>
+        <button>Explorar ahora</button>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="assets/images/carrusel-2.jpg" alt="Carrusel 2">
+      <div class="carousel-text">
+        <h2>Los Mejores Autores</h2>
+        <p>Encuentra a tus favoritos</p>
+        <button>Descubrir autores</button>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="assets/images/carrusel-3.jpg" alt="Carrusel 3">
+      <div class="carousel-text">
+        <h2>Ofertas Especiales</h2>
+        <p>Hasta 30% de descuento</p>
+        <button>Ver ofertas</button>
+      </div>
+    </div>
+    <div class="carousel-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+  
+  <!-- Categorías -->
+<section class="categorias">
+  <h2>Explora por Categorías</h2>
+  <div class="categoria-grid">
+    <div class="categoria-card">
+      <img src="assets/images/categorias/fantasia.jpg" alt="Fantasía">
+      <span>Fantasía</span>
+    </div>
+    <div class="categoria-card">
+      <img src="assets/images/categorias/realismo.jpg" alt="Realismo">
+      <span>Realismo</span>
+    </div>
+    <div class="categoria-card">
+      <img src="assets/images/categorias/ciencia-ficcion.jpg" alt="Ciencia Ficcion">
+      <span>Ciencia Ficción</span>
+    </div>
+    <div class="categoria-card">
+      <img src="assets/images/categorias/romance.jpg" alt="Romance">
+      <span>Romance</span>
+    </div>
+    <div class="categoria-card">
+      <img src="assets/images/categorias/misterio.jpg" alt="Misterio">
+      <span>Misterio</span>
+    </div>
+  </div>
+</section>
+
+  
+  <!-- Libros Destacados -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Libros Destacados</h2>
+      <div class="filters">
+        <button class="filter" [class.active]="selectedFilter === 'todos'" (click)="applyFilter('todos')">Todos</button>
+        <button class="filter" [class.active]="selectedFilter === 'mas-vendidos'" (click)="applyFilter('mas-vendidos')">Más Vendidos</button>
+        <button class="filter" [class.active]="selectedFilter === 'recomendados'" (click)="applyFilter('recomendados')">Recomendados</button>
+      </div>
+    </div>
+  
+    <div class="book-grid">
+      <div class="book-card" *ngFor="let book of filteredBooks">
+        <img [src]="book.coverImage" [alt]="book.title" class="book-image" />
+        <h3 class="book-title">{{ book.title }}</h3>
+        <p class="book-author">{{ book.id_Author?.name }}</p>
+    
+        <div class="rating">
+          <span *ngFor="let star of [1, 2, 3, 4, 5]">
+            {{ star <= (book.avg_rating || 0) ? '★' : '☆' }}
+          </span>
+        </div>
+    
+        <div class="price">
+          <span class="price-current">€{{ book.price }}</span>
+        </div>
+    
+        <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+      </div>
+    </div>
+
+    <div class="ver-todos-container">
+      <a routerLink="/catalogo" class="ver-todos-btn">Ver todos los libros</a>
+    </div>
+  </section>
+  
+  <section class="nuevos-lanzamientos">
+    <h2 class="titulo-seccion">Nuevos Lanzamientos</h2>
+    <div class="slider-container">
+      <div class="slider" id="slider">
+        <div class="card" *ngFor="let book of nuevosLanzamientos">
+          <span class="badge">Nuevo</span>
+          <img [src]="book.coverImage" [alt]="book.title" />
+          <h3>{{ book.title }}</h3>
+          <p class="autor">{{ book.id_Author?.name }}</p>
+          <p class="precio">${{ book.price }}</p>
+          <button class="btn-agregar" (click)="addToCart(book)">Añadir al carrito</button>
+        </div>
+        
+      </div>
+      <div class="slider-controls">
+        <button (click)="prevSlide()" class="arrow">&#10094;</button>
+        <button (click)="nextSlide()" class="arrow">&#10095;</button>
+      </div>
+    </div>
+  </section>
+  
+        
+  

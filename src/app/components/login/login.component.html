@@ -37,7 +37,7 @@
                             <p>
                                 Gracias por volver a visitarnos, te pedimos que ingreses tu usuario y contraseña para ingresar a tu cuenta.
                             </p>
-                            <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                                 <div class="mb-3">
                                     <label for="idE" class="form-label">Dirección de email</label>
                                     <input type="email" formControlName="email" class="form-control" id="idE" aria-describedby="idEH" />
