@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environment';
 
 export interface Genre {
   id: number;
@@ -9,7 +10,7 @@ export interface Genre {
 
 @Injectable({ providedIn: 'root' })
 export class GenreService {
-  private apiUrl = '/api/genres';
+  private apiUrl = `${environment.apiUrl}/api/book/`;
 
   constructor(private http: HttpClient) {}
 
@@ -22,10 +23,10 @@ export class GenreService {
   }
 
   updateGenre(id: number, genre: { name: string }): Observable<Genre> {
-    return this.http.put<Genre>(`${this.apiUrl}/${id}`, genre);
+    return this.http.put<Genre>(`${this.apiUrl}${id}/`, genre);
   }
 
   deleteGenre(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }

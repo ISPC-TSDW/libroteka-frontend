@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environment';
 
 export interface Author {
   id: number;
@@ -9,7 +10,7 @@ export interface Author {
 
 @Injectable({ providedIn: 'root' })
 export class AuthorService {
-  private apiUrl = '/api/authors';
+  private apiUrl = `${environment.apiUrl}/api/authors/`;
 
   constructor(private http: HttpClient) {}
 
@@ -22,10 +23,10 @@ export class AuthorService {
   }
 
   updateAuthor(id: number, author: { name: string }): Observable<Author> {
-    return this.http.put<Author>(`${this.apiUrl}/${id}`, author);
+    return this.http.put<Author>(`${this.apiUrl}${id}/`, author);
   }
 
   deleteAuthor(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }
