@@ -60,6 +60,10 @@ export class AdminBooksComponent implements OnInit {
   paginatedGenres: Genre[] = [];
   paginatedEditorials: Editorial[] = [];
 
+  // Track new items
+  private newItems = new Set<number>();
+  private readonly NEW_ITEM_TIMEOUT = 5000; // 5 seconds
+
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
@@ -104,6 +108,12 @@ export class AdminBooksComponent implements OnInit {
   updatePagination(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
+    
+    // Sort lists alphabetically
+    this.books.sort((a, b) => a.title.localeCompare(b.title));
+    this.authors.sort((a, b) => a.name.localeCompare(b.name));
+    this.genres.sort((a, b) => a.name.localeCompare(b.name));
+    this.editorials.sort((a, b) => a.name.localeCompare(b.name));
     
     this.paginatedBooks = this.books.slice(startIndex, endIndex);
     this.paginatedAuthors = this.authors.slice(startIndex, endIndex);
@@ -269,8 +279,13 @@ export class AdminBooksComponent implements OnInit {
   // Author CRUD
   addAuthor(name: string) {
     this.authorService.createAuthor({ name }).subscribe(author => {
-      this.authors.push(author);
+      this.authors.unshift(author);
+      this.newItems.add(author.id);
       this.updatePagination();
+      // Remove "new" status after timeout
+      setTimeout(() => {
+        this.newItems.delete(author.id);
+      }, this.NEW_ITEM_TIMEOUT);
     });
   }
   updateAuthor(id: number, name: string) {
@@ -289,8 +304,12 @@ export class AdminBooksComponent implements OnInit {
   // Genre CRUD
   addGenre(name: string) {
     this.genreService.createGenre({ name }).subscribe(genre => {
-      this.genres.push(genre);
+      this.genres.unshift(genre);
+      this.newItems.add(genre.id);
       this.updatePagination();
+      setTimeout(() => {
+        this.newItems.delete(genre.id);
+      }, this.NEW_ITEM_TIMEOUT);
     });
   }
   updateGenre(id: number, name: string) {
@@ -309,8 +328,12 @@ export class AdminBooksComponent implements OnInit {
   // Editorial CRUD
   addEditorial(name: string) {
     this.editorialService.createEditorial({ name }).subscribe(editorial => {
-      this.editorials.push(editorial);
+      this.editorials.unshift(editorial);
+      this.newItems.add(editorial.id);
       this.updatePagination();
+      setTimeout(() => {
+        this.newItems.delete(editorial.id);
+      }, this.NEW_ITEM_TIMEOUT);
     });
   }
   updateEditorial(id: number, name: string) {
@@ -324,5 +347,10 @@ export class AdminBooksComponent implements OnInit {
       this.editorials = this.editorials.filter(e => e.id !== id);
       this.updatePagination();
     });
+  }
+
+  // Helper method to check if an item is new
+  isNewItem(item: Author | Genre | Editorial): boolean {
+    return this.newItems.has(item.id);
   }
 } 

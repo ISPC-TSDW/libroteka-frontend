@@ -14,7 +14,10 @@
         <div class="accordion-body">
           <ul class="list-group mb-2">
             <li *ngFor="let author of paginatedAuthors" class="list-group-item d-flex justify-content-between align-items-center">
-              <span>{{author.name}}</span>
+              <span>
+                {{author.name}}
+                <span *ngIf="isNewItem(author)" class="badge bg-success ms-2">New</span>
+              </span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteAuthor(author.id)">Delete</button>
               </span>
@@ -51,7 +54,10 @@
         <div class="accordion-body">
           <ul class="list-group mb-2">
             <li *ngFor="let genre of paginatedGenres" class="list-group-item d-flex justify-content-between align-items-center">
-              <span>{{genre.name}}</span>
+              <span>
+                {{genre.name}}
+                <span *ngIf="isNewItem(genre)" class="badge bg-success ms-2">New</span>
+              </span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteGenre(genre.id)">Delete</button>
               </span>
@@ -88,7 +94,10 @@
         <div class="accordion-body">
           <ul class="list-group mb-2">
             <li *ngFor="let editorial of paginatedEditorials" class="list-group-item d-flex justify-content-between align-items-center">
-              <span>{{editorial.name}}</span>
+              <span>
+                {{editorial.name}}
+                <span *ngIf="isNewItem(editorial)" class="badge bg-success ms-2">New</span>
+              </span>
               <span>
                 <button class="btn btn-sm btn-danger ms-2" (click)="deleteEditorial(editorial.id)">Delete</button>
               </span>
