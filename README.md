@@ -1,5 +1,4 @@
 # Tecnicatura Superior en Desarrollo web y Aplicaciones Digitales
-## Programación Web 1
 
 - Equipo: Bookster
 - Proyecto: Libroteka
@@ -17,17 +16,11 @@ Puntos claves:
 - Ceremonias - Scrum: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Scrum:-Registro-de-ceremonias)
 - Historias de Usuario: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Historias-de-Usuario)
 - Milestones: [Link](https://github.com/ISPC-Bookster/Libroteka/milestones)
-- Branching Strategy:
 
-| Branch	| Naming Convention |
-| -- | -- |
-| Master |	"main"
-| Desarrollo	| "dev"
-| Rama Integrantes | "iniciales-feature"
 
 ## Credenciales Django Admin
-- user: superadmin
-- password: libroteka
+- user:
+- password: 
 
 ## Librerías
 - FrontEnd: fortawesome, nodemailer, bootstrap, rxjs, smtpjs, tslib, zone.js
@@ -41,14 +34,9 @@ Puntos claves:
 Clone the project
 
 ```bash
-  git clone https://github.com/LibrotekaISPC2023/Libroteka.git
+  git clone https://github.com/ISPC-TSDW/libroteka-frontend.git
+
 ``` 
-
-Go to the project directory
-
-```bash
-  cd Frontend
-```
 
 Install dependencies
 
@@ -71,7 +59,7 @@ Start the server
 Clone the project
 
 ```bash
-  git clone https://github.com/LibrotekaISPC2023/Libroteka.git
+  git clone https://github.com/ISPC-TSDW/libroteka-backend.git
 ``` 
 
 Go to the project directory
