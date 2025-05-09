@@ -43,3 +43,4 @@ export class SobrenosotrosComponent {
     { nombre: 'Walter Salvatierra', foto: 'assets/images/Integrantes/facku_salvatierra.jpeg' }
   ];
 }
+

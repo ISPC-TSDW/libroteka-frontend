@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
-import { CartService, Book } from '../../services/cart.service';
+import { CartService } from '../../services/cart.service';
 import { BookService } from '../../services/book.service';
+import { Book } from '../../models/book.model';
 
 @Component({
   selector: 'app-landing',

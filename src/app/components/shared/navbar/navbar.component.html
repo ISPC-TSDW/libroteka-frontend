@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light py-1 sticky-top" style="background-color: #d9d1bd">
     <div class="container">
         <a class="navbar-brand d-flex justify-content-between align-items-center order-lg-0" routerLink="/landing">
@@ -85,5 +86,43 @@
         <button routerLink="/busqueda-personalizada" type="button" class="btn position-relative">
       <i class="fa fa-search"></i>
     </button>
+<nav class="navbar">
+  <div class="navbar-left">
+    <a class="logo-link" routerLink="/inicio">
+      <img src="assets/images/logo.png" alt="Logo" class="logo" />
+      <span class="brand-name">Libroteka</span>
+    </a>
+  </div>
+
+  <div class="navbar-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input type="text" placeholder="Buscar libros, autores, géneros..." />
     </div>
+  </div>
+
+  <div class="navbar-right">
+    <a class="nav-link" routerLink="/inicio">
+      <i data-lucide="home"></i>
+      <span>Inicio</span>
+    </a>
+    <a class="nav-link" routerLink="/favoritos">
+      <i data-lucide="heart"></i>
+      <span>Favoritos</span>
+    </a>
+    <a class="nav-link" routerLink="/dashboard">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Dashboard</span>
+    </a>
+    
+    <a class="nav-link carrito-icon" routerLink="/sobre-nosotros">
+      <i data-lucide="handshake"></i>
+      <span>Sobre Nosotros</span>
+      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+    </a>
+    <a class="nav-link" routerLink="/login">
+      <i data-lucide="log-in"></i>
+      <span>Login</span>
+    </a>
+  </div>
 </nav>
