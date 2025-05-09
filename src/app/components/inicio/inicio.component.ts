@@ -43,7 +43,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.books = data;
         this.filteredBooks = data;
-        this.nuevosLanzamientos = data.filter(b => b.is_new);
+        this.nuevosLanzamientos = data.filter((b:any) => b.is_new);
       },
       error: (err) => {
         console.error('Error cargando libros', err);

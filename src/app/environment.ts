@@ -7,7 +7,7 @@ export const environment = {
         } else if (frontendUrl.includes('koyeb')) {
             return 'http://libroback.koyeb.app';
         } else {
-            return 'http://127.0.0.1:8000';
+            return 'http://localhost:8000';
         }
     })()
 };
