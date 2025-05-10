@@ -20,8 +20,9 @@ def test_localhost():
         # Obtener el título de la página
         print(f"Título de la página: {driver.title}")
         
-        # Esperar a que el usuario presione Enter para cerrar
-        input("Presiona Enter para cerrar el navegador...")
+        # Esperar unos segundos antes de cerrar el navegador
+        import time
+        time.sleep(5)  # Esperar 5 segundos
         
     finally:
         # Cerrar el navegador
