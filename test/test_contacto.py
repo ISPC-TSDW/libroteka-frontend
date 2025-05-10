@@ -80,7 +80,8 @@ def test_formulario_contacto_realista():
     except Exception as e:
         print("Error durante la prueba:", str(e))
     finally:
-        input("Presiona Enter para cerrar el navegador...")
+        print("Cerrando el navegador automáticamente en 3 segundos...")
+        time.sleep(3)
         driver.quit()
 
 if __name__ == "__main__":
