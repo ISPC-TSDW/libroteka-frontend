@@ -132,10 +132,12 @@ def test_crear_usuario():
         driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
         time.sleep(5)
 
-        print("Test completado. El navegador permanecerá abierto hasta que lo cierres manualmente.")
-        print("Puedes cerrar el navegador cuando desees.")
-        while True:
+        print("Test completado. El navegador permanecerá abierto por un tiempo limitado.")
+        timeout = 60  # Tiempo en segundos antes de cerrar el navegador automáticamente
+        for _ in range(timeout):
             time.sleep(1)
+        print("Tiempo de espera agotado. Cerrando el navegador automáticamente.")
+        driver.quit()
 
     except KeyboardInterrupt:
         print("\nCerrando el navegador...")
