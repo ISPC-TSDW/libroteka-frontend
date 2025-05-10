@@ -55,7 +55,7 @@ def test_busqueda_libro_sin_resultados():
     except Exception as e:
         print("Error durante el test:", str(e))
     finally:
-        input("Presiona Enter para cerrar el navegador...")
+        print("Cerrando el navegador automáticamente...")
         driver.quit()
 
 if __name__ == "__main__":
