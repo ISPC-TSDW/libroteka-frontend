@@ -62,9 +62,9 @@ def test_login_usuario():
         else:
             print("❌ Login fallido. URL actual:", current_url)
 
-        print("Test finalizado. El navegador seguirá abierto.")
-        while True:
-            time.sleep(1)
+        print("Test finalizado. El navegador permanecerá abierto durante 30 segundos para inspección.")
+        time.sleep(30)  # Mantener el navegador abierto durante 30 segundos para inspección
+        print("Cerrando navegador automáticamente después del tiempo de espera.")
 
     except KeyboardInterrupt:
         print("\nCerrando navegador...")
