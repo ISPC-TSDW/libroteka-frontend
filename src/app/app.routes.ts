@@ -11,9 +11,9 @@ import { MasVendidosComponent } from './components/mas-vendidos/mas-vendidos.com
 import { AuthGuard } from './guards/auth-guard';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { PaymentGatewayComponent } from './components/payment-gateway/payment-gateway.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminBooksComponent } from './components/admin/admin-books.component';
 import { InicioComponent } from './components/inicio/inicio.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 export const routes: Routes = [
@@ -26,7 +26,7 @@ export const routes: Routes = [
   { path: 'sobre-nosotros', component: SobrenosotrosComponent },
   { path: 'create', component: CreateComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'admin/books', component: AdminBooksComponent },
+  { path: 'admin/books', component: AdminBooksComponent, canActivate: [AuthGuard] },
   { path: 'mas-vendidos', component: MasVendidosComponent },
   { path: 'book/:bookId', component: BookDetailsComponent },
   { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },
