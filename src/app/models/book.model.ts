@@ -11,7 +11,7 @@ export interface Book {
   price: number;
   stock: number;
   id_Editorial: Editorial | null;
-  image: string;
+  coverImage: string;
   avg_rating?: number;
   quantity?: number;
   isBestSeller?: boolean;      
