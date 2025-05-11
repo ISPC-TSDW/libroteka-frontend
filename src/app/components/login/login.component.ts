@@ -4,7 +4,6 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoginService } from './login.service';
 import { AuthService } from '../../services/auth.service';
-import { UserRoleService } from '../../services/user-role.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +20,6 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private authService: AuthService,
-    private userRoleService: UserRoleService,
     private router: Router
   ) {
     this.form = this.formBuilder.group({
@@ -37,33 +35,14 @@ export class LoginComponent {
   get Password() {
     return this.form.get('password');
   }
+
   onSubmit(): void {
     if (this.form.valid) {
       this.loginService.loginUser(this.form.value).subscribe(
         (response) => {
           const { access, refresh } = response;
           this.authService.storeTokens(access, refresh);
-          
-          this.userRoleService.getUserDetails(
-            this.form.value.email, 
-            this.form.value.password
-          ).subscribe(
-            (userDetails) => {
-              console.log('User details:', userDetails);
-              // Store the complete user details object with nested user
-              this.authService.storeUserDetails(userDetails);
-              // Navigate based on role
-              if (this.authService.hasRole(2)) {
-                this.router.navigate(['/admin/books']);
-              } else {
-                this.router.navigate(['/dashboard']);
-              }
-            },
-            (error) => {
-              console.error('Error fetching user details:', error);
-              this.router.navigate(['/dashboard']);
-            }
-          );
+          this.router.navigate(['/dashboard']);
         },
         (error) => {
           this.errorMessage = 'Invalid email or password';
