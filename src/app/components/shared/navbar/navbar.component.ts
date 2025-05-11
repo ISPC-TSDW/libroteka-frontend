@@ -15,6 +15,8 @@ declare var lucide: any;
 })
 export class NavbarComponent implements OnInit, AfterViewInit {
   cartItemCount: number = 0;
+  cartItems: any[] = [];
+  isCartVisible: boolean = false;
   isLoggedIn = false;
   userEmail: string | null = '';
 
@@ -27,6 +29,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(cartItems => {
       this.cartItemCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
+      this.cartItems = cartItems;
     });
 
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
@@ -58,7 +61,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   proceedToCheckout(): void {
     this.router.navigate(['/pagos']);
   }
+
+  toggleCart(): void {
+    this.isCartVisible = !this.isCartVisible;
+  }
 }
+
 
 
 
