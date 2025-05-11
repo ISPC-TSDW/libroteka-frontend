@@ -88,49 +88,49 @@ def test_crear_usuario():
         boton_ingresar = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[routerlink='/login']")))
         boton_ingresar.click()
         wait.until(EC.url_contains("/login"))
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[routerlink='/create']")))
 
         print("Haciendo clic en el botón CREAR CUENTA...")
         boton_crear_cuenta = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[routerlink='/create']")))
         boton_crear_cuenta.click()
         wait.until(EC.url_contains("/create"))
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='username']")))
 
         print("Generando datos realistas...")
         datos = generar_datos_reales()
 
         print("Llenando el formulario...")
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='username']"))).send_keys(datos['username'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='first_name']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='first_name']").send_keys(datos['first_name'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='last_name']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='last_name']").send_keys(datos['last_name'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='dni']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='dni']").send_keys(datos['dni'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='email']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='email']").send_keys(datos['email'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='password']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='password']").send_keys(datos['password'])
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[formControlName='confirmpass']")))
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='confirmpass']").send_keys(datos['password'])
         time.sleep(4)
 
         print("Marcando checkbox de boletín...")
         driver.find_element(By.CSS_SELECTOR, "input[type='checkbox']").click()
-        time.sleep(4)
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[type='checkbox']")))
 
         guardar_datos_usuario(datos)
-        time.sleep(4)
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
 
         print("Enviando formulario...")
         driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
-        time.sleep(5)
+        wait.until(EC.url_contains("/success"))  # Replace "/success" with the actual URL or condition to wait for
 
         print("Test completado. El navegador permanecerá abierto por un tiempo limitado.")
         timeout = 60  # Tiempo en segundos antes de cerrar el navegador automáticamente
