@@ -27,9 +27,14 @@
       <span>Dashboard</span>
     </a>
     
-    <a class="nav-link carrito-icon" routerLink="/sobre-nosotros">
+    <a class="nav-link sobrenosotros" routerLink="/sobre-nosotros">
       <i data-lucide="handshake"></i>
       <span>Sobre Nosotros</span>
+      
+    </a>
+    <a class="nav-link carrito-icon" routerLink="/payment-gateway">
+      <i data-lucide="shopping-cart"></i>
+      <span>Carrito</span>
       <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
     </a>
     <a class="nav-link" routerLink="/login">
