@@ -26,17 +26,33 @@
       <i data-lucide="layout-dashboard"></i>
       <span>Dashboard</span>
     </a>
-    
     <a class="nav-link sobrenosotros" routerLink="/sobre-nosotros">
       <i data-lucide="handshake"></i>
       <span>Sobre Nosotros</span>
-      
     </a>
-    <a class="nav-link carrito-icon" routerLink="/payment-gateway">
-      <i data-lucide="shopping-cart"></i>
-      <span>Carrito</span>
-      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
-    </a>
+
+    <!-- Botón del carrito con dropdown -->
+    <div class="cart-container">
+      <button class="nav-link carrito-icon" (click)="toggleCart()">
+        <i data-lucide="shopping-cart"></i>
+        <span>Carrito</span>
+        <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+      </button>
+      <div class="carrito-dropdown" *ngIf="isCartVisible">
+        <div *ngIf="cartItems.length > 0; else emptyCart">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <div class="cart-item-title">{{ item.title }}</div>
+            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+          </div>
+          <button type="button" class="btn btn-danger m-2" (click)="clearCart()">Limpiar carrito</button>
+          <button type="button" class="btn btn-success m-2" (click)="proceedToCheckout()">Iniciar compra</button>
+        </div>
+        <ng-template #emptyCart>
+          <div class="cart-empty">El carrito está vacío.</div>
+        </ng-template>
+      </div>
+    </div>
+
     <a class="nav-link" routerLink="/login">
       <i data-lucide="log-in"></i>
       <span>Login</span>
