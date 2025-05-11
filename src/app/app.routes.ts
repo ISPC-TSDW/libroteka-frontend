@@ -14,6 +14,7 @@ import { PaymentGatewayComponent } from './components/payment-gateway/payment-ga
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminBooksComponent } from './components/admin/admin-books.component';
 import { InicioComponent } from './components/inicio/inicio.component';
+import { AdminGuard } from './guards/admin-guard';
 
 
 export const routes: Routes = [
@@ -26,7 +27,7 @@ export const routes: Routes = [
   { path: 'sobre-nosotros', component: SobrenosotrosComponent },
   { path: 'create', component: CreateComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'admin/books', component: AdminBooksComponent },
+  { path: 'admin/books', component: AdminBooksComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'mas-vendidos', component: MasVendidosComponent },
   { path: 'book/:bookId', component: BookDetailsComponent },
   { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },
