@@ -1,89 +1,61 @@
-<nav class="navbar navbar-expand-lg navbar-light py-1 sticky-top" style="background-color: #d9d1bd">
-    <div class="container">
-        <a class="navbar-brand d-flex justify-content-between align-items-center order-lg-0" routerLink="/home">
-            <img src="../../../../assets/images/Book_25711.png" alt="icono del sitio a modificar" />
-            <span class="text-uppercase fw-lighter ms-2">Libroteka</span>
-        </a>
+<nav class="navbar">
+  <div class="navbar-left">
+    <a class="logo-link" routerLink="/inicio">
+      <img src="assets/images/logo.png" alt="Logo" class="logo" />
+      <span class="brand-name">Libroteka</span>
+    </a>
+  </div>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-        <div class="collapse navbar-collapse order-lg-1" id="navMenu">
-            <ul class="navbar-nav mx-auto text-center">
-                <li class="nav-item px-2 py-2">
-                    <a class="nav-link text-uppercase text-dark" routerLink="/home">inicio</a
-          >
-        </li>
-        <li class="nav-item px-2 py-2">
-          <a class="nav-link text-uppercase text-dark" routerLink="/catalogo"
-            >catalogo</a
-          >
-        </li>
-
-        <li class="nav-item px-2 py-2">
-          <a
-            class="nav-link text-uppercase text-dark"
-            routerLink="/mas-vendidos"
-            >Mas Vendidos</a
-          >
-        </li>
-        <li class="nav-item px-2 py-2">
-          <a class="nav-link text-uppercase text-dark" routerLink="/dashboard"
-            >Dashboard</a
-          >
-        </li>
-        <li class="nav-item px-2 py-2">
-          <a
-            class="nav-link text-uppercase text-dark"
-            routerLink="/sobre-nosotros"
-            >Sobre Nosotros</a
-          >
-        </li>
-
-        <li class="nav-item px-2 py-2">
-          <a class="nav-link text-uppercase text-dark" routerLink="/contacto"
-            >contacto</a
-          >
-        </li>
-        <li class="nav-item px-2 py-2">
-          <li *ngIf="!isLoggedIn">
-            <a class="nav-link text-uppercase text-dark" routerLink="/login">INGRESAR</a>
-                </li>
-                <li *ngIf="isLoggedIn">
-                    <a class="nav-link text-uppercase text-dark" href="#">{{ userEmail }}</a>
-                    <a class="nav-link text-uppercase text-dark" href="#" (click)="logout()">Logout</a>
-                </li>
-            </ul>
-        </div>
-        <div class="order-lg-2 nav-btns">
-            <button type="button" class="btn position-relative" (click)="toggleCart()">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge bg-primary">
-          {{ cartItemCount }}
-        </span>
-      </button>
-            <div *ngIf="isCartVisible" class="cart-dropdown">
-                <div *ngFor="let item of cartItems" class="cart-item">
-                    <div class="cart-item-title">{{ item.title }}</div>
-                    <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
-                </div>
-                <div *ngIf="cartItems.length === 0" class="cart-empty">
-                    El carrito está vacío.
-                </div>
-                <button type="button" class="btn btn-danger m-2" (click)="clearCart()">Limpiar carrito</button>
-                <button type="button" class="btn btn-success m-2" (click)="proceedToCheckout()">Iniciar compra</button>
-            </div>
-        </div>
-
-        <button type="button" class="btn position-relative">
-      <i class="fa fa-heart"></i>
-      <span
-        class="position-absolute top-0 start-100 translate-middle badge bg-primary"
-      ></span>
-    </button>
-        <button routerLink="/busqueda-personalizada" type="button" class="btn position-relative">
-      <i class="fa fa-search"></i>
-    </button>
+  <div class="navbar-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input type="text" placeholder="Buscar libros, autores, géneros..." />
     </div>
+  </div>
+
+  <div class="navbar-right">
+    <a class="nav-link" routerLink="/inicio">
+      <i data-lucide="home"></i>
+      <span>Inicio</span>
+    </a>
+    <a class="nav-link" routerLink="/favoritos">
+      <i data-lucide="heart"></i>
+      <span>Favoritos</span>
+    </a>
+    <a class="nav-link" routerLink="/dashboard">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Dashboard</span>
+    </a>
+    <a class="nav-link sobrenosotros" routerLink="/sobre-nosotros">
+      <i data-lucide="handshake"></i>
+      <span>Sobre Nosotros</span>
+    </a>
+
+    <!-- Botón del carrito con dropdown -->
+    <div class="cart-container">
+      <button class="nav-link carrito-icon" (click)="toggleCart()">
+        <i data-lucide="shopping-cart"></i>
+        <span>Carrito</span>
+        <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+      </button>
+      <div class="carrito-dropdown" *ngIf="isCartVisible">
+        <div *ngIf="cartItems.length > 0; else emptyCart">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <div class="cart-item-title">{{ item.title }}</div>
+            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+          </div>
+          <button type="button" class="btn btn-danger m-2" (click)="clearCart()">Limpiar carrito</button>
+          <button type="button" class="btn btn-success m-2" (click)="proceedToCheckout()">Iniciar compra</button>
+        </div>
+        <ng-template #emptyCart>
+          <div class="cart-empty">El carrito está vacío.</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <a class="nav-link" routerLink="/login">
+      <i data-lucide="log-in"></i>
+      <span>Login</span>
+    </a>
+  </div>
 </nav>

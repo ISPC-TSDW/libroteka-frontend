@@ -11,4 +11,10 @@ export interface Book {
   price: number;
   stock: number;
   id_Editorial: Editorial | null;
+  image: string;
+  avg_rating?: number;
+  quantity?: number;
+  isBestSeller?: boolean;      
+  isRecommended?: boolean;
+  is_new?: boolean;
 }

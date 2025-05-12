@@ -1,0 +1,338 @@
+<div class="admin-container">
+  <h1>Gestión de Libros</h1>
+
+  <!-- Management Accordion for Authors, Genres, Editorials -->
+  <div class="accordion mb-4" id="entityAccordion">
+    <!-- Authors -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#authorsCollapse">
+          Autores
+        </button>
+      </h2>
+      <div id="authorsCollapse" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newAuthorName" placeholder="Nombre del nuevo autor">
+            <button class="btn btn-primary mt-2" (click)="addAuthor()">Agregar Autor</button>
+          </div>
+          <ul class="list-group">
+            <li *ngFor="let author of paginatedAuthors" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>
+                {{ author.name }}
+                <span *ngIf="isNewItem(author)" class="badge bg-success ms-2">Nuevo</span>
+              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteAuthor(author.id_Author)">Eliminar</button>
+            </li>
+          </ul>
+          <nav *ngIf="authors.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">Primero</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Último</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- Genres -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#genresCollapse">
+          Géneros
+        </button>
+      </h2>
+      <div id="genresCollapse" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newGenreName" placeholder="Nombre del nuevo género">
+            <button class="btn btn-primary mt-2" (click)="addGenre()">Agregar Género</button>
+          </div>
+          <ul class="list-group">
+            <li *ngFor="let genre of paginatedGenres" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>
+                {{ genre.name }}
+                <span *ngIf="isNewItem(genre)" class="badge bg-success ms-2">Nuevo</span>
+              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteGenre(genre.id_Genre)">Eliminar</button>
+            </li>
+          </ul>
+          <nav *ngIf="genres.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">Primero</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Último</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- Editorials -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#editorialsCollapse">
+          Editoriales
+        </button>
+      </h2>
+      <div id="editorialsCollapse" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <div class="mb-3">
+            <input type="text" class="form-control" [(ngModel)]="newEditorialName" placeholder="Nombre de la nueva editorial">
+            <button class="btn btn-primary mt-2" (click)="addEditorial()">Agregar Editorial</button>
+          </div>
+          <ul class="list-group">
+            <li *ngFor="let editorial of paginatedEditorials" class="list-group-item d-flex justify-content-between align-items-center">
+              <span>
+                {{ editorial.name }}
+                <span *ngIf="isNewItem(editorial)" class="badge bg-success ms-2">Nuevo</span>
+              </span>
+              <button class="btn btn-danger btn-sm" (click)="deleteEditorial(editorial.id_Editorial)">Eliminar</button>
+            </li>
+          </ul>
+          <nav *ngIf="editorials.length > itemsPerPage" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(1)">Primero</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="onPageChange(totalPages)">Último</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Form -->
+  <div class="form-container">
+    <h2>{{ isEditing ? 'Editar Libro' : 'Agregar Nuevo Libro' }}</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="book-form">
+      <div class="form-group">
+        <label for="title">Título</label>
+        <input 
+          type="text" 
+          id="title" 
+          formControlName="title" 
+          required
+          [class.error]="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="author">Autor</label>
+        <select 
+          id="author" 
+          formControlName="id_Author"
+          required
+          [class.error]="bookForm.get('id_Author')?.invalid && bookForm.get('id_Author')?.touched"
+        >
+          <option value="">Seleccionar un autor</option>
+          <option *ngFor="let author of authors" [value]="author.id_Author">
+            {{author.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="genre">Género</label>
+        <select 
+          id="genre" 
+          formControlName="id_Genre"
+          required
+          [class.error]="bookForm.get('id_Genre')?.invalid && bookForm.get('id_Genre')?.touched"
+        >
+          <option value="">Seleccionar un género</option>
+          <option *ngFor="let genre of genres" [value]="genre.id_Genre">
+            {{genre.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="editorial">Editorial</label>
+        <select 
+          id="editorial" 
+          formControlName="id_Editorial"
+          required
+          [class.error]="bookForm.get('id_Editorial')?.invalid && bookForm.get('id_Editorial')?.touched"
+        >
+          <option value="">Seleccionar una editorial</option>
+          <option *ngFor="let editorial of editorials" [value]="editorial.id_Editorial">
+            {{editorial.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="isbn">ISBN</label>
+        <input 
+          type="text" 
+          id="isbn" 
+          formControlName="ISBN" 
+          required
+          [class.error]="bookForm.get('ISBN')?.invalid && bookForm.get('ISBN')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="year">Año de Publicación</label>
+        <input 
+          type="number" 
+          id="year" 
+          formControlName="year" 
+          required
+          min="1800"
+          [max]="currentYear"
+          [class.error]="bookForm.get('year')?.invalid && bookForm.get('year')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="price">Precio</label>
+        <input 
+          type="number" 
+          id="price" 
+          formControlName="price" 
+          required
+          min="0"
+          step="0.01"
+          [class.error]="bookForm.get('price')?.invalid && bookForm.get('price')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input 
+          type="number" 
+          id="stock" 
+          formControlName="stock" 
+          required
+          min="0"
+          [class.error]="bookForm.get('stock')?.invalid && bookForm.get('stock')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Portada del Libro</label>
+        <input 
+          type="file" 
+          id="image" 
+          accept="image/*"
+          (change)="onImageSelected($event)"
+        >
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Vista previa de la portada">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          [disabled]="!bookForm.valid"
+          class="btn btn-primary"
+        >
+          {{ isEditing ? 'Actualizar Libro' : 'Agregar Libro' }}
+        </button>
+        <button 
+          type="button" 
+          (click)="resetForm()" 
+          *ngIf="isEditing"
+          class="btn btn-secondary"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Books Table -->
+  <div class="table-container">
+    <h2>Lista de Libros</h2>
+    <table class="books-table">
+      <thead>
+        <tr>
+          <th>Portada</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Género</th>
+          <th>ISBN</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Año</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of paginatedBooks">
+          <td class="book-cover">
+            <img [src]="book.image || 'assets/images/no-cover.png'" alt="Portada del libro">
+          </td>
+          <td>{{book.title}}</td>
+          <td>{{getAuthorName(book.id_Author)}}</td>
+          <td>{{getGenreName(book.id_Genre)}}</td>
+          <td>{{book.ISBN}}</td>
+          <td>${{book.price}}</td>
+          <td>{{book.stock}}</td>
+          <td>{{book.year}}</td>
+          <td class="actions">
+            <div class="action-buttons">
+              <button (click)="editBook(book)" class="btn btn-edit">
+                Editar
+              </button>
+              <button (click)="deleteBook(book)" class="btn btn-delete">
+                Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Pagination controls for books -->
+    <div class="d-flex justify-content-center mt-3">
+      <nav aria-label="Paginación de libros">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">Anterior</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage * itemsPerPage >= books.length">
+            <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div> 
