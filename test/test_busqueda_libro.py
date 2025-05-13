@@ -11,21 +11,16 @@ def test_busqueda_libro_y_ver_detalle():
     driver = webdriver.Chrome(options=chrome_options)
 
     try:
-
-        print("Abriendo página de inicio...")
         driver.get("http://localhost:4200/inicio")
 
         wait = WebDriverWait(driver, 10)
         time.sleep(2)
     
-        print("Navegando a la página de Libroteka...")
         driver.get("http://localhost:4200/busqueda-personalizada")
         wait = WebDriverWait(driver, 10)
 
-        print("Esperando el input de búsqueda...")
         search_input = wait.until(EC.presence_of_element_located((By.ID, "search-input")))
 
-        print("Seleccionando criterio de búsqueda...")
         criterio_select = driver.find_element(By.ID, "search-filter")
         criterio_select.click()
         time.sleep(1)
@@ -39,12 +34,10 @@ def test_busqueda_libro_y_ver_detalle():
         search_input.send_keys(termino_busqueda)
         time.sleep(2)
 
-        print("Haciendo clic en el botón de búsqueda...")
         search_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
         search_button.click()
         time.sleep(2)
 
-        print("Esperando resultados de búsqueda...")
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".book")))
         resultados = driver.find_elements(By.CSS_SELECTOR, ".book")
 
@@ -53,19 +46,15 @@ def test_busqueda_libro_y_ver_detalle():
             print(f"\nLibro {idx}:\n{libro.text}")
             
 
-        print("Buscando botón 'Ver detalles' en el primer resultado...")
         ver_detalle_button = resultados[0].find_element(By.XPATH, ".//button[contains(text(), 'Ver detalles')]")
         ver_detalle_button.click()
         print("Se hizo clic en 'Ver detalles'.")
 
-        print("Esperando que el popup del detalle se muestre...")
         popup_visible = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".popup-overlay")))
-        print("Popup de detalles visible.")
 
     except Exception as e:
         print("Error durante el test:", str(e))
     finally:
-        input("Presiona Enter para cerrar el navegador...")
         driver.quit()
 
 if __name__ == "__main__":
