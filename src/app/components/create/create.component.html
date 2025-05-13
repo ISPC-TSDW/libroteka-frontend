@@ -107,11 +107,11 @@
                 </p>
                 } @else if (dni?.hasError('minlength')) {
                 <p class="text-danger">
-                  El numero de DNI debe tener un minimo de 6 caracteres.
+                  El numero de DNI debe tener entre 7 y 11 caracteres.
                 </p>
                 } @else if (dni?.hasError('maxlength')) {
                 <p class="text-danger">
-                  El numero de DNI debe tener un maximo de 6 caracteres.
+                  El numero de DNI debe tener un maximo de 11 caracteres.
                 </p>
                 } @else if (dni?.hasError('pattern')) {
                 <p class="text-danger">
