@@ -4,17 +4,42 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import random
+import string
 import time
 from faker import Faker # type: ignore
 
 # Inicializar Faker
 fake = Faker('es_AR')
 
+def generar_contraseña_segura():
+    # Definir los conjuntos de caracteres
+    mayusculas = string.ascii_uppercase
+    minusculas = string.ascii_lowercase
+    numeros = string.digits
+    especiales = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+    
+    # Asegurar al menos un carácter de cada tipo
+    contraseña = [
+        random.choice(mayusculas),
+        random.choice(minusculas),
+        random.choice(numeros),
+        random.choice(especiales)
+    ]
+    
+    # Completar hasta 12 caracteres con una mezcla aleatoria
+    todos_caracteres = mayusculas + minusculas + numeros + especiales
+    contraseña.extend(random.choice(todos_caracteres) for _ in range(8))
+    
+    # Mezclar los caracteres
+    random.shuffle(contraseña)
+    
+    return ''.join(contraseña)
+
 def generar_datos_reales():
     first_name = fake.first_name()
     last_name = fake.last_name()
 
-   # Limitar la longitud del nombre de usuario a 18 caracteres como máximo
+    # Limitar la longitud del nombre de usuario a 18 caracteres como máximo
     base_username = f"{first_name.lower()}.{last_name.lower()}"
     max_length = 18
     suffix = str(random.randint(1, 99))
@@ -28,7 +53,7 @@ def generar_datos_reales():
 
     dni = str(random.randint(100000, 999999))  # DNI de 6 caracteres
     email = fake.email()
-    password = fake.password(length=10, special_chars=True, digits=True, upper_case=True, lower_case=True)
+    password = generar_contraseña_segura()
 
     return {
         'username': username,
@@ -83,10 +108,17 @@ def test_crear_usuario():
 
         driver.find_element(By.CSS_SELECTOR, "input[formControlName='confirmpass']").send_keys(datos['password'])
         time.sleep(4)
-        driver.find_element(By.CSS_SELECTOR, "input[type='checkbox']").click()
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[type='checkbox']")))
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
-        driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        
+        # Marcar el checkbox usando JavaScript
+        checkbox = wait.until(EC.presence_of_element_located((By.ID, "Check")))
+        driver.execute_script("arguments[0].checked = true;", checkbox)
+        time.sleep(1)
+
+        # Hacer click en el botón de enviar
+        boton_enviar = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
+        driver.execute_script("arguments[0].click();", boton_enviar)
+        time.sleep(1)
+
         wait.until(EC.url_contains("/success"))  # Replace "/success" with the actual URL or condition to wait for
         timeout = 60  # Tiempo en segundos antes de cerrar el navegador automáticamente
         for _ in range(timeout):
