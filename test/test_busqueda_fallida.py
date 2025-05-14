@@ -29,7 +29,6 @@ def test_busqueda_libro_sin_resultados():
                 break
 
         termino_inexistente = "LibroInexistente1234"
-        print(f"Ingresando término de búsqueda sin resultados: {termino_inexistente}")
         search_input.send_keys(termino_inexistente)
 
         search_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
@@ -43,10 +42,9 @@ def test_busqueda_libro_sin_resultados():
         mensaje_no_resultados = wait.until(EC.visibility_of_element_located((
             By.XPATH, "//*[contains(text(), 'No hay publicaciones que coincidan')]"
         )))
-        print("Se mostró el mensaje de búsqueda sin resultados:", mensaje_no_resultados.text)
 
     except Exception as e:
-        print("Error durante el test:", str(e))
+        pass
     finally:
         driver.quit()
 

@@ -88,7 +88,6 @@ def test_agregar_y_comprar_libro():
         address = fake.street_address()
         telephone = fake.phone_number()
 
-        print(f"Ingresando dirección aleatoria: {city}, {address}, {telephone}")
         driver.find_element(By.ID, "city").send_keys(city)
         time.sleep(0.5)
         driver.find_element(By.ID, "address").send_keys(address)
@@ -109,7 +108,7 @@ def test_agregar_y_comprar_libro():
         cvv = "123"
         card_holder = fake.name()
 
-        print(f"Ingresando datos de pago: {card_number}, {expiry_date}, {cvv}, {card_holder}")
+
         driver.find_element(By.ID, "cardNumber").send_keys(card_number)
         time.sleep(0.5)
         driver.find_element(By.ID, "expiryDate").send_keys(expiry_date)
@@ -126,9 +125,8 @@ def test_agregar_y_comprar_libro():
         time.sleep(5)
 
     except Exception as e:
-        print("Error durante la prueba:", str(e))
+        pass
     finally:
-        print("Cerrando el navegador automáticamente en 3 segundos...")
         time.sleep(3)
         driver.quit()
 

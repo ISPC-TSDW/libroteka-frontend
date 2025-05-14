@@ -30,7 +30,6 @@ def test_busqueda_libro_y_ver_detalle():
                 break
 
         termino_busqueda = "Cien años de soledad"
-        print(f"Ingresando término: {termino_busqueda}")
         search_input.send_keys(termino_busqueda)
         time.sleep(2)
 
@@ -41,19 +40,15 @@ def test_busqueda_libro_y_ver_detalle():
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".book")))
         resultados = driver.find_elements(By.CSS_SELECTOR, ".book")
 
-        print(f"Se encontraron {len(resultados)} resultados.")
         for idx, libro in enumerate(resultados, start=1):
-            print(f"\nLibro {idx}:\n{libro.text}")
-            
-
+            pass         
         ver_detalle_button = resultados[0].find_element(By.XPATH, ".//button[contains(text(), 'Ver detalles')]")
         ver_detalle_button.click()
-        print("Se hizo clic en 'Ver detalles'.")
 
         popup_visible = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".popup-overlay")))
 
     except Exception as e:
-        print("Error durante el test:", str(e))
+        pass
     finally:
         driver.quit()
 
