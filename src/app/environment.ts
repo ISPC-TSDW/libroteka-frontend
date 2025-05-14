@@ -5,7 +5,7 @@ export const environment = {
         if (frontendUrl.includes('dev')) {
             return 'https://libroteka-app.onrender.com';
         } else if (frontendUrl.includes('prod')) {
-            return 'http://libroback.koyeb.app';
+            return 'https://libroback.koyeb.app';
         } else {
             return 'http://localhost:8000';
         }
