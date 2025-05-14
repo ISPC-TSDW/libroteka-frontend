@@ -17,6 +17,7 @@ import { AdminGuard } from './guards/admin-guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'landing', component: LandingComponent },

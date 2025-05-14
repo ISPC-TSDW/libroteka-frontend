@@ -72,7 +72,7 @@
   
     <div class="book-grid">
       <div class="book-card" *ngFor="let book of filteredBooks">
-        <img [src]="book.image" [alt]="book.title" class="book-image" />
+        <img [src]="book.coverImage" [alt]="book.title" class="book-image" />
         <h3 class="book-title">{{ book.title }}</h3>
         <p class="book-author">{{ book.id_Author?.name }}</p>
     
@@ -101,7 +101,7 @@
       <div class="slider" id="slider">
         <div class="card" *ngFor="let book of nuevosLanzamientos">
           <span class="badge">Nuevo</span>
-          <img [src]="book.image" [alt]="book.title" />
+          <img [src]="book.coverImage" [alt]="book.title" />
           <h3>{{ book.title }}</h3>
           <p class="autor">{{ book.id_Author?.name }}</p>
           <p class="precio">${{ book.price }}</p>
