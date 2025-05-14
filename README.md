@@ -1,14 +1,10 @@
-# Tecnicatura Superior en Desarrollo web y Aplicaciones Digitales
-
-
-
-## Repositorio Frontend (Angular)
+# Libroteka Frontend
 
 Este repositorio contiene el código frontend del proyecto **Libroteka**, una SPA desarrollada con **Angular**. Permite a los usuarios buscar, explorar y comprar libros desde una interfaz intuitiva y conectada con el backend mediante APIs REST.
 
 
 
-## ⚙️ Tecnologías
+## ⚙️ Librerías y dependencias
 
 - Angular 17
 - Bootstrap
