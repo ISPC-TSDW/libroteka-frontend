@@ -149,9 +149,9 @@
                     <p class="text-danger">
                       Completar su contraseña es obligatorio.
                     </p>
-                    } @else if (Password?.hasError('minlength')) {
+                    } @else if (Password?.hasError('strongPassword')) {
                     <p class="text-danger">
-                      La contraseña debe tener un minimo de 8 caracteres.
+                      La contraseña debe tener al menos 12 caracteres, una mayúscula, una minúscula, un número y un carácter especial (@$!%*?&/#-_).
                     </p>
                     } }
                     <span id="mensajeErrorPassword" style="color: red"></span>
