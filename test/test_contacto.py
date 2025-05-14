@@ -20,13 +20,11 @@ def test_formulario_contacto_realista():
 
     try:
 
-        print("Abriendo página de inicio...")
         driver.get("http://localhost:4200/inicio")
 
         wait = WebDriverWait(driver, 10)
         time.sleep(2)
-    
-        print("Navegando a la página de contacto...")
+
         driver.get("http://localhost:4200/contacto")
 
         wait = WebDriverWait(driver, 20)
