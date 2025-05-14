@@ -16,10 +16,6 @@ def test_localhost():
         
         # Esperar un momento para ver la página
         driver.implicitly_wait(5)
-        
-        # Obtener el título de la página
-        print(f"Título de la página: {driver.title}")
-        
         # Esperar unos segundos antes de cerrar el navegador
         import time
         time.sleep(5)  # Esperar 5 segundos
