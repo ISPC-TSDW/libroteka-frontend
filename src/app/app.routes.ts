@@ -11,7 +11,6 @@ import { MasVendidosComponent } from './components/mas-vendidos/mas-vendidos.com
 import { AuthGuard } from './guards/auth-guard';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { PaymentGatewayComponent } from './components/payment-gateway/payment-gateway.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminBooksComponent } from './components/admin/admin-books.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { AdminGuard } from './guards/admin-guard';
