@@ -28,7 +28,7 @@ export class CreateComponent {
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       first_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern('[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+')]], // Updated to match backend field name
       last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern('[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+')]], // Updated to match backend field name
-      dni: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('[0-9]+')]],
+      dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(11), Validators.pattern('[0-9]+')]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmpass: ['', [Validators.required, Validators.minLength(8)]],

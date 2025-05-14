@@ -1,140 +1,55 @@
-# Tecnicatura Superior en Desarrollo web y Aplicaciones Digitales
-## Programación Web 1
+# Libroteka Frontend
 
-- Equipo: Bookster
-- Proyecto: Libroteka
-- Cohorte: 2023
+Este repositorio contiene el código frontend del proyecto **Libroteka**, una SPA desarrollada con **Angular**. Permite a los usuarios buscar, explorar y comprar libros desde una interfaz intuitiva y conectada con el backend mediante APIs REST.
 
-Dependencies: 
-- Node: "^18"
-- Angular: "^17"
-- Python: "^3.8"
-- Django: "^4.2"
-- SQLITE3: Incluido en Django
 
-Puntos claves:
-- Formulario IEEE830: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Formulario-IEEE830)
-- Ceremonias - Scrum: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Scrum:-Registro-de-ceremonias)
-- Historias de Usuario: [Link](https://github.com/ISPC-Bookster/Libroteka/wiki/Historias-de-Usuario)
-- Milestones: [Link](https://github.com/ISPC-Bookster/Libroteka/milestones)
-- Branching Strategy:
 
-| Branch	| Naming Convention |
-| -- | -- |
-| Master |	"main"
-| Desarrollo	| "dev"
-| Rama Integrantes | "iniciales-feature"
+## ⚙️ Librerías y dependencias
 
-## Credenciales Django Admin
-- user: superadmin
-- password: libroteka
+- Angular 17
+- Bootstrap
+- RxJS
+- Font Awesome
 
-## Librerías
-- FrontEnd: fortawesome, nodemailer, bootstrap, rxjs, smtpjs, tslib, zone.js
-- BackEnd: django, djangorestframework, django-cors-headers, Pillow, jsonfield, mysqlclient
 
-## Correr localmente
-<table>
-<tr>
-<th> FrontEnd </th>
-<td>
-Clone the project
+
+## 🧩 Funcionalidades principales
+
+- Landing page con información general
+- Login y registro de usuarios con validaciones
+- Navegación protegida según el rol del usuario
+- Visualización y detalle de libros
+- Carrito de compras
+- Dashboard con gestión de productos (admin)
+
+
+
+
+
+## 🛠 Correr Localmente
+
+Requisitos:
+- Node 17+
+- Backend corriendo localmente (Ver [readme](https://github.com/ISPC-TSDW/libroteka-backend))
+
+---
+
+1. Clone the project
 
 ```bash
-  git clone https://github.com/LibrotekaISPC2023/Libroteka.git
+  git clone https://github.com/ISPC-TSDW/libroteka-frontend.git
 ``` 
-
-Go to the project directory
-
-```bash
-  cd Frontend
+2. Ingresar al directorio del proyecto
+```sh
+  cd libroteka-frontend
 ```
-
-Install dependencies
-
+3. Instalar dependencias
 ```bash
   npm install
 ```
-
-Start the server
-
+4. Levantar el servidor local
 ```bash
   npm start
 ```
-</td>
-</tr>
-</table>
-<table>
-<tr>
-<th> BackEnd </th>
-<td>
-Clone the project
-
-```bash
-  git clone https://github.com/LibrotekaISPC2023/Libroteka.git
-``` 
-
-Go to the project directory
-
-```bash
-  cd Backend/Libroteka
-```
-
-Activate Virtual environment & install Libraries
-
-```bash
-.\backendLibroteka-env\bin\activate # Windows users
-source backendLibroteka-env/bin/activate # Linux users
-
-```
-```bash
- cd Libroteka/Backend/Libroteka
-```
-```bash
-  pip install -r requirements.txt
-```
-
-Start the server
-
-```bash
-  python manage.py runserver
-```
-</td>
-</tr>
-</table>
-
-<table>
-<tr>
-<th> Docker <br> (Optional) </th>
-<td>
-Clone the project
-
-```bash
-  git clone https://github.com/LibrotekaISPC2023/Libroteka.git
-``` 
-
-Go to the project directory
-
-```bash
-  cd Frontend
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Go back and Start the Docker Compose
-
-```bash
-  cd ..
-```
-```bash
-  sudo docker compose up --build
-```
-</td>
-</tr>
-</table>
-<table>
+5. Abrir la aplicación en http://localhost:4200/
 
