@@ -87,6 +87,9 @@
         </div>
     
         <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+        <div *ngIf="addedMessages.has(book.id_Book)" class="success-message">
+          {{ addedMessages.get(book.id_Book) }}
+        </div>
       </div>
     </div>
 
