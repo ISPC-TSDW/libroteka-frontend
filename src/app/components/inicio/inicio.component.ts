@@ -22,6 +22,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
   filteredBooks: Book[] = [];
   nuevosLanzamientos: Book[] = [];
   selectedFilter: string = 'todos';
+  addedMessages: Map<number, string> = new Map();
 
   constructor(
     private bookService: BookService,
@@ -39,17 +40,19 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   loadBooks(): void {
-    this.bookService.getBooks().subscribe({
-      next: (data) => {
-        this.books = data;
-        this.filteredBooks = data;
-        this.nuevosLanzamientos = data.filter((b:any) => b.is_new);
-      },
-      error: (err) => {
-        console.error('Error cargando libros', err);
-      }
-    });
-  }
+  this.bookService.getBooks().subscribe({
+    next: (data) => {
+      this.books = data;
+      this.filteredBooks = data;
+
+      const currentYear = new Date().getFullYear();
+      this.nuevosLanzamientos = data.filter((book: any) => book.year >= 2020);
+    },
+    error: (err) => {
+      console.error('Error cargando libros', err);
+    }
+  });
+}
 
   applyFilter(filter: string): void {
     this.selectedFilter = filter;
@@ -90,7 +93,12 @@ export class InicioComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addToCart(book: Book): void {
-    this.cartService.addCartItem(book);
-  }
+addToCart(book: Book): void {
+  this.cartService.addCartItem(book);
+  this.addedMessages.set(book.id_Book, `"${book.title}" agregado con éxito`);
+  setTimeout(() => {
+    this.addedMessages.delete(book.id_Book);
+  }, 3000);
+}
+
 }
