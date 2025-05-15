@@ -56,12 +56,12 @@ export class LoginComponent {
               if (this.authService.hasRole(2)) {
                 this.router.navigate(['/admin/books']);
               } else {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/inicio']);
               }
             },
             (error) => {
               console.error('Error fetching user details:', error);
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/inicio']);
             }
           );
         },
