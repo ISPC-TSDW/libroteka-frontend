@@ -46,9 +46,23 @@ export class CreateComponent {
     const hasSpecialChar = /[@$!%*?&/#\-_.]/.test(value);
     const isValidLength = value.length >= 12;
 
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isValidLength;
+    if (!isValidLength) {
+      return { strongPassword: true };
+    }
+    if (!hasUpperCase) {
+      return { strongPassword: true };
+    }
+    if (!hasLowerCase) {
+      return { strongPassword: true };
+    }
+    if (!hasNumber) {
+      return { strongPassword: true };
+    }
+    if (!hasSpecialChar) {
+      return { strongPassword: true };
+    }
 
-    return passwordValid ? null : { strongPassword: true };
+    return null;
   }
 
   // Validador para verificar que las contraseñas coincidan
