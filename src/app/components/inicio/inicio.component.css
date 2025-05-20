@@ -171,7 +171,20 @@
     margin-top: 20px;
   }
   
-  .tarjeta-libro {
+  /* .book-card{
+    width: 300px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 16px;
+
+  } */
+
+  /* .tarjeta-libro {
     width: 220px;
     background-color: #fff;
     border-radius: 8px;
@@ -181,13 +194,19 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 16px;
-  }
+  } */
   
-  .tarjeta-libro img {
+  .book-image{
     width: 100%;
     height: 280px;
     object-fit: cover;
+
   }
+  /* .tarjeta-libro img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover; 
+  }*/
   
   .tarjeta-libro h3 {
     font-size: 1.1rem;
@@ -196,9 +215,10 @@
   }
   
   .tarjeta-libro p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #6b7280;
     margin: 4px 0;
+
   }
   
   .tarjeta-libro .precio {
@@ -276,13 +296,18 @@
     text-align: center;
   }
   
-  .book-image {
+  /* .book-image {
     width: 100%;
     border-radius: 10px;
     margin-bottom: 1rem;
-  }
+  } */
   
   .book-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+        
     font-size: 1rem;
     font-weight: bold;
     margin: 0.5rem 0 0.2rem 0;
@@ -327,6 +352,21 @@
   .btn-add:hover {
     background-color: #8b6dfd;
   }
+
+  .btn-resenia{
+    margin-top: 0.5rem;
+    background-color: #a78bfa;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  .btn-resenia:hover{
+    background-color: #8b6dfd;
+  }
+
 
   .ver-todos-container {
     text-align: center;

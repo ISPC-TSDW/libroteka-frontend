@@ -4,6 +4,10 @@ import { RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { CartService } from '../../services/cart.service';
+import { BookDetailsComponent } from '../book-details/book-details.component';
+import { Armchair } from 'lucide-angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-inicio',
@@ -99,6 +103,9 @@ addToCart(book: Book): void {
   setTimeout(() => {
     this.addedMessages.delete(book.id_Book);
   }, 3000);
+
+
+
 }
 
 }

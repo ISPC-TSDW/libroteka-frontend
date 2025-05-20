@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../models/book.model';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -17,4 +18,5 @@ export class BookDetailsComponent {
   closePopup() {
     this.selectedBook = null;
   }
+  
 }

@@ -72,7 +72,7 @@
   
     <div class="book-grid">
       <div class="book-card" *ngFor="let book of filteredBooks">
-        <img [src]="book.image" [alt]="book.title" class="book-image" />
+        <img [src]="book.image" [alt]="book.title" class="book-image"/>
         <h3 class="book-title">{{ book.title }}</h3>
         <p class="book-author">{{ book.id_Author?.name }}</p>
     
@@ -85,8 +85,12 @@
         <div class="price">
           <span class="price-current">${{ book.price }}</span>
         </div>
-    
-        <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+        <div class="btn-div">
+          <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+          <button class="btn-resenia">Ver mas</button>
+          
+        </div>
+        
         <div *ngIf="addedMessages.has(book.id_Book)" class="success-message">
           {{ addedMessages.get(book.id_Book) }}
         </div>
