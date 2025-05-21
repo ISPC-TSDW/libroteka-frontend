@@ -18,6 +18,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'landing', component: LandingComponent },
@@ -33,6 +34,7 @@ export const routes: Routes = [
   { path: 'book/:bookId', component: BookDetailsComponent },
   { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },
   { path: 'not-found', component: NotFoundComponent },
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
+  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
+  { path: 'book-details/:id', component: BookDetailsComponent },
 ];

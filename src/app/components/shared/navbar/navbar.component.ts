@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, DoCheck } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../services/cart.service';
@@ -13,7 +13,7 @@ declare var lucide: any;
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit, AfterViewInit {
+export class NavbarComponent implements OnInit, AfterViewInit, DoCheck {
   cartItemCount: number = 0;
   cartItems: any[] = [];
   isCartVisible: boolean = false;
@@ -49,6 +49,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngDoCheck(): void {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
@@ -66,6 +72,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     this.isCartVisible = !this.isCartVisible;
   }
 }
+
 
 
 

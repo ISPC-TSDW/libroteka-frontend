@@ -29,7 +29,6 @@
     <a class="nav-link carrito-icon" routerLink="/sobre-nosotros">
       <i data-lucide="handshake"></i>
       <span>Sobre Nosotros</span>
-      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
     </a>
 
     <!-- Botón del carrito con dropdown -->
@@ -54,9 +53,15 @@
       </div>
     </div>
 
-    <a class="nav-link" routerLink="/login">
+    <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login">
       <i data-lucide="log-in"></i>
       <span>Login</span>
     </a>
+
+    <a *ngIf="isLoggedIn" class="nav-link" (click)="logout()" style="cursor: pointer;">
+      <i data-lucide="log-out"></i>
+      <span>Logout</span>
+    </a>
+
   </div>
 </nav>

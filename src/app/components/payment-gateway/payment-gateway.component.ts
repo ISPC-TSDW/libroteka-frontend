@@ -7,6 +7,8 @@ import { Book } from '../../models/book.model';
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 
+
+
 @Component({
   selector: 'app-payment-gateway',
   standalone: true,
@@ -49,6 +51,7 @@ export class PaymentGatewayComponent implements OnInit {
     this.showPaymentForm = true;
   }
 
+  
   onPaymentSubmit() {
     this.authService.currentUserEmail().subscribe(email => {
       if (email !== null) {
@@ -74,4 +77,7 @@ export class PaymentGatewayComponent implements OnInit {
       }
     });
   }
+  
+
+  
 }
