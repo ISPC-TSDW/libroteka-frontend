@@ -5,7 +5,6 @@
       <div class="carousel-text">
         <h2>Descubre Nuevos Mundos</h2>
         <p>Las mejores historias te esperan</p>
-        <button>Explorar ahora</button>
       </div>
     </div>
     <div class="carousel-slide">
@@ -13,7 +12,6 @@
       <div class="carousel-text">
         <h2>Los Mejores Autores</h2>
         <p>Encuentra a tus favoritos</p>
-        <button>Descubrir autores</button>
       </div>
     </div>
     <div class="carousel-slide">
@@ -21,7 +19,6 @@
       <div class="carousel-text">
         <h2>Ofertas Especiales</h2>
         <p>Hasta 30% de descuento</p>
-        <button>Ver ofertas</button>
       </div>
     </div>
     <div class="carousel-dots">
@@ -59,15 +56,10 @@
 </section>
 
   
-  <!-- Libros Destacados -->
+  <!-- Libros  -->
   <section class="featured-section">
     <div class="section-header">
-      <h2>Libros Destacados</h2>
-      <div class="filters">
-        <button class="filter" [class.active]="selectedFilter === 'todos'" (click)="applyFilter('todos')">Todos</button>
-        <button class="filter" [class.active]="selectedFilter === 'mas-vendidos'" (click)="applyFilter('mas-vendidos')">Más Vendidos</button>
-        <button class="filter" [class.active]="selectedFilter === 'recomendados'" (click)="applyFilter('recomendados')">Recomendados</button>
-      </div>
+      <h2>Libros</h2>
     </div>
   
     <div class="book-grid">
@@ -105,7 +97,8 @@
   <section class="nuevos-lanzamientos">
     <h2 class="titulo-seccion">Nuevos Lanzamientos</h2>
     <div class="slider-container">
-      <div class="slider" id="slider">
+      <div class="slider" #slider>
+
         <div class="card" *ngFor="let book of nuevosLanzamientos">
           <span class="badge">Nuevo</span>
           <img [src]="book.image" [alt]="book.title" />
@@ -117,8 +110,8 @@
         
       </div>
       <div class="slider-controls">
-        <button (click)="prevSlide()" class="arrow">&#10094;</button>
-        <button (click)="nextSlide()" class="arrow">&#10095;</button>
+        <button (click)="prevNuevosSlide()" class="arrow">&#10094;</button>
+        <button (click)="nextNuevosSlide()" class="arrow">&#10095;</button>
       </div>
     </div>
   </section>
