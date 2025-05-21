@@ -490,4 +490,71 @@
     color: #5a189a;
   }
   
-  
+  /* Contenedor del slider */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Slider horizontal */
+.slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+/* Ocultar barra de scroll (opcional) */
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tarjetas dentro del slider */
+.slider .card {
+  min-width: 200px;
+  max-width: 200px;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Imagen del libro */
+.slider .card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+/* Controles del slider */
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.slider-controls .arrow {
+  pointer-events: all;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.slider-controls .arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
