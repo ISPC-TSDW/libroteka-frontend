@@ -20,7 +20,8 @@ export interface Order {
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = `${environment.apiUrl}api/orders/`;
+  private apiUrl = `${environment.apiUrl}/api/orders/`;
+  
 
   constructor(private http: HttpClient) {}
 
@@ -35,5 +36,9 @@ export class OrderService {
         books: JSON.parse(order.books)
       })))
     );
+  }
+
+  createMercadoPagoPreference(items: any[]): Observable<any> {
+  return this.http.post(`${environment.apiUrl}/api/mercadopago/preference/`, { items }, { withCredentials: true });
   }
 }
