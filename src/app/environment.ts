@@ -9,5 +9,6 @@ export const environment = {
         } else {
             return 'http://localhost:8000';
         }
-    })()
+    })(),
+    mercadoPagoPublicKey: 'TEST-badf7b33-4f55-4f9e-b225-bc48f7552ab5'
 };
