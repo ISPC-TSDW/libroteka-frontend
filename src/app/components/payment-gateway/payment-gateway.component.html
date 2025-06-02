@@ -48,7 +48,7 @@
               [(ngModel)]="addressDetails.address"
               name="address"
               required
-           #address="ngModel"
+              #address="ngModel"
             />
             <div *ngIf="form.submitted && address.invalid">
               <small>La dirección es obligatoria.</small>
@@ -71,8 +71,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary mt-3">Siguiente</button>
-          <button type="button">Atrás</button>
+          <button type="submit" class="btn btn-primary mt-3" [disabled]="form.invalid">Siguiente</button>
         </form>
       </div>
     </div>
@@ -103,7 +102,7 @@
       </div>
 
       <div class="col-md-6">
-        <form (ngSubmit)="onPaymentSubmit()">
+        <form #paymentForm="ngForm" (ngSubmit)="onPaymentSubmit()">
           <div class="form-group">
             <label for="cardNumber">Tarjeta de crédito</label>
             <input
@@ -113,10 +112,16 @@
               name="cardNumber"
               pattern="^[0-9]{16}$"
               required
+              #cardNumber="ngModel"
             />
+            <div *ngIf="paymentForm.submitted && cardNumber.invalid">
+              <small *ngIf="cardNumber.errors?.['required']">El número de tarjeta es obligatorio.</small>
+              <small *ngIf="cardNumber.errors?.['pattern']">Debe tener 16 dígitos numéricos.</small>
+            </div>
+            
           </div>
           <div class="form-group">
-            <label for="expiryDate">Fecha de expiración</label>
+            <label for="expiryDate">Fecha de expiración (MM/AA)</label>
             <input
               type="text"
               id="expiryDate"
@@ -124,7 +129,12 @@
               name="expiryDate"
               pattern="^(0[1-9]|1[0-2])\/\d{2}$"
               required
+              #expiryDate="ngModel"
             />
+            <div *ngIf="paymentForm.submitted && expiryDate.invalid">
+              <small *ngIf="expiryDate.errors?.['required']">La fecha de expiración es obligatoria.</small>
+              <small *ngIf="expiryDate.errors?.['pattern']">Formato inválido. Use MM/AA.</small>
+            </div>
           </div>
           <div class="form-group">
             <label for="cvv">CVV</label>
@@ -135,7 +145,12 @@
               name="cvv"
               required
               pattern="^[0-9]{3,4}$"
+              #cvv="ngModel"
             />
+            <div *ngIf="paymentForm.submitted && cvv.invalid">
+              <small *ngIf="cvv.errors?.['required']">El CVV es obligatorio.</small>
+              <small *ngIf="cvv.errors?.['pattern']">Debe tener 3 o 4 dígitos numéricos.</small>
+            </div>
           </div>
           <div class="form-group">
             <label for="cardHolderName">Titular de la tarjeta</label>
@@ -145,13 +160,44 @@
               [(ngModel)]="paymentDetails.cardHolderName"
               name="cardHolderName"
               required
+              pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}$"
+              #cardHolderName="ngModel"
             />
-            <button  type="submit" class="btn btn-primary mt-3">
-              Realizar pago
-            </button>
-           
+            <div *ngIf="paymentForm.submitted && cardHolderName.invalid">
+              <small *ngIf="cardHolderName.errors?.['required']">El titular de la tarjeta es obligatorio.</small>
+              <small *ngIf="cardHolderName.errors?.['pattern']">Formato inválido. Use solo letras.</small>
+            </div>
           </div>
+          <div class="form-group">
+            <label for="dni">DNI</label>
+            <input
+              type="text"
+              id="dni"
+              [(ngModel)]="paymentDetails.dni"
+              name="dni"
+              required
+              pattern="^[0-9]{7,10}$"
+              #dni="ngModel"
+            />
+            <div *ngIf="paymentForm.submitted && dni.invalid">
+              <small *ngIf="dni.errors?.['required']">El DNI es obligatorio.</small>
+              <small *ngIf="dni.errors?.['pattern']">Debe tener entre 7 y 10 dígitos numéricos.</small>
+            </div>
+          </div>
+          <button type="button">Atrás</button>
+
+          <button  type="submit" class="btn btn-primary mt-3" [disabled]="paymentForm.invalid">
+            Realizar pago
+          </button>
+          
+         
         </form>
+        <div class="mt-3">
+          <div class="cho-container"></div>
+          <button type="button" class="btn btn-success" (click)="onMercadoPagoPay()">
+            Pagar con Mercado Pago
+          </button>
+        </div>
       </div>
     </div>
   </div>
