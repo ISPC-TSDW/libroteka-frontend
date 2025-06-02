@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <form (ngSubmit)="onAddressSubmit()">
+        <form #form="ngForm" (ngSubmit)="onAddressSubmit(form)">
           <div class="form-group">
             <label for="city">Ciudad</label>
             <input
@@ -32,7 +32,13 @@
               [(ngModel)]="addressDetails.city"
               name="city"
               required
+              pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}$"
+              #city="ngModel"
             />
+            <div *ngIf="form.submitted && city.invalid">
+              <small *ngIf="city.errors?.['required']">Ciudad es obligatoria.</small>
+              <small *ngIf="city.errors?.['pattern']">Ciudad inválida.</small>
+            </div>
           </div>
           <div class="form-group">
             <label for="address">Dirección</label>
@@ -42,23 +48,31 @@
               [(ngModel)]="addressDetails.address"
               name="address"
               required
+           #address="ngModel"
             />
+            <div *ngIf="form.submitted && address.invalid">
+              <small>La dirección es obligatoria.</small>
+            </div>
           </div>
           <div class="form-group">
             <label for="telephone">Teléfono</label>
             <input
               type="text"
               id="telephone"
-              [(ngModel)]="addressDetails.telephone"
               name="telephone"
+              [(ngModel)]="addressDetails.telephone"
               required
+              pattern="^[0-9]{10}$"
+              #telephone="ngModel"
             />
-            <button type="submit" class="btn btn-primary mt-3">
-              Siguiente
-            </button>
-            <button>Atras</button>
-
+            <div *ngIf="form.submitted && telephone.invalid">
+              <small *ngIf="telephone.errors?.['required']">El teléfono es obligatorio.</small>
+              <small *ngIf="telephone.errors?.['pattern']">Debe tener 10 dígitos numéricos.</small>
+            </div>
           </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Siguiente</button>
+          <button type="button">Atrás</button>
         </form>
       </div>
     </div>
@@ -97,6 +111,7 @@
               id="cardNumber"
               [(ngModel)]="paymentDetails.cardNumber"
               name="cardNumber"
+              pattern="^[0-9]{16}$"
               required
             />
           </div>
@@ -107,6 +122,7 @@
               id="expiryDate"
               [(ngModel)]="paymentDetails.expiryDate"
               name="expiryDate"
+              pattern="^(0[1-9]|1[0-2])\/\d{2}$"
               required
             />
           </div>
@@ -118,6 +134,7 @@
               [(ngModel)]="paymentDetails.cvv"
               name="cvv"
               required
+              pattern="^[0-9]{3,4}$"
             />
           </div>
           <div class="form-group">
