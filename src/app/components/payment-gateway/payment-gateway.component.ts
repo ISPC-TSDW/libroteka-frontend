@@ -4,15 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { Book } from '../../models/book.model';
-import { OrderService } from '../../services/order.service';
+import { OrderService, Order } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
-
 
 
 @Component({
   selector: 'app-payment-gateway',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './payment-gateway.component.html',
   styleUrls: ['./payment-gateway.component.css']
 })
@@ -47,35 +46,46 @@ export class PaymentGatewayComponent implements OnInit {
     return this.cartItems.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
   }
 
-  onAddressSubmit() {
+  onAddressSubmit(form: any) {
+    if (!form.valid){
+      return;
+    }
     this.showPaymentForm = true;
   }
 
   
   onPaymentSubmit() {
     this.authService.currentUserEmail().subscribe(email => {
-      if (email !== null) {
-        const validCart = this.cartItems.map(({ quantity, ...validProps }) => validProps);
-        const orderData = {
-          id_User: email,
-          id_Order_Status: 4,
-          date: new Date(),
-          books: JSON.stringify(validCart),
-          total: this.totalAmount,
-          books_amount: this.cartItems.reduce((total, item) => total + (item.quantity || 1), 0)
-        };
+      console.log('Email obtenido:', email);
+      if (!email)  {
+      console.error('Email is null, order not created');
+      alert('Error: no se detectó el usuario.');
+      return;
+    }
 
-        this.orderService.createOrder(orderData).subscribe(response => {
-          console.log('Order created successfully:', response);
-          this.cartService.clearCart();
-          this.router.navigate(['/dashboard']);
-        }, error => {
-          console.error('Error creating order:', error);
-        });
-      } else {
-        console.error('Error: Email is null, order not created');
+    const validCart = this.cartItems.map(({ quantity, ...props }) => props);
+    const orderData = {
+      id_User: email, // debe existir en UsersLibroteka
+      id_Order_Status: 1, // ID de "Pendiente", por ejemplo
+      date: new Date(),
+      books: validCart, // sin stringify
+      total: this.totalAmount,
+      books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0)
+    };
+
+    console.log("Order payload:", orderData);
+
+    this.orderService.createOrder(orderData).subscribe({
+      next: res => {
+        console.log('Order created successfully:', res);
+        this.cartService.clearCart();
+        this.router.navigate(['/dashboard']);
+      },
+      error: err => {
+        console.error('Error creating order:', err);
       }
     });
+  });
   }
   
 
