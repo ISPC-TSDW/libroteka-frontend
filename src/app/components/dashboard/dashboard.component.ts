@@ -12,11 +12,16 @@ import { OrderService, Order } from '../../services/order.service';
 export class DashboardComponent implements OnInit {
   recentPurchases: Order[] = [];
   shipmentStatus: any[] = [];
+  userOrders: Order[] = [];
 
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
     this.loadOrders();
+    this.orderService.getOrders().subscribe({
+      next: (orders) => (this.userOrders = orders),
+      error: (err) => (this.userOrders = []),
+    });
   }
 
   loadOrders(): void {
@@ -38,8 +43,11 @@ export class DashboardComponent implements OnInit {
         return 'Pendiente';
       case 2:
         return 'Pagado';
+      case 3:
+        return 'Cancelado';
+
       case 4:
-        return 'Preparando';
+        return 'En preparación';
       case 5:
         return 'Enviado';
       case 6:

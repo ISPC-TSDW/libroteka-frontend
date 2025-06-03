@@ -38,6 +38,8 @@ export class PaymentGatewayComponent implements OnInit {
   totalAmount: number = 0;
   showPaymentForm: boolean = false;
   mp: any;
+  paymentMessage: string = '';
+  paymentSuccess: boolean = false;
 
   constructor(private router: Router, private cartService: CartService, private orderService: OrderService, private authService: AuthService) { }
 
@@ -92,13 +94,14 @@ export class PaymentGatewayComponent implements OnInit {
 
   this.orderService.createOrder(orderData).subscribe({
     next: res => {
-      console.log('Order created successfully:', res);
+      this.paymentMessage = '¡Pago realizado con éxito!';
+      this.paymentSuccess = true;
       this.cartService.clearCart();
       this.router.navigate(['/dashboard']);
     },
     error: err => {
-      console.error('Error creating order:', err);
-      alert('Error al crear la orden');
+      this.paymentMessage = 'Ocurrió un error al procesar el pago.';
+      this.paymentSuccess = false;
     }
   });
 }
@@ -107,9 +110,9 @@ export class PaymentGatewayComponent implements OnInit {
 onMercadoPagoPay() {
   const items = this.cartItems.map(item => ({
     title: item.title,
-    quantity: item.quantity || 1,
+    quantity: Number(item.quantity || 1),
     currency_id: "ARS",
-    unit_price: item.price
+    unit_price: Number(item.price)
   }));
   this.orderService.createMercadoPagoPreference(items).subscribe((res: any) => {
     this.mp.checkout({
@@ -126,5 +129,23 @@ onMercadoPagoPay() {
   });
 }
 
-  
+cleanNumberField(field: keyof typeof this.paymentDetails) {
+  this.paymentDetails[field] = this.paymentDetails[field].replace(/[^0-9]/g, '');
+}
+cleanAddressNumberField(field: keyof typeof this.addressDetails) {
+  this.addressDetails[field] = this.addressDetails[field].replace(/[^0-9]/g, '');
+}
+cleanLetterField(field: keyof typeof this.paymentDetails) {
+  this.paymentDetails[field] = this.paymentDetails[field].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+}
+cleanCityField() {
+  this.addressDetails.city = this.addressDetails.city.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+}
+formatExpiryDate() {
+  let value = this.paymentDetails.expiryDate.replace(/[^0-9]/g, '');
+  if (value.length > 2) {
+    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+  }
+  this.paymentDetails.expiryDate = value.slice(0, 5);
+}
 }

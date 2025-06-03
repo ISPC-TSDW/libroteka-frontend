@@ -20,7 +20,6 @@ export class SuccessComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Recupera los datos del carrito y envío (puedes guardarlos en localStorage antes de abrir MP)
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     this.addressDetails = JSON.parse(localStorage.getItem('addressDetails') || '{}');
     this.totalAmount = Number(localStorage.getItem('totalAmount') || 0);
@@ -39,7 +38,6 @@ export class SuccessComponent implements OnInit {
     this.orderService.createOrder(orderData).subscribe({
       next: res => {
         this.cartService.clearCart();
-        // Limpia localStorage si lo usaste
         localStorage.removeItem('cartItems');
         localStorage.removeItem('addressDetails');
         localStorage.removeItem('totalAmount');
@@ -53,10 +51,8 @@ export class SuccessComponent implements OnInit {
   }
 
   onMercadoPagoPay() {
-    // ...código para abrir MP...
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     localStorage.setItem('addressDetails', JSON.stringify(this.addressDetails));
     localStorage.setItem('totalAmount', this.totalAmount.toString());
-    // ...abrir MP...
   }
 }

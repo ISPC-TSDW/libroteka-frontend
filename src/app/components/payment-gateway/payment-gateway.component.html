@@ -34,8 +34,12 @@
               required
               pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}$"
               #city="ngModel"
+              aria-label="Ciudad"
+              [attr.aria-invalid]="city.invalid && (city.dirty || city.touched)"
+              aria-describedby="cityHelp"
+              (input)="cleanCityField()"
             />
-            <div *ngIf="form.submitted && city.invalid">
+            <div *ngIf="city.invalid && (city.dirty || city.touched)" id="cityHelp" class="text-danger" role="alert">
               <small *ngIf="city.errors?.['required']">Ciudad es obligatoria.</small>
               <small *ngIf="city.errors?.['pattern']">Ciudad inválida.</small>
             </div>
@@ -49,8 +53,11 @@
               name="address"
               required
               #address="ngModel"
+              aria-label="Dirección"
+              [attr.aria-invalid]="address.invalid && (address.dirty || address.touched)"
+              aria-describedby="addressHelp"
             />
-            <div *ngIf="form.submitted && address.invalid">
+            <div *ngIf="address.invalid && (address.dirty || address.touched)" id="addressHelp" class="text-danger" role="alert">
               <small>La dirección es obligatoria.</small>
             </div>
           </div>
@@ -64,13 +71,19 @@
               required
               pattern="^[0-9]{10}$"
               #telephone="ngModel"
+              inputmode="numeric"
+              maxlength="10"
+              aria-label="Teléfono, 10 dígitos numéricos"
+              autocomplete="tel"
+              (input)="cleanAddressNumberField('telephone')"
+              [attr.aria-invalid]="telephone.invalid && (telephone.dirty || telephone.touched)"
+              aria-describedby="telefonoHelp"
             />
-            <div *ngIf="form.submitted && telephone.invalid">
+            <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" id="telefonoHelp" class="text-danger" role="alert">
               <small *ngIf="telephone.errors?.['required']">El teléfono es obligatorio.</small>
               <small *ngIf="telephone.errors?.['pattern']">Debe tener 10 dígitos numéricos.</small>
             </div>
           </div>
-
           <button type="submit" class="btn btn-primary mt-3" [disabled]="form.invalid">Siguiente</button>
         </form>
       </div>
@@ -102,6 +115,7 @@
       </div>
 
       <div class="col-md-6">
+        <!-- Formulario de pago -->
         <form #paymentForm="ngForm" (ngSubmit)="onPaymentSubmit()">
           <div class="form-group">
             <label for="cardNumber">Tarjeta de crédito</label>
@@ -113,12 +127,17 @@
               pattern="^[0-9]{16}$"
               required
               #cardNumber="ngModel"
+              inputmode="numeric"
+              maxlength="16"
+              (input)="cleanNumberField('cardNumber')"
+              aria-label="Número de tarjeta"
+              [attr.aria-invalid]="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)"
+              aria-describedby="cardNumberHelp"
             />
-            <div *ngIf="paymentForm.submitted && cardNumber.invalid">
+            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" id="cardNumberHelp" class="text-danger" role="alert">
               <small *ngIf="cardNumber.errors?.['required']">El número de tarjeta es obligatorio.</small>
               <small *ngIf="cardNumber.errors?.['pattern']">Debe tener 16 dígitos numéricos.</small>
             </div>
-            
           </div>
           <div class="form-group">
             <label for="expiryDate">Fecha de expiración (MM/AA)</label>
@@ -130,8 +149,13 @@
               pattern="^(0[1-9]|1[0-2])\/\d{2}$"
               required
               #expiryDate="ngModel"
+              maxlength="5"
+              (input)="formatExpiryDate()"
+              aria-label="Fecha de expiración"
+              [attr.aria-invalid]="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)"
+              aria-describedby="expiryDateHelp"
             />
-            <div *ngIf="paymentForm.submitted && expiryDate.invalid">
+            <div *ngIf="expiryDate.invalid && (expiryDate.dirty || expiryDate.touched)" id="expiryDateHelp" class="text-danger" role="alert">
               <small *ngIf="expiryDate.errors?.['required']">La fecha de expiración es obligatoria.</small>
               <small *ngIf="expiryDate.errors?.['pattern']">Formato inválido. Use MM/AA.</small>
             </div>
@@ -146,8 +170,14 @@
               required
               pattern="^[0-9]{3,4}$"
               #cvv="ngModel"
+              inputmode="numeric"
+              maxlength="4"
+              (input)="cleanNumberField('cvv')"
+              aria-label="CVV"
+              [attr.aria-invalid]="cvv.invalid && (cvv.dirty || cvv.touched)"
+              aria-describedby="cvvHelp"
             />
-            <div *ngIf="paymentForm.submitted && cvv.invalid">
+            <div *ngIf="cvv.invalid && (cvv.dirty || cvv.touched)" id="cvvHelp" class="text-danger" role="alert">
               <small *ngIf="cvv.errors?.['required']">El CVV es obligatorio.</small>
               <small *ngIf="cvv.errors?.['pattern']">Debe tener 3 o 4 dígitos numéricos.</small>
             </div>
@@ -162,8 +192,12 @@
               required
               pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{2,50}$"
               #cardHolderName="ngModel"
+              aria-label="Titular de la tarjeta"
+              [attr.aria-invalid]="cardHolderName.invalid && (cardHolderName.dirty || cardHolderName.touched)"
+              aria-describedby="cardHolderNameHelp"
+              (input)="cleanLetterField('cardHolderName')"
             />
-            <div *ngIf="paymentForm.submitted && cardHolderName.invalid">
+            <div *ngIf="cardHolderName.invalid && (cardHolderName.dirty || cardHolderName.touched)" id="cardHolderNameHelp" class="text-danger" role="alert">
               <small *ngIf="cardHolderName.errors?.['required']">El titular de la tarjeta es obligatorio.</small>
               <small *ngIf="cardHolderName.errors?.['pattern']">Formato inválido. Use solo letras.</small>
             </div>
@@ -178,19 +212,22 @@
               required
               pattern="^[0-9]{7,10}$"
               #dni="ngModel"
+              inputmode="numeric"
+              maxlength="10"
+              (input)="cleanNumberField('dni')"
+              aria-label="DNI"
+              [attr.aria-invalid]="dni.invalid && (dni.dirty || dni.touched)"
+              aria-describedby="dniHelp"
             />
-            <div *ngIf="paymentForm.submitted && dni.invalid">
+            <div *ngIf="dni.invalid && (dni.dirty || dni.touched)" id="dniHelp" class="text-danger" role="alert">
               <small *ngIf="dni.errors?.['required']">El DNI es obligatorio.</small>
               <small *ngIf="dni.errors?.['pattern']">Debe tener entre 7 y 10 dígitos numéricos.</small>
             </div>
           </div>
-          <button type="button">Atrás</button>
-
-          <button  type="submit" class="btn btn-primary mt-3" [disabled]="paymentForm.invalid">
+          <button type="button" class="btn btn-secondary" (click)="showPaymentForm = false">Atrás</button>
+          <button type="submit" class="btn btn-primary mt-3" [disabled]="paymentForm.invalid">
             Realizar pago
           </button>
-          
-         
         </form>
         <div class="mt-3">
           <div class="cho-container"></div>
@@ -200,5 +237,9 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="paymentMessage" [ngClass]="{'text-success': paymentSuccess, 'text-danger': !paymentSuccess}" role="alert" class="mt-3">
+    {{ paymentMessage }}
   </div>
 </div>

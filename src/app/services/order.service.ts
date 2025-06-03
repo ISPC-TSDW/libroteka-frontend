@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-//import { Book } from './cart.service';
 import { Book } from '../models/book.model';
 import { environment } from '../environment';
 
@@ -11,7 +10,7 @@ export interface Order {
   id_User: string;
   id_Order_Status: number;
   date: Date;
-  books: any;
+  books: Book[];
   total: number;
   books_amount: number;
 }
@@ -33,7 +32,7 @@ export class OrderService {
     return this.http.get<Order[]>(this.apiUrl).pipe(
       map(orders => orders.map(order => ({
         ...order,
-        books: JSON.parse(order.books)
+        books: typeof order.books === 'string' ? JSON.parse(order.books) : order.books
       })))
     );
   }
