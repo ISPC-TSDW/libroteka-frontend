@@ -4,3 +4,8 @@
 .ng-invalid:not(form).ng-touched {
   border-left: 5px solid #a94442; /* red */
 }
+.eye-icon {
+  vertical-align: middle;
+  width: 28px;
+  height: 28px;
+}
