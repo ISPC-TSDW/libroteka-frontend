@@ -24,6 +24,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   selectedFilter: string = 'todos';
   addedMessages: Map<number, string> = new Map();
 
+  // Modal
+  selectedBook: Book | null = null;
+
   // Referencia al carrusel horizontal de lanzamientos
   @ViewChild('slider') slider!: ElementRef;
 
@@ -88,5 +91,15 @@ export class InicioComponent implements OnInit, AfterViewInit {
     if (this.slider?.nativeElement) {
       this.slider.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
     }
+  }
+
+  // abrir modal
+  openModal(book: Book): void {
+    this.selectedBook = book;
+  }
+
+  // cerrar modal
+  closeModal(): void {
+    this.selectedBook = null;
   }
 }
