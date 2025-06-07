@@ -7,6 +7,8 @@ import { Book } from '../../models/book.model';
 import { OrderService, Order } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../environment';
+import { AuthorService, Author } from '../../services/author.service'; // Asegúrate de tener este servicio
+
 
 declare var MercadoPago: any;
 
@@ -40,14 +42,26 @@ export class PaymentGatewayComponent implements OnInit {
   mp: any;
   paymentMessage: string = '';
   paymentSuccess: boolean = false;
+  authors: Author[] = [];
 
-  constructor(private router: Router, private cartService: CartService, private orderService: OrderService, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private orderService: OrderService,
+    private authService: AuthService,
+    private authorService: AuthorService
+  ) { }
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(cartItems => {
       this.cartItems = cartItems;
       this.totalAmount = this.calculateTotal();
     });
+
+    this.authorService.getAuthors().subscribe(authors => {
+      this.authors = authors;
+    });
+
     this.authService.getCurrentUser().subscribe({
       next: user => this.userEmail = user.email,
       error: err => {
@@ -147,5 +161,11 @@ formatExpiryDate() {
     value = value.slice(0, 2) + '/' + value.slice(2, 4);
   }
   this.paymentDetails.expiryDate = value.slice(0, 5);
+}
+
+getAuthorName(author: Author | number | null): string {
+  if (!author) return 'Autor desconocido';
+  if (typeof author === 'object' && 'name' in author) return author.name;
+  return this.authors.find(a => a.id_Author === author)?.name || 'Autor desconocido';
 }
 }

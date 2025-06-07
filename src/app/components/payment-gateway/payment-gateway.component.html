@@ -7,7 +7,7 @@
           <h5>Detalle de la compra</h5>
           <div *ngFor="let item of cartItems" class="cart-item">
             <div class="cart-item-title">
-              {{ item.title + " - " + item.id_Author?.name }}
+              {{ item.title + " - " + getAuthorName(item.id_Author) }}
             </div>
             <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
             <div class="cart-item-price">
@@ -98,7 +98,7 @@
           <h5>Detalle de la compra</h5>
           <div *ngFor="let item of cartItems" class="cart-item">
             <div class="cart-item-title">
-              {{ item.title + " - " + item.id_Author?.name }}
+              {{ item.title + " - " + getAuthorName(item.id_Author) }}
             </div>
             <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
             <div class="cart-item-price">
