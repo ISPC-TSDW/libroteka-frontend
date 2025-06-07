@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal-backdrop" *ngIf="selectedBook">
+<app-book-details *ngIf="selectedBook" [selectedBook]="selectedBook" (close)="closeModal()">
   <div class="modal">
     <h2>{{ selectedBook.title }}</h2>
     <p><strong>Autor:</strong> {{ selectedBook.id_Author?.name }}</p>
@@ -7,7 +7,8 @@
     <p><strong>Precio:</strong> ${{ selectedBook.price }}</p>
     <button (click)="closeModal()">Cerrar</button>
   </div>
-</div>
+</app-book-details>
+
 
 
 <!-- Carrousel -->
@@ -92,6 +93,7 @@
         <div class="btn-div">
           <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
           <button class="btn-resenia" (click)="openModal(book)">Ver más</button>
+
 
           
         </div>

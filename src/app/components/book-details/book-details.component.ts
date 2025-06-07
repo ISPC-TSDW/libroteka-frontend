@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../models/book.model';
 import { ActivatedRoute } from '@angular/router';
@@ -14,9 +14,9 @@ import { ActivatedRoute } from '@angular/router';
 export class BookDetailsComponent {
   
   @Input() selectedBook: Book | null = null;
+  @Output() close = new EventEmitter<void>();
   
   closePopup() {
-    this.selectedBook = null;
+    this.close.emit();
   }
-  
 }

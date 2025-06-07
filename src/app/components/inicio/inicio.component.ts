@@ -4,11 +4,13 @@ import { RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { CartService } from '../../services/cart.service';
+import { BookDetailsComponent } from '../book-details/book-details.component';
+
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BookDetailsComponent],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
