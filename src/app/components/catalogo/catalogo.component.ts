@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { GenreService, Genre } from '../../services/genre.service';
+import { CategoryService } from '../../services/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-catalogo',
@@ -11,30 +13,55 @@ import { GenreService, Genre } from '../../services/genre.service';
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css'
 })
-export class CatalogoComponent implements OnInit {
+export class CatalogoComponent implements OnInit, OnDestroy {
   books: Book[] = [];
   filteredBooks: Book[] = [];
   genres: Genre[] = [];
   selectedCategory: string = 'todo';
   loading: boolean = false;
+  private categorySubscription: Subscription;
+  private booksLoaded: boolean = false;
 
   constructor(
     private bookService: BookService,
-    private genreService: GenreService
-  ) {}
+    private genreService: GenreService,
+    private categoryService: CategoryService
+  ) {
+    this.categorySubscription = this.categoryService.selectedCategory$.subscribe(category => {
+      if (category && this.booksLoaded) {
+        this.filterByCategory(category);
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadBooks();
     this.loadGenres();
   }
 
+  ngOnDestroy() {
+    if (this.categorySubscription) {
+      this.categorySubscription.unsubscribe();
+    }
+  }
+
   loadBooks() {
     this.loading = true;
+    this.booksLoaded = false;
     this.bookService.getBooks().subscribe({
       next: (books) => {
         this.books = books;
         this.filteredBooks = books;
         this.loading = false;
+        this.booksLoaded = true;
+        
+        // Una vez que los libros están cargados, aplicamos el filtro si hay una categoría seleccionada
+        const savedCategory = this.categoryService.getCategory();
+        if (savedCategory) {
+          setTimeout(() => {
+            this.filterByCategory(savedCategory);
+          }, 500); // Esperamos medio segundo para asegurar que todo esté listo
+        }
       },
       error: (error) => {
         console.error('Error al cargar los libros:', error);
