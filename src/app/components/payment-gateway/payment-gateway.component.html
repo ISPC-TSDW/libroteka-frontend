@@ -242,4 +242,8 @@
   <div *ngIf="paymentMessage" [ngClass]="{'text-success': paymentSuccess, 'text-danger': !paymentSuccess}" role="alert" class="mt-3">
     {{ paymentMessage }}
   </div>
+
+  <div class="alert alert-success text-center mt-5" *ngIf="paymentSuccess && paymentMessage">
+    ¡Pago realizado con éxito! Serás redirigido a tu panel en unos segundos...
+  </div>
 </div>

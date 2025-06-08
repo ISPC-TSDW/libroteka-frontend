@@ -15,7 +15,7 @@
                 Fecha: {{ order.date | date:'short' }}
                 <ul class="list-group" style="padding: 5%">
                   <li *ngFor="let book of order.books">
-                    {{ book.title }} {{ book.quantity }}
+                    {{ getBookTitle(book.id_Book) }} (x{{ book.quantity || 1 }})
                   </li>
                 </ul>
                 <span>Total: {{ order.total | currency }}</span>

@@ -32,7 +32,9 @@
     </a>
 
     <!-- Botón del carrito con dropdown -->
-    <div class="cart-container">
+    <div class="cart-container"
+         (mouseenter)="showCartDropdown()"
+         (mouseleave)="hideCartDropdown()">
       <button class="nav-link carrito-icon" (click)="toggleCart()">
         <i data-lucide="shopping-cart"></i>
         <span>Carrito</span>

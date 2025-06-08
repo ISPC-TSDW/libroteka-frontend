@@ -37,7 +37,7 @@ export class OrderService {
     );
   }
 
-  createMercadoPagoPreference(items: any[]): Observable<any> {
-  return this.http.post(`${environment.apiUrl}/api/mercadopago/preference/`, { items }, { withCredentials: true });
-  }
+  createMercadoPagoPreference(payload: any): Observable<any> {
+  return this.http.post(`${environment.apiUrl}/api/mercadopago/preference/`, payload, { withCredentials: true });
+}
 }

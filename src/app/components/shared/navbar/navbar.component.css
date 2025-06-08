@@ -89,6 +89,7 @@ i {
 
 .cart-container {
   position: relative;
+  display: inline-block;
 }
 
 .carrito-dropdown {
@@ -137,21 +138,27 @@ button.btn {
 }
 
 .btn-danger {
-  background-color: #d32f2f;
-  color: white;
+  background-color: #ffe0f7;   /* Rosa pastel, suave y visible */
+  color: #b5179e;              /* Violeta fuerte para el texto */
+  border: 1px solid #f3c4fb;
   margin-bottom: 0.5rem;
+  transition: background 0.2s, color 0.2s;
 }
 
 .btn-danger:hover {
-  background-color: #b71c1c;
+  background-color: #f3c4fb;   /* Violeta pastel al pasar el mouse */
+  color: #7b2cbf;
 }
 
 .btn-success {
-  background-color: #388e3c;
-  color: white;
+  background-color: #e0f7fa;   /* Celeste pastel, amigable y accesible */
+  color: #00707a;              /* Azul verdoso para el texto */
+  border: 1px solid #b2ebf2;
+  transition: background 0.2s, color 0.2s;
 }
 
 .btn-success:hover {
-  background-color: #2e7d32;
+  background-color: #b2ebf2;   /* Celeste un poco más intenso */
+  color: #005662;
 }
 

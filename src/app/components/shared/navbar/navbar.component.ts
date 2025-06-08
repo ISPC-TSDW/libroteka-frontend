@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, DoCheck {
   cartItemCount: number = 0;
   cartItems: any[] = [];
   isCartVisible: boolean = false;
+  cartDropdownTimeout: any;
   isLoggedIn = false;
   userEmail: string | null = '';
 
@@ -66,6 +67,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, DoCheck {
 
   proceedToCheckout(): void {
     this.router.navigate(['/pagos']);
+  }
+
+  showCartDropdown(): void {
+    clearTimeout(this.cartDropdownTimeout);
+    this.isCartVisible = true;
+  }
+
+  hideCartDropdown(): void {
+    this.cartDropdownTimeout = setTimeout(() => {
+      this.isCartVisible = false;
+    }, 150); // pequeño delay para evitar parpadeo si el usuario mueve rápido el mouse
   }
 
   toggleCart(): void {
