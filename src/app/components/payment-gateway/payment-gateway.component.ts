@@ -7,6 +7,8 @@ import { Book } from '../../models/book.model';
 import { OrderService, Order } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../environment';
+import { AuthorService, Author } from '../../services/author.service'; // Asegúrate de tener este servicio
+
 
 declare var MercadoPago: any;
 
@@ -40,14 +42,26 @@ export class PaymentGatewayComponent implements OnInit {
   mp: any;
   paymentMessage: string = '';
   paymentSuccess: boolean = false;
+  authors: Author[] = [];
 
-  constructor(private router: Router, private cartService: CartService, private orderService: OrderService, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private orderService: OrderService,
+    private authService: AuthService,
+    private authorService: AuthorService
+  ) { }
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe(cartItems => {
       this.cartItems = cartItems;
       this.totalAmount = this.calculateTotal();
     });
+
+    this.authorService.getAuthors().subscribe(authors => {
+      this.authors = authors;
+    });
+
     this.authService.getCurrentUser().subscribe({
       next: user => this.userEmail = user.email,
       error: err => {
@@ -108,24 +122,53 @@ export class PaymentGatewayComponent implements OnInit {
 
 
 onMercadoPagoPay() {
+  // 1. Crea la preferencia de Mercado Pago primero
   const items = this.cartItems.map(item => ({
     title: item.title,
     quantity: Number(item.quantity || 1),
     currency_id: "ARS",
     unit_price: Number(item.price)
   }));
-  this.orderService.createMercadoPagoPreference(items).subscribe((res: any) => {
-    this.mp.checkout({
-      preference: { id: res.preference_id },
-      autoOpen: true,
-      render: {
-        container: '.cho-container',
-        label: 'Pagar con Mercado Pago'
-      }
-    });
-  }, error => {
-    alert('Error al iniciar el pago con Mercado Pago');
-    console.error(error);
+
+  this.orderService.createMercadoPagoPreference(items).subscribe({
+    next: (res: any) => {
+      const preferenceId = res.preference_id;
+
+      // 2. Crea la orden en el backend con el preference_id
+      const orderData = {
+        books: this.cartItems,
+        total: this.totalAmount,
+        books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
+        address: this.addressDetails.address,
+        city: this.addressDetails.city,
+        telephone: this.addressDetails.telephone,
+        dni: this.paymentDetails.dni,
+        id_Order_Status: 1, // Pendiente
+        preference_id: preferenceId
+      };
+
+      this.orderService.createOrder(orderData).subscribe({
+        next: () => {
+          // 3. Abre el checkout de Mercado Pago
+          this.mp.checkout({
+            preference: { id: preferenceId },
+            autoOpen: true,
+            render: {
+              container: '.cho-container',
+              label: 'Pagar con Mercado Pago'
+            }
+          });
+        },
+        error: err => {
+          alert('Error al registrar la orden antes de pagar');
+          console.error(err);
+        }
+      });
+    },
+    error: error => {
+      alert('Error al iniciar el pago con Mercado Pago');
+      console.error(error);
+    }
   });
 }
 
@@ -147,5 +190,11 @@ formatExpiryDate() {
     value = value.slice(0, 2) + '/' + value.slice(2, 4);
   }
   this.paymentDetails.expiryDate = value.slice(0, 5);
+}
+
+getAuthorName(author: Author | number | null): string {
+  if (!author) return 'Autor desconocido';
+  if (typeof author === 'object' && 'name' in author) return author.name;
+  return this.authors.find(a => a.id_Author === author)?.name || 'Autor desconocido';
 }
 }
