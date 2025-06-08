@@ -41,12 +41,11 @@
         <div class="quantity">
           <input 
             type="number" 
-            placeholder="1" 
-            value="1" 
+            [(ngModel)]="quantity"
             min="1" 
             class="inputquantity">
         </div>
-        <button class="btntocart">
+        <button class="btntocart" (click)="addToCart()">
           <i class="fa-solid fa-plus"></i>Añadir al carrito
         </button>
       </div>

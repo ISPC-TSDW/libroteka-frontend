@@ -1,15 +1,16 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book.model';
-import { ActivatedRoute } from '@angular/router';
 import { AuthorService, Author } from '../../services/author.service';
 import { GenreService, Genre } from '../../services/genre.service';
 import { EditorialService, Editorial } from '../../services/editorial.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-book-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css'
 })
@@ -21,11 +22,13 @@ export class BookDetailsComponent implements OnInit {
   authors: Author[] = [];
   genres: Genre[] = [];
   editorials: Editorial[] = [];
+  quantity: number = 1;
 
   constructor(
     private authorService: AuthorService,
     private genreService: GenreService,
-    private editorialService: EditorialService
+    private editorialService: EditorialService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -64,5 +67,13 @@ export class BookDetailsComponent implements OnInit {
   
   closePopup() {
     this.close.emit();
+  }
+
+  addToCart() {
+    if (this.selectedBook) {
+      for (let i = 0; i < this.quantity; i++) {
+        this.cartService.addCartItem(this.selectedBook);
+      }
+    }
   }
 }
