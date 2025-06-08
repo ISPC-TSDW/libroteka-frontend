@@ -109,7 +109,15 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   onMercadoPagoPay() {
+    const items = this.cartItems.map(item => ({
+      title: item.title,
+      quantity: item.quantity || 1,
+      currency_id: 'ARS',
+      unit_price: Math.round(item.price * 100) / 100
+    }));
+
     const payload = {
+      items,
       books: this.cartItems,
       total: Math.round(this.totalAmount * 100) / 100,
       books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
@@ -120,6 +128,7 @@ export class PaymentGatewayComponent implements OnInit {
       id_User: this.userEmail,
       id_Order_Status: 1
     };
+
     this.orderService.createMercadoPagoPreference(payload).subscribe(res => {
       const preferenceId = res.preference_id;
       this.mp.checkout({
