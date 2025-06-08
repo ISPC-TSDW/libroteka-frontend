@@ -122,24 +122,53 @@ export class PaymentGatewayComponent implements OnInit {
 
 
 onMercadoPagoPay() {
+  // 1. Crea la preferencia de Mercado Pago primero
   const items = this.cartItems.map(item => ({
     title: item.title,
     quantity: Number(item.quantity || 1),
     currency_id: "ARS",
     unit_price: Number(item.price)
   }));
-  this.orderService.createMercadoPagoPreference(items).subscribe((res: any) => {
-    this.mp.checkout({
-      preference: { id: res.preference_id },
-      autoOpen: true,
-      render: {
-        container: '.cho-container',
-        label: 'Pagar con Mercado Pago'
-      }
-    });
-  }, error => {
-    alert('Error al iniciar el pago con Mercado Pago');
-    console.error(error);
+
+  this.orderService.createMercadoPagoPreference(items).subscribe({
+    next: (res: any) => {
+      const preferenceId = res.preference_id;
+
+      // 2. Crea la orden en el backend con el preference_id
+      const orderData = {
+        books: this.cartItems,
+        total: this.totalAmount,
+        books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
+        address: this.addressDetails.address,
+        city: this.addressDetails.city,
+        telephone: this.addressDetails.telephone,
+        dni: this.paymentDetails.dni,
+        id_Order_Status: 1, // Pendiente
+        preference_id: preferenceId
+      };
+
+      this.orderService.createOrder(orderData).subscribe({
+        next: () => {
+          // 3. Abre el checkout de Mercado Pago
+          this.mp.checkout({
+            preference: { id: preferenceId },
+            autoOpen: true,
+            render: {
+              container: '.cho-container',
+              label: 'Pagar con Mercado Pago'
+            }
+          });
+        },
+        error: err => {
+          alert('Error al registrar la orden antes de pagar');
+          console.error(err);
+        }
+      });
+    },
+    error: error => {
+      alert('Error al iniciar el pago con Mercado Pago');
+      console.error(error);
+    }
   });
 }
 
