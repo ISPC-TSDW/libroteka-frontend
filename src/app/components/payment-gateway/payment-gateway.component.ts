@@ -73,7 +73,7 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   calculateTotal(): number {
-    return this.cartItems.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
+    return Math.round((this.cartItems.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0)) * 100) / 100;
   }
 
   onAddressSubmit(form: any) {
@@ -84,117 +84,75 @@ export class PaymentGatewayComponent implements OnInit {
   }
 
   onPaymentSubmit() {
-    if (!this.userEmail) {
-      console.error('Email is null, order not created');
-      alert('Error: no se detectó el usuario.');
-      return;
-    }
-
-    const validCart = this.cartItems.map(({ quantity, ...props }) => props);
     const orderData = {
-      //id_User: this.userEmail, // debe existir en UsersLibroteka
-      id_Order_Status: 1, // ID de "Pendiente", por ejemplo
-      //date: new Date(),
-      books: validCart, 
-      total: this.totalAmount,
+      books: this.cartItems,
+      total: Math.round(this.totalAmount * 100) / 100,
       books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
       address: this.addressDetails.address,
       city: this.addressDetails.city,
       telephone: this.addressDetails.telephone,
       dni: this.paymentDetails.dni,
-    };
-
-  console.log("Order payload:", orderData);
-
-  this.orderService.createOrder(orderData).subscribe({
-    next: res => {
-      this.paymentMessage = '¡Pago realizado con éxito!';
-      this.paymentSuccess = true;
-      this.cartService.clearCart();
-      this.router.navigate(['/dashboard']);
-    },
-    error: err => {
-      this.paymentMessage = 'Ocurrió un error al procesar el pago.';
-      this.paymentSuccess = false;
-    }
-  });
-}
-
-
-onMercadoPagoPay() {
-  // 1. Crea la preferencia de Mercado Pago primero
-  const items = this.cartItems.map(item => ({
-    title: item.title,
-    quantity: Number(item.quantity || 1),
-    currency_id: "ARS",
-    unit_price: Number(item.price)
-  }));
-
-  this.orderService.createMercadoPagoPreference(items).subscribe({
-    next: (res: any) => {
-      const preferenceId = res.preference_id;
-
-      // 2. Crea la orden en el backend con el preference_id
-      const orderData = {
-        books: this.cartItems,
-        total: this.totalAmount,
-        books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
-        address: this.addressDetails.address,
-        city: this.addressDetails.city,
-        telephone: this.addressDetails.telephone,
-        dni: this.paymentDetails.dni,
-        id_Order_Status: 1, // Pendiente
-        preference_id: preferenceId
-      };
-
-      this.orderService.createOrder(orderData).subscribe({
-        next: () => {
-          // 3. Abre el checkout de Mercado Pago
-          this.mp.checkout({
-            preference: { id: preferenceId },
-            autoOpen: true,
-            render: {
-              container: '.cho-container',
-              label: 'Pagar con Mercado Pago'
-            }
-          });
-        },
-        error: err => {
-          alert('Error al registrar la orden antes de pagar');
-          console.error(err);
-        }
-      });
-    },
-    error: error => {
-      alert('Error al iniciar el pago con Mercado Pago');
-      console.error(error);
-    }
-  });
-}
-
-cleanNumberField(field: keyof typeof this.paymentDetails) {
-  this.paymentDetails[field] = this.paymentDetails[field].replace(/[^0-9]/g, '');
-}
-cleanAddressNumberField(field: keyof typeof this.addressDetails) {
-  this.addressDetails[field] = this.addressDetails[field].replace(/[^0-9]/g, '');
-}
-cleanLetterField(field: keyof typeof this.paymentDetails) {
-  this.paymentDetails[field] = this.paymentDetails[field].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
-}
-cleanCityField() {
-  this.addressDetails.city = this.addressDetails.city.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
-}
-formatExpiryDate() {
-  let value = this.paymentDetails.expiryDate.replace(/[^0-9]/g, '');
-  if (value.length > 2) {
-    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+      id_User: this.userEmail,
+      id_Order_Status: 1};
+    this.orderService.createOrder(orderData).subscribe({
+      next: res => {
+        this.paymentMessage = '¡Pago realizado con éxito!';
+        this.paymentSuccess = true;
+        this.cartService.clearCart();
+        this.router.navigate(['/dashboard']);
+      },
+      error: err => {
+        this.paymentMessage = 'Ocurrió un error al procesar el pago.';
+        this.paymentSuccess = false;
+      }
+    });
   }
-  this.paymentDetails.expiryDate = value.slice(0, 5);
-}
 
-getAuthorName(author: Author | number | null): string {
-  if (!author) return 'Autor desconocido';
-  if (typeof author === 'object' && 'name' in author) return author.name;
-  return this.authors.find(a => a.id_Author === author)?.name || 'Autor desconocido';
-}
+  onMercadoPagoPay() {
+    const payload = {
+      books: this.cartItems,
+      total: Math.round(this.totalAmount * 100) / 100,
+      books_amount: this.cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
+      address: this.addressDetails.address,
+      city: this.addressDetails.city,
+      telephone: this.addressDetails.telephone,
+      dni: this.paymentDetails.dni,
+      id_User: this.userEmail,
+      id_Order_Status: 1
+    };
+    this.orderService.createMercadoPagoPreference(payload).subscribe(res => {
+      const preferenceId = res.preference_id;
+      this.mp.checkout({
+        preference: { id: preferenceId },
+        autoOpen: true,
+        render: { container: '.cho-container', label: 'Pagar con Mercado Pago' }
+      });
+    });
+  }
+
+  cleanNumberField(field: keyof typeof this.paymentDetails) {
+    this.paymentDetails[field] = this.paymentDetails[field].replace(/[^0-9]/g, '');
+  }
+  cleanAddressNumberField(field: keyof typeof this.addressDetails) {
+    this.addressDetails[field] = this.addressDetails[field].replace(/[^0-9]/g, '');
+  }
+  cleanLetterField(field: keyof typeof this.paymentDetails) {
+    this.paymentDetails[field] = this.paymentDetails[field].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+  }
+  cleanCityField() {
+    this.addressDetails.city = this.addressDetails.city.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '');
+  }
+  formatExpiryDate() {
+    let value = this.paymentDetails.expiryDate.replace(/[^0-9]/g, '');
+    if (value.length > 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    this.paymentDetails.expiryDate = value.slice(0, 5);
+  }
+
+  getAuthorName(author: Author | number | null): string {
+    if (!author) return 'Autor desconocido';
+    if (typeof author === 'object' && 'name' in author) return author.name;
+    return this.authors.find(a => a.id_Author === author)?.name || 'Autor desconocido';
+  }
 }

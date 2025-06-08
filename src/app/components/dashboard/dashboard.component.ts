@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService, Order } from '../../services/order.service';
-
+import { BookService} from '../../services/book.service';
+import { Book } from '../../models/book.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -13,10 +14,16 @@ export class DashboardComponent implements OnInit {
   recentPurchases: Order[] = [];
   shipmentStatus: any[] = [];
   userOrders: Order[] = [];
+  books: Book[] = [];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private bookService: BookService) {}
 
   ngOnInit(): void {
+    this.bookService.getBooks().subscribe(books => {
+      this.books = books;
+      this.loadOrders();
+    });
+    
     this.loadOrders();
     this.orderService.getOrders().subscribe({
       next: (orders) => (this.userOrders = orders),
@@ -55,5 +62,9 @@ export class DashboardComponent implements OnInit {
       default:
         return 'Preparando';
     }
+  }
+
+  getBookTitle(id_Book: number): string {
+    return this.books.find(b => b.id_Book === id_Book)?.title || 'Libro desconocido';
   }
 }
