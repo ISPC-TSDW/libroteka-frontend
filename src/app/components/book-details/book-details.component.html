@@ -20,9 +20,9 @@
       <h2>{{ selectedBook.title }}</h2>
       
       <div class="book-info">
-        <p><strong>Autor:</strong> {{ selectedBook.id_Author?.name }}</p>
-        <p><strong>Género:</strong> {{ selectedBook.id_Genre?.name }}</p>
-        <p><strong>Editorial:</strong> {{ selectedBook.id_Editorial?.name }}</p>
+        <p><strong>Autor:</strong> {{ getAuthorName(selectedBook.id_Author) }}</p>
+        <p><strong>Género:</strong> {{ getGenreName(selectedBook.id_Genre) }}</p>
+        <p><strong>Editorial:</strong> {{ getEditorialName(selectedBook.id_Editorial) }}</p>
         <p><strong>Descripción:</strong> {{ selectedBook.description }}</p>
         <p><strong>Precio:</strong> ${{ selectedBook.price }}</p>
         <p><strong>Stock:</strong> {{ selectedBook.stock }}</p>
