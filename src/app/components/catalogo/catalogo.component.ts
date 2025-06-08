@@ -1,14 +1,89 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BookService } from '../../services/book.service';
+import { Book } from '../../models/book.model';
+import { GenreService, Genre } from '../../services/genre.service';
 
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css'
 })
-export class CatalogoComponent {
+export class CatalogoComponent implements OnInit {
+  books: Book[] = [];
+  filteredBooks: Book[] = [];
+  genres: Genre[] = [];
+  selectedCategory: string = 'todo';
+  loading: boolean = false;
 
+  constructor(
+    private bookService: BookService,
+    private genreService: GenreService
+  ) {}
+
+  ngOnInit() {
+    this.loadBooks();
+    this.loadGenres();
+  }
+
+  loadBooks() {
+    this.loading = true;
+    this.bookService.getBooks().subscribe({
+      next: (books) => {
+        this.books = books;
+        this.filteredBooks = books;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar los libros:', error);
+        this.loading = false;
+      }
+    });
+  }
+
+  loadGenres() {
+    this.genreService.getGenres().subscribe({
+      next: (genres) => {
+        this.genres = genres;
+      },
+      error: (error) => {
+        console.error('Error al cargar los géneros:', error);
+      }
+    });
+  }
+
+  filterByCategory(category: string) {
+    this.selectedCategory = category;
+    this.loading = true;
+    
+    if (category === 'todo') {
+      this.filteredBooks = this.books;
+      this.loading = false;
+    } else {
+      this.filteredBooks = this.books.filter(book => {
+        if (!book.id_Genre) return false;
+        
+        // Si id_Genre es un objeto (tiene la propiedad name)
+        if (typeof book.id_Genre === 'object' && book.id_Genre !== null) {
+          return book.id_Genre.name.toLowerCase() === category.toLowerCase();
+        }
+        
+        // Si id_Genre es un número (ID)
+        const genreId = Number(book.id_Genre);
+        const genre = this.genres.find(g => g.id_Genre === genreId);
+        return genre ? genre.name.toLowerCase() === category.toLowerCase() : false;
+      });
+      this.loading = false;
+    }
+  }
+
+  getGenreName(genre: Genre | number | null): string {
+    if (!genre) return 'Género desconocido';
+    if (typeof genre === 'object' && 'name' in genre) return genre.name;
+    const genreId = Number(genre);
+    const foundGenre = this.genres.find(g => g.id_Genre === genreId);
+    return foundGenre ? foundGenre.name : 'Género desconocido';
+  }
 }
