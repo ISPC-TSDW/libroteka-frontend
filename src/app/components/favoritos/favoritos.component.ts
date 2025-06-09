@@ -67,3 +67,4 @@ export class FavoritosComponent implements OnInit {
     return this.editorials.find(e => e.id_Editorial === id)?.name || 'Desconocida';
   }
 }
+

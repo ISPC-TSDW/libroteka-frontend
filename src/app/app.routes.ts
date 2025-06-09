@@ -39,3 +39,5 @@ export const routes: Routes = [
   { path: 'book-details/:id', component: BookDetailsComponent },
 ];
 
+
+
