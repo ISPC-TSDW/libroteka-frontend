@@ -95,12 +95,39 @@
       </a>
 
       <!-- Botón del carrito -->
-      <div class="cart-container">
-        <button class="nav-link carrito-icon" (click)="toggleCart()">
+      <div class="cart-hover-area"
+           (mouseenter)="showCartDropdown()"
+           (mouseleave)="hideCartDropdown()">
+        <button class="nav-link carrito-icon">
           <i data-lucide="shopping-cart"></i>
           <span>Carrito</span>
           <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
         </button>
+        <div class="carrito-dropdown" *ngIf="isCartVisible">
+          <div class="carrito-dropdown-content">
+            <div class="carrito-dropdown-header">
+              <h3>Carrito</h3>
+              <button class="close-cart" (click)="toggleCart()">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <div class="carrito-items">
+              <div *ngIf="cartItems.length > 0; else emptyCart">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                  <div class="cart-item-title">{{ item.title }}</div>
+                  <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+                </div>
+              </div>
+              <ng-template #emptyCart>
+                <div class="cart-empty">El carrito está vacío.</div>
+              </ng-template>
+            </div>
+            <div class="carrito-footer" *ngIf="cartItems.length > 0">
+              <button type="button" class="btn btn-danger" (click)="clearCart()">Limpiar carrito</button>
+              <button type="button" class="btn btn-success" (click)="proceedToCheckout()">Iniciar compra</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login">
@@ -155,33 +182,6 @@
         <i data-lucide="log-out"></i>
         <span>Logout</span>
       </a>
-    </div>
-  </div>
-
-  <!-- Dropdown del carrito -->
-  <div class="carrito-dropdown" *ngIf="isCartVisible">
-    <div class="carrito-dropdown-content">
-      <div class="carrito-dropdown-header">
-        <h3>Carrito</h3>
-        <button class="close-cart" (click)="toggleCart()">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-      <div class="carrito-items">
-        <div *ngIf="cartItems.length > 0; else emptyCart">
-          <div *ngFor="let item of cartItems" class="cart-item">
-            <div class="cart-item-title">{{ item.title }}</div>
-            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
-          </div>
-        </div>
-        <ng-template #emptyCart>
-          <div class="cart-empty">El carrito está vacío.</div>
-        </ng-template>
-      </div>
-      <div class="carrito-footer" *ngIf="cartItems.length > 0">
-        <button type="button" class="btn btn-danger" (click)="clearCart()">Limpiar carrito</button>
-        <button type="button" class="btn btn-success" (click)="proceedToCheckout()">Iniciar compra</button>
-      </div>
     </div>
   </div>
 
