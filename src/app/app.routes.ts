@@ -15,7 +15,7 @@ import { AdminBooksComponent } from './components/admin/admin-books.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { AdminGuard } from './guards/admin-guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-
+import { FavoritosComponent } from './components/favoritos/favoritos.component';
 
 
 
@@ -32,11 +32,12 @@ export const routes: Routes = [
   { path: 'admin/books', component: AdminBooksComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'mas-vendidos', component: MasVendidosComponent },
   { path: 'book/:bookId', component: BookDetailsComponent },
-  { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard], },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
-  { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
+  { path: 'pagos', component: PaymentGatewayComponent, canActivate: [AuthGuard] },
   { path: 'book-details/:id', component: BookDetailsComponent },
+  { path: 'favoritos', component: FavoritosComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/not-found', pathMatch: 'full' }
 ];
 
 
