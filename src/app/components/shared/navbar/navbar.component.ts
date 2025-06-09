@@ -23,6 +23,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, DoCheck {
   cartItemCount: number = 0;
   cartItems: any[] = [];
   isCartVisible: boolean = false;
+  cartDropdownTimeout: any;
   isLoggedIn = false;
   userEmail: string | null = '';
   isMobileMenuOpen: boolean = false;
@@ -138,6 +139,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, DoCheck {
   proceedToCheckout(): void {
     this.router.navigate(['/pagos']);
     this.isCartVisible = false;
+  }
+
+  showCartDropdown(): void {
+    clearTimeout(this.cartDropdownTimeout);
+    this.isCartVisible = true;
+  }
+
+  hideCartDropdown(): void {
+    this.cartDropdownTimeout = setTimeout(() => {
+      this.isCartVisible = false;
+    }, 150);
   }
 
   toggleCart(): void {
