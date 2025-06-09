@@ -1,103 +1,92 @@
-<div class="login-form">
-    <div class="title text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card h-100 mb-3">
-                        <div class="card-body text-center">
-                            <div class="alert alert-info" role="alert">
-                                <h2>INGRESAR O CREAR UNA CUENTA</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container form-container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <h2 class="mb-4 text-center">Iniciar sesión</h2>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="idE" class="form-label">Correo electrónico</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control"
+            id="idE"
+            aria-label="Correo electrónico"
+            required
+            [attr.aria-invalid]="Email?.invalid && (Email?.dirty || Email?.touched)"
+            aria-describedby="emailHelp"
+          />
+          <div *ngIf="Email?.errors && (Email?.dirty || Email?.touched)" id="emailHelp" class="text-danger" role="alert">
+            <div *ngIf="Email?.hasError('required')">El correo es obligatorio.</div>
+            <div *ngIf="Email?.hasError('email')">Ingrese un correo válido.</div>
+          </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card h-100 mb-3">
-                        <div class="card-body">
-                            <div class="alert alert-primary" role="alert">
-                                <h5>Nuevo Cliente</h5>
-                            </div>
-                            <p>
-                                Registrarse es simple y seguro. Te pediremos solo algunos datos para hacer el seguimiento de los pedidos y poder procesar tus compras más rápido. Además podrás recibir ofertas, promociones e información de los últimos lanzamientos.
-                            </p>
-                            <a routerLink="/create" class="btn btn-primary">CREAR CUENTA</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card h-100 mb-3">
-                        <div class="card-body">
-                            <div class="alert alert-primary" role="alert">
-                                <h5>Usuario Registrado</h5>
-                            </div>
-                            <p>
-                                Gracias por volver a visitarnos, te pedimos que ingreses tu usuario y contraseña para ingresar a tu cuenta.
-                            </p>
-                            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                                <div class="mb-3">
-                                    <label for="idE" class="form-label">Dirección de email</label>
-                                    <input type="email" formControlName="email" class="form-control" id="idE" aria-describedby="idEH" />
-                                    <div *ngIf="Email?.errors && Email?.touched">
-                                        <div *ngIf="Email?.hasError('required')" class="text-danger">
-                                            Este campo es obligatorio.
-                                        </div>
-                                        <div *ngIf="Email?.hasError('email')" class="text-danger">
-                                            El correo debe tener un formato válido.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="InputPassword" class="form-label">Contraseña</label>
-                                    <input type="password" formControlName="password" class="form-control" id="InputPassword" />
-                                    <div *ngIf="Password?.errors && Password?.touched">
-                                        <div *ngIf="Password?.hasError('required')" class="text-danger">
-                                            Este campo es obligatorio.
-                                        </div>
-                                        <div *ngIf="Password?.hasError('minlength')" class="text-danger">
-                                            La contraseña debe tener al menos 8 caracteres.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="Check" />
-                                    <label class="form-check-label">Recordarme</label>
-                                </div>
-                                <button type="submit" class="btn btn-primary">ACCEDER</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+          <label for="InputPassword" class="form-label">Contraseña</label>
+          <div class="input-group">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              class="form-control"
+              id="InputPassword"
+              aria-label="Contraseña"
+              required
+              minlength="8"
+              maxlength="32"
+              [attr.aria-invalid]="Password?.invalid && (Password?.dirty || Password?.touched)"
+              aria-describedby="passwordHelp"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              tabindex="0"
+            >
+              <img
+                *ngIf="showPassword"
+                src="assets/images/icons/visibility_off_24dp_1A1A1A.svg"
+                alt="Ocultar contraseña"
+                width="28"
+                height="28"
+                aria-hidden="true"
+                class="eye-icon"
+                draggable="false"
+                focusable="false"
+              />
+              <img
+                *ngIf="!showPassword"
+                src="assets/images/icons/visibility_24dp_1A1A1A.svg"
+                alt="Mostrar contraseña"
+                width="28"
+                height="28"
+                aria-hidden="true"
+                class="eye-icon"
+                draggable="false"
+                focusable="false"
+              />
+            </button>
+          </div>
+          <div *ngIf="Password?.errors && (Password?.dirty || Password?.touched)" id="passwordHelp" class="text-danger" role="alert">
+            <div *ngIf="Password?.hasError('required')">La contraseña es obligatoria.</div>
+            <div *ngIf="Password?.hasError('minlength')">Debe tener al menos 8 caracteres.</div>
+          </div>
         </div>
+
+        <button type="submit" class="btn-login btn-primary w-100" [disabled]="form.invalid">ACCEDER</button>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-2" role="alert">
+            {{ errorMessage }}
+        </div>
+
+        <div class="mt-3 text-center">
+          <a routerLink="/create" aria-label="Ir a crear cuenta">¿No tienes cuenta? Regístrate aquí</a>
+        </div>
+      </form>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card h-100 mb-3">
-                    <div class="card-body text-center"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card h-100 mb-3">
-                    <div class="card-body text-center">
-                        <p>
-                            <strong>
-                <a href="#" style="color: rgb(19, 19, 103)">¿Olvidó su contraseña?</a>
-              </strong>
-                        </p>
-                        <p>
-                            <strong>
-                <a href="#" style="color: rgb(19, 19, 103)">Volver atrás</a>
-              </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 <router-outlet></router-outlet>

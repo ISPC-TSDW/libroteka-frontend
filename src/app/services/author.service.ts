@@ -19,14 +19,14 @@ export class AuthorService {
   }
 
   createAuthor(author: { name: string }): Observable<Author> {
-    return this.http.post<Author>(this.apiUrl, author);
+    return this.http.post<Author>(this.apiUrl, author, { withCredentials: true });
   }
 
   updateAuthor(id: number, author: { name: string }): Observable<Author> {
-    return this.http.put<Author>(`${this.apiUrl}${id}/`, author);
+    return this.http.put<Author>(`${this.apiUrl}${id}/`, author, { withCredentials: true });
   }
 
   deleteAuthor(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`, { withCredentials: true });
   }
 }

@@ -1,3 +1,16 @@
+<!-- Modal -->
+<app-book-details *ngIf="selectedBook" [selectedBook]="selectedBook" (close)="closeModal()">
+  <div class="modal">
+    <h2>{{ selectedBook.title }}</h2>
+    <p><strong>Autor:</strong> {{ selectedBook.id_Author?.name }}</p>
+    <p><strong>Descripción:</strong> {{ selectedBook.description }}</p>
+    <p><strong>Precio:</strong> ${{ selectedBook.price }}</p>
+    <button (click)="closeModal()">Cerrar</button>
+  </div>
+</app-book-details>
+
+
+
 <!-- Carrousel -->
 <div class="carousel">
     <div class="carousel-slide active">
@@ -5,7 +18,6 @@
       <div class="carousel-text">
         <h2>Descubre Nuevos Mundos</h2>
         <p>Las mejores historias te esperan</p>
-        <button>Explorar ahora</button>
       </div>
     </div>
     <div class="carousel-slide">
@@ -13,7 +25,6 @@
       <div class="carousel-text">
         <h2>Los Mejores Autores</h2>
         <p>Encuentra a tus favoritos</p>
-        <button>Descubrir autores</button>
       </div>
     </div>
     <div class="carousel-slide">
@@ -21,7 +32,6 @@
       <div class="carousel-text">
         <h2>Ofertas Especiales</h2>
         <p>Hasta 30% de descuento</p>
-        <button>Ver ofertas</button>
       </div>
     </div>
     <div class="carousel-dots">
@@ -59,20 +69,15 @@
 </section>
 
   
-  <!-- Libros Destacados -->
+  <!-- Libros  -->
   <section class="featured-section">
     <div class="section-header">
-      <h2>Libros Destacados</h2>
-      <div class="filters">
-        <button class="filter" [class.active]="selectedFilter === 'todos'" (click)="applyFilter('todos')">Todos</button>
-        <button class="filter" [class.active]="selectedFilter === 'mas-vendidos'" (click)="applyFilter('mas-vendidos')">Más Vendidos</button>
-        <button class="filter" [class.active]="selectedFilter === 'recomendados'" (click)="applyFilter('recomendados')">Recomendados</button>
-      </div>
+      <h2>Libros</h2>
     </div>
   
     <div class="book-grid">
       <div class="book-card" *ngFor="let book of filteredBooks">
-        <img [src]="book.coverImage" [alt]="book.title" class="book-image" />
+        <img [src]="book.image" [alt]="book.title" class="book-image"/>
         <h3 class="book-title">{{ book.title }}</h3>
         <p class="book-author">{{ book.id_Author?.name }}</p>
     
@@ -85,8 +90,17 @@
         <div class="price">
           <span class="price-current">${{ book.price }}</span>
         </div>
-    
-        <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+        <div class="btn-div">
+          <button class="btn-add" (click)="addToCart(book)">Añadir al carrito</button>
+          <button class="btn-resenia" (click)="openModal(book)">Ver más</button>
+
+
+          
+        </div>
+        
+        <div *ngIf="addedMessages.has(book.id_Book)" class="success-message">
+          {{ addedMessages.get(book.id_Book) }}
+        </div>
       </div>
     </div>
 
@@ -98,10 +112,11 @@
   <section class="nuevos-lanzamientos">
     <h2 class="titulo-seccion">Nuevos Lanzamientos</h2>
     <div class="slider-container">
-      <div class="slider" id="slider">
+      <div class="slider" #slider>
+
         <div class="card" *ngFor="let book of nuevosLanzamientos">
           <span class="badge">Nuevo</span>
-          <img [src]="book.coverImage" [alt]="book.title" />
+          <img [src]="book.image" [alt]="book.title" />
           <h3>{{ book.title }}</h3>
           <p class="autor">{{ book.id_Author?.name }}</p>
           <p class="precio">${{ book.price }}</p>
@@ -110,8 +125,8 @@
         
       </div>
       <div class="slider-controls">
-        <button (click)="prevSlide()" class="arrow">&#10094;</button>
-        <button (click)="nextSlide()" class="arrow">&#10095;</button>
+        <button (click)="prevNuevosSlide()" class="arrow">&#10094;</button>
+        <button (click)="nextNuevosSlide()" class="arrow">&#10095;</button>
       </div>
     </div>
   </section>

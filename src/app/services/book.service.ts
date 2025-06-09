@@ -16,12 +16,12 @@ export class BookService {
   }
 
   getBooks(): Observable<any> {
-    console.log('BookService.getBooks() called');
+    console.log('Esto es el servicio de libros');
     const url = this.apiUrl;
     console.log('Making GET request to:', url);
     return this.http.get(url).pipe(
       tap({
-        next: (response) => console.log('BookService.getBooks() response:', response),
+        next: (response) => console.log('Estos son los libros: :D', response),
         error: (error) => console.error('BookService.getBooks() error:', error)
       }),
       catchError(this.handleError)

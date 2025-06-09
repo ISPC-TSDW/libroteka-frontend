@@ -1,20 +1,22 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { CartService } from '../../services/cart.service';
+import { BookDetailsComponent } from '../book-details/book-details.component';
+
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BookDetailsComponent],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit, AfterViewInit {
 
-  // Parte del carrusel
+  // Parte del carrusel principal
   currentSlide = 0;
 
   // Parte de los libros
@@ -22,6 +24,13 @@ export class InicioComponent implements OnInit, AfterViewInit {
   filteredBooks: Book[] = [];
   nuevosLanzamientos: Book[] = [];
   selectedFilter: string = 'todos';
+  addedMessages: Map<number, string> = new Map();
+
+  // Modal
+  selectedBook: Book | null = null;
+
+  // Referencia al carrusel horizontal de lanzamientos
+  @ViewChild('slider') slider!: ElementRef;
 
   constructor(
     private bookService: BookService,
@@ -29,10 +38,10 @@ export class InicioComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadBooks(); // Cuando arranca, trae los libros
+    this.loadBooks();
   }
 
-  ngAfterViewInit(): void { // Carrusel, cambio cada 5 segundos
+  ngAfterViewInit(): void {
     setInterval(() => {
       this.nextSlide();
     }, 5000);
@@ -43,23 +52,13 @@ export class InicioComponent implements OnInit, AfterViewInit {
       next: (data) => {
         this.books = data;
         this.filteredBooks = data;
-        this.nuevosLanzamientos = data.filter((b:any) => b.is_new);
+        const currentYear = new Date().getFullYear();
+        this.nuevosLanzamientos = data.filter((book: any) => book.year >= 1800);
       },
       error: (err) => {
         console.error('Error cargando libros', err);
       }
     });
-  }
-
-  applyFilter(filter: string): void {
-    this.selectedFilter = filter;
-    if (filter === 'todos') {
-      this.filteredBooks = this.books;
-    } else if (filter === 'mas-vendidos') {
-      this.filteredBooks = this.books.filter(book => book.isBestSeller);
-    } else if (filter === 'recomendados') {
-      this.filteredBooks = this.books.filter(book => book.isRecommended);
-    }
   }
 
   nextSlide() {
@@ -76,21 +75,33 @@ export class InicioComponent implements OnInit, AfterViewInit {
     }
   }
 
-  prevSlide() {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.dot');
+  addToCart(book: Book): void {
+    this.cartService.addCartItem(book);
+    this.addedMessages.set(book.id_Book, `"${book.title}" agregado con éxito`);
+    setTimeout(() => {
+      this.addedMessages.delete(book.id_Book);
+    }, 3000);
+  }
 
-    if (slides.length > 0) {
-      slides.forEach(slide => slide.classList.remove('active'));
-      dots.forEach(dot => dot.classList.remove('active'));
-
-      this.currentSlide = (this.currentSlide - 1 + slides.length) % slides.length;
-      slides[this.currentSlide].classList.add('active');
-      dots[this.currentSlide].classList.add('active');
+  nextNuevosSlide(): void {
+    if (this.slider?.nativeElement) {
+      this.slider.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
     }
   }
 
-  addToCart(book: Book): void {
-    this.cartService.addCartItem(book);
+  prevNuevosSlide(): void {
+    if (this.slider?.nativeElement) {
+      this.slider.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  }
+
+  // abrir modal
+  openModal(book: Book): void {
+    this.selectedBook = book;
+  }
+
+  // cerrar modal
+  closeModal(): void {
+    this.selectedBook = null;
   }
 }

@@ -1,6 +1,8 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,12 +22,19 @@ export class AuthService {
     this.checkLoginStatus();
   }
 
+  getCurrentUser(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/me/`, { withCredentials: true });
+  }
+
   storeTokens(accessToken: string, refreshToken: string): void {
     sessionStorage.setItem(this.accessTokenKey, accessToken);
     sessionStorage.setItem(this.refreshTokenKey, refreshToken);
     this.isLoggedInSubject.next(true);
     const email = this.decodeToken(accessToken)?.email || null;
     this.currentUserEmailSubject.next(email);
+    if (email) {
+      sessionStorage.setItem('userEmail', email);
+    }
   }
 
   storeUserDetails(userDetails: any): void {
@@ -75,9 +84,34 @@ export class AuthService {
     return this.isLoggedInSubject.asObservable();
   }
 
-  currentUserEmail(): Observable<string | null> {
-    return this.currentUserEmailSubject.asObservable();
+  
+
+currentUserEmail(): Observable<string | null> {
+  const email = this.currentUserEmailSubject.value;
+
+  if (email) {
+    return new BehaviorSubject(email).asObservable();
   }
+
+  const storedEmail = sessionStorage.getItem('userEmail');
+  if (storedEmail) {
+    this.currentUserEmailSubject.next(storedEmail);
+    return new BehaviorSubject(storedEmail).asObservable();
+  }
+
+  const token = this.getAccessToken();
+  if (token) {
+    const decoded = this.decodeToken(token);
+    const decodedEmail = decoded?.email || null;
+    if (decodedEmail) {
+      this.currentUserEmailSubject.next(decodedEmail);
+      return new BehaviorSubject(decodedEmail).asObservable();
+    }
+  }
+
+  return new BehaviorSubject(null).asObservable();
+}
+
 
   checkLoginStatus(): void {
     const token = this.getAccessToken();

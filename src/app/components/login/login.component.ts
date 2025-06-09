@@ -16,6 +16,7 @@ import { UserRoleService } from '../../services/user-role.service';
 export class LoginComponent {
   form!: FormGroup;
   errorMessage: string = '';
+  showPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,7 +27,7 @@ export class LoginComponent {
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(1)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
     });
   }
 
@@ -37,41 +38,41 @@ export class LoginComponent {
   get Password() {
     return this.form.get('password');
   }
+  
   onSubmit(): void {
     if (this.form.valid) {
       this.loginService.loginUser(this.form.value).subscribe(
         (response) => {
           const { access, refresh } = response;
-          this.authService.storeTokens(access, refresh);
-          
-          this.userRoleService.getUserDetails(
-            this.form.value.email, 
-            this.form.value.password
-          ).subscribe(
-            (userDetails) => {
-              console.log('User details:', userDetails);
-              // Store the complete user details object with nested user
-              this.authService.storeUserDetails(userDetails);
-              // Navigate based on role
-              if (this.authService.hasRole(2)) {
-                this.router.navigate(['/admin/books']);
-              } else {
-                this.router.navigate(['/dashboard']);
+          if (access && refresh) {
+            this.authService.storeTokens(access, refresh);
+            this.userRoleService.getUserDetails(
+              this.form.value.email, 
+              this.form.value.password
+            ).subscribe(
+              (userDetails) => {
+                this.authService.storeUserDetails(userDetails);
+                if (this.authService.hasRole(2)) {
+                  this.router.navigate(['/admin/books']);
+                } else {
+                  this.router.navigate(['/inicio']);
+                }
+              },
+              (error) => {
+                // Si falla obtener detalles, igual navega
+                this.router.navigate(['/inicio']);
               }
-            },
-            (error) => {
-              console.error('Error fetching user details:', error);
-              this.router.navigate(['/dashboard']);
-            }
-          );
+            );
+          } else {
+            this.errorMessage = 'Respuesta inválida del servidor.';
+          }
         },
         (error) => {
-          this.errorMessage = 'Invalid email or password';
-          console.error(error);
+          this.errorMessage = 'Email o contraseña incorrectos.';
         }
       );
     } else {
-      this.errorMessage = 'Please fill in all required fields correctly';
+      this.errorMessage = 'Por favor, complete todos los campos correctamente.';
       this.form.markAllAsTouched();
     }
   }

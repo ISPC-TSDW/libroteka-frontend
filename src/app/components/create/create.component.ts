@@ -17,6 +17,8 @@ export class CreateComponent {
   successMessage: string = '';
   errorMessage: string = '';
   showConfirmPassMessage: boolean = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,8 +32,8 @@ export class CreateComponent {
       last_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern('[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+')]], // Updated to match backend field name
       dni: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(11), Validators.pattern('[0-9]+')]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmpass: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
+      confirmpass: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
     }, { validators: this.checkPasswords });
   }
 
@@ -68,11 +70,11 @@ export class CreateComponent {
     event.preventDefault();
     if (this.form.valid) {
       const { confirmpass, ...formData } = this.form.value;
-
       this.createService.registerUser(formData).subscribe(
         (response) => {
-          const { access, refresh } = response;
-          this.authService.storeTokens(access, refresh);
+          if (response.access && response.refresh) {
+            this.authService.storeTokens(response.access, response.refresh);
+          }
           this.successMessage = 'Registro exitoso. Redirigiendo al dashboard...';
           this.errorMessage = '';
           this.router.navigate(['/dashboard']);
@@ -83,15 +85,16 @@ export class CreateComponent {
         }
       );
     } else {
-      this.errorMessage = 'No se pudo crear el registro, revisa las observaciones.';
+      this.errorMessage = 'Por favor, complete todos los campos correctamente.';
       this.form.markAllAsTouched();
     }
   }
 
+
   checkPasswords(group: FormGroup): { [key: string]: boolean } | null {
     const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmpass')?.value;
-    return password === confirmPassword ? null : { notSame: true };
+    const confirmPass = group.get('confirmpass')?.value;
+    return password === confirmPass ? null : { notSame: true };
   }
 
   ConfirmPassMsg(event: Event): void {

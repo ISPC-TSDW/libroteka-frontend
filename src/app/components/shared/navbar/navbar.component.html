@@ -1,62 +1,190 @@
 <nav class="navbar">
-  <div class="navbar-left">
-    <a class="logo-link" routerLink="/inicio">
-      <img src="assets/images/logo.png" alt="Logo" class="logo" />
-      <span class="brand-name">Libroteka</span>
-    </a>
-  </div>
-
-  <div class="navbar-center">
-    <div class="search-bar">
-      <i data-lucide="search"></i>
-      <input type="text" placeholder="Buscar libros, autores, géneros..." />
+  <!-- Versión móvil -->
+  <div class="navbar-mobile">
+    <!-- Logo centrado en la parte superior -->
+    <div class="mobile-logo">
+      <a class="logo-link" routerLink="/inicio">
+        <img src="assets/images/logo.png" alt="Logo" class="logo" />
+        <span class="brand-name">Libroteka</span>
+      </a>
+    </div>
+    <!-- Menú hamburguesa y search en la parte inferior -->
+    <div class="mobile-controls">
+      <button class="hamburger-button" (click)="toggleMobileMenu()">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="search-container">
+        <div class="search-bar">
+          <i data-lucide="search"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+            placeholder="Buscar libros..." 
+          />
+          <button *ngIf="searchQuery" class="clear-search" (click)="clearSearch()">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <!-- Resultados de búsqueda móvil -->
+        <div class="search-results" *ngIf="searchResults.length > 0">
+          <div *ngFor="let book of searchResults" class="search-result-item" (click)="selectBook(book)">
+            <img [src]="book.image || 'assets/images/no-image.png'" [alt]="book.title" class="search-result-image">
+            <div class="search-result-info">
+              <h4>{{ book.title }}</h4>
+              <p>{{ book.id_Author?.name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="navbar-right">
-    <a class="nav-link" routerLink="/inicio">
-      <i data-lucide="home"></i>
-      <span>Inicio</span>
-    </a>
-    <a class="nav-link" routerLink="/favoritos">
-      <i data-lucide="heart"></i>
-      <span>Favoritos</span>
-    </a>
-    <a class="nav-link" routerLink="/dashboard">
-      <i data-lucide="layout-dashboard"></i>
-      <span>Dashboard</span>
-    </a>
-    <a class="nav-link carrito-icon" routerLink="/sobre-nosotros">
-      <i data-lucide="handshake"></i>
-      <span>Sobre Nosotros</span>
-      <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
-    </a>
+  <!-- Versión desktop -->
+  <div class="navbar-desktop">
+    <div class="navbar-left">
+      <a class="logo-link" routerLink="/inicio">
+        <img src="assets/images/logo.png" alt="Logo" class="logo" />
+        <span class="brand-name">Libroteka</span>
+      </a>
+    </div>
 
-    <!-- Botón del carrito con dropdown -->
-    <div class="cart-container">
-      <button class="nav-link carrito-icon" (click)="toggleCart()">
-        <i data-lucide="shopping-cart"></i>
-        <span>Carrito</span>
-        <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
-      </button>
-      <div class="carrito-dropdown" *ngIf="isCartVisible">
-        <div *ngIf="cartItems.length > 0; else emptyCart">
-          <div *ngFor="let item of cartItems" class="cart-item">
-            <div class="cart-item-title">{{ item.title }}</div>
-            <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
-          </div>
-          <button type="button" class="btn btn-danger m-2" (click)="clearCart()">Limpiar carrito</button>
-          <button type="button" class="btn btn-success m-2" (click)="proceedToCheckout()">Iniciar compra</button>
+    <div class="navbar-center">
+      <div class="search-container">
+        <div class="search-bar">
+          <i data-lucide="search"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+            placeholder="Buscar libros..." 
+          />
+          <button *ngIf="searchQuery" class="clear-search" (click)="clearSearch()">
+            <i data-lucide="x"></i>
+          </button>
         </div>
-        <ng-template #emptyCart>
-          <div class="cart-empty">El carrito está vacío.</div>
-        </ng-template>
+        <!-- Resultados de búsqueda desktop -->
+        <div class="search-results" *ngIf="searchResults.length > 0">
+          <div *ngFor="let book of searchResults" class="search-result-item" (click)="selectBook(book)">
+            <img [src]="book.image || 'assets/images/no-image.png'" [alt]="book.title" class="search-result-image">
+            <div class="search-result-info">
+              <h4>{{ book.title }}</h4>
+              <p>{{ book.id_Author?.name }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <a class="nav-link" routerLink="/login">
-      <i data-lucide="log-in"></i>
-      <span>Login</span>
-    </a>
+    <div class="navbar-right">
+      <a class="nav-link" routerLink="/inicio">
+        <i data-lucide="home"></i>
+        <span>Inicio</span>
+      </a>
+      <a class="nav-link" routerLink="/favoritos">
+        <i data-lucide="heart"></i>
+        <span>Favoritos</span>
+      </a>
+      <a class="nav-link" routerLink="/dashboard">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-link" routerLink="/sobre-nosotros">
+        <i data-lucide="handshake"></i>
+        <span>Sobre Nosotros</span>
+      </a>
+
+      <!-- Botón del carrito -->
+      <div class="cart-hover-area"
+           (mouseenter)="showCartDropdown()"
+           (mouseleave)="hideCartDropdown()">
+        <button class="nav-link carrito-icon">
+          <i data-lucide="shopping-cart"></i>
+          <span>Carrito</span>
+          <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
+        </button>
+        <div class="carrito-dropdown" *ngIf="isCartVisible">
+          <div class="carrito-dropdown-content">
+            <div class="carrito-dropdown-header">
+              <h3>Carrito</h3>
+              <button class="close-cart" (click)="toggleCart()">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <div class="carrito-items">
+              <div *ngIf="cartItems.length > 0; else emptyCart">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                  <div class="cart-item-title">{{ item.title }}</div>
+                  <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
+                </div>
+              </div>
+              <ng-template #emptyCart>
+                <div class="cart-empty">El carrito está vacío.</div>
+              </ng-template>
+            </div>
+            <div class="carrito-footer" *ngIf="cartItems.length > 0">
+              <button type="button" class="btn btn-danger" (click)="clearCart()">Limpiar carrito</button>
+              <button type="button" class="btn btn-success" (click)="proceedToCheckout()">Iniciar compra</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login">
+        <i data-lucide="log-in"></i>
+        <span>Login</span>
+      </a>
+
+      <a *ngIf="isLoggedIn" class="nav-link" (click)="logout()" style="cursor: pointer;">
+        <i data-lucide="log-out"></i>
+        <span>Logout</span>
+      </a>
+    </div>
   </div>
+
+  <!-- Menú móvil -->
+  <div class="mobile-menu" [class.active]="isMobileMenuOpen">
+    <div class="mobile-menu-header">
+      <button class="close-button" (click)="toggleMobileMenu()">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="mobile-menu-content">
+      <a class="mobile-nav-link" routerLink="/inicio" (click)="toggleMobileMenu()">
+        <i data-lucide="home"></i>
+        <span>Inicio</span>
+      </a>
+      <a class="mobile-nav-link" routerLink="/favoritos" (click)="toggleMobileMenu()">
+        <i data-lucide="heart"></i>
+        <span>Favoritos</span>
+      </a>
+      <a class="mobile-nav-link" routerLink="/dashboard" (click)="toggleMobileMenu()">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="mobile-nav-link" routerLink="/sobre-nosotros" (click)="toggleMobileMenu()">
+        <i data-lucide="handshake"></i>
+        <span>Sobre Nosotros</span>
+      </a>
+
+      <!-- Carrito en menú móvil -->
+      <div class="mobile-nav-link cart-mobile" (click)="toggleCart()">
+        <i data-lucide="shopping-cart"></i>
+        <span>Carrito</span>
+        <span *ngIf="cartItemCount > 0" class="cart-badge-mobile">{{ cartItemCount }}</span>
+      </div>
+
+      <a *ngIf="!isLoggedIn" class="mobile-nav-link" routerLink="/login" (click)="toggleMobileMenu()">
+        <i data-lucide="log-in"></i>
+        <span>Login</span>
+      </a>
+      <a *ngIf="isLoggedIn" class="mobile-nav-link" (click)="logout(); toggleMobileMenu()">
+        <i data-lucide="log-out"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal de detalles del libro -->
+  <app-book-details *ngIf="selectedBook" [selectedBook]="selectedBook" (close)="closeBookDetails()"></app-book-details>
 </nav>

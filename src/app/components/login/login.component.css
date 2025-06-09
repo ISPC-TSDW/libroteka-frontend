@@ -1,4 +1,4 @@
-  .form-control{
+.form-control{
     background-color: #E8F0FE;
     padding: 6px 12px;
   }
@@ -7,4 +7,21 @@
     font-size: 20px;
     margin: 0px 0px 8px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .eye-icon {
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+  }
+  .btn-login {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #a78bfa;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s
   }

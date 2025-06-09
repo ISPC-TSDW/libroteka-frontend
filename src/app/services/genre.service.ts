@@ -19,14 +19,14 @@ export class GenreService {
   }
 
   createGenre(genre: { name: string }): Observable<Genre> {
-    return this.http.post<Genre>(this.apiUrl, genre);
+    return this.http.post<Genre>(this.apiUrl, genre, { withCredentials: true });
   }
 
   updateGenre(id: number, genre: { name: string }): Observable<Genre> {
-    return this.http.put<Genre>(`${this.apiUrl}${id}/`, genre);
+    return this.http.put<Genre>(`${this.apiUrl}${id}/`, genre, { withCredentials: true });
   }
 
   deleteGenre(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`, { withCredentials: true });
   }
 }
