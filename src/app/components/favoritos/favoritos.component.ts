@@ -7,7 +7,6 @@ import { EditorialService } from '../../services/editorial.service';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 
-
 @Component({
   selector: 'app-favoritos',
   standalone: true,
