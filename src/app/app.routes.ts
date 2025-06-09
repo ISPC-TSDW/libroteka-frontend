@@ -38,3 +38,6 @@ export const routes: Routes = [
   { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
   { path: 'book-details/:id', component: BookDetailsComponent },
 ];
+
+
+
