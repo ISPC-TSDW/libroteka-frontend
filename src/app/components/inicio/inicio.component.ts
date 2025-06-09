@@ -4,11 +4,13 @@ import { RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { CartService } from '../../services/cart.service';
+import { BookDetailsComponent } from '../book-details/book-details.component';
+
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BookDetailsComponent],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
@@ -23,6 +25,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   nuevosLanzamientos: Book[] = [];
   selectedFilter: string = 'todos';
   addedMessages: Map<number, string> = new Map();
+
+  // Modal
+  selectedBook: Book | null = null;
 
   // Referencia al carrusel horizontal de lanzamientos
   @ViewChild('slider') slider!: ElementRef;
@@ -88,5 +93,15 @@ export class InicioComponent implements OnInit, AfterViewInit {
     if (this.slider?.nativeElement) {
       this.slider.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
     }
+  }
+
+  // abrir modal
+  openModal(book: Book): void {
+    this.selectedBook = book;
+  }
+
+  // cerrar modal
+  closeModal(): void {
+    this.selectedBook = null;
   }
 }

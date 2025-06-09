@@ -19,14 +19,14 @@ export class EditorialService {
   }
 
   createEditorial(editorial: { name: string }): Observable<Editorial> {
-    return this.http.post<Editorial>(this.apiUrl, editorial);
+    return this.http.post<Editorial>(this.apiUrl, editorial, { withCredentials: true });
   }
 
   updateEditorial(id: number, editorial: { name: string }): Observable<Editorial> {
-    return this.http.put<Editorial>(`${this.apiUrl}${id}/`, editorial);
+    return this.http.put<Editorial>(`${this.apiUrl}${id}/`, editorial, { withCredentials: true });
   }
 
   deleteEditorial(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${id}/`);
+    return this.http.delete<void>(`${this.apiUrl}${id}/`, { withCredentials: true });
   }
 }

@@ -16,7 +16,6 @@
       <div>
         <a href="https://github.com/ISPC-TSDW/libroteka-mobile/releases/download/v1.1.0/LibrotekaApp.apk">
           <h5>Descargá nuestra APP <i class="fa-brands fa-android" aria-hidden="true"></i> </h5>
-
         </a>
       </div>
     </div>
@@ -25,11 +24,17 @@
       <div>
         <h3>Categorías</h3>
         <ul>
-          <li>Ficción</li>
-          <li>No Ficción</li>
-          <li>Ciencia Ficción</li>
-          <li>Romance</li>
-          <li>Misterio</li>
+          <li><a (click)="navigateToCategory('todo')">Todo</a></li>
+          <li *ngFor="let genre of visibleGenres">
+            <a (click)="navigateToCategory(genre.name.toLowerCase())">
+              {{genre.name}}
+            </a>
+          </li>
+          <li *ngIf="hasMoreGenres">
+            <a class="show-more" (click)="toggleGenres()">
+              {{ showAllGenres ? 'Mostrar menos' : 'Mostrar más' }}
+            </a>
+          </li>
         </ul>
       </div>
       <div>
