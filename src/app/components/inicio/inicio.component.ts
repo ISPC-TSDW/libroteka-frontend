@@ -29,6 +29,10 @@ export class InicioComponent implements OnInit, AfterViewInit {
   // Modal
   selectedBook: Book | null = null;
 
+  //Popup
+  showSuccessPopup: boolean = false;
+  successMessage: string = '';
+
   // Referencia al carrusel horizontal de lanzamientos
   @ViewChild('slider') slider!: ElementRef;
 
@@ -76,12 +80,22 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   addToCart(book: Book): void {
-    this.cartService.addCartItem(book);
-    this.addedMessages.set(book.id_Book, `"${book.title}" agregado con éxito`);
-    setTimeout(() => {
-      this.addedMessages.delete(book.id_Book);
-    }, 3000);
-  }
+  this.cartService.addCartItem(book);
+
+  // Mostrar popup toast
+  this.successMessage = `"${book.title}" agregado con éxito`;
+  this.showSuccessPopup = true;
+  setTimeout(() => {
+    this.showSuccessPopup = false;
+  }, 3000); // 3 segundos visible
+
+  // (Opcional) mensaje en tarjeta individual
+  this.addedMessages.set(book.id_Book, `"${book.title}" agregado con éxito`);
+  setTimeout(() => {
+    this.addedMessages.delete(book.id_Book);
+  }, 3000);
+}
+
 
   nextNuevosSlide(): void {
     if (this.slider?.nativeElement) {
